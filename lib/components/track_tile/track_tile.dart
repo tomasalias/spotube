@@ -233,36 +233,36 @@ class TrackTile extends HookConsumerWidget {
                   child: AbsorbPointer(
                     absorbing: selectionMode,
                     child: switch (track) {
-                    SpotubeLocalTrackObject() => Text(
-                        track.name,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                      ),
-                    _ => Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                child: Button(
-                style: ButtonVariance.link.copyWith(
-                padding: (context, states, value) =>
-                  EdgeInsets.zero,
-                ),
-                onPressed: effectiveSelection
-                  ? null
-                  : () {
-                    context
-                      .navigateTo(TrackRoute(trackId: track.id));
-                  },
-                              child: Text(
-                                track.name,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
+                      SpotubeLocalTrackObject() => Text(
+                          track.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      _ => Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Flexible(
+                              child: Button(
+                                style: ButtonVariance.link.copyWith(
+                                  padding: (context, states, value) =>
+                                      EdgeInsets.zero,
+                                ),
+                                onPressed: effectiveSelection
+                                    ? null
+                                    : () {
+                                        context.navigateTo(
+                                            TrackRoute(trackId: track.id));
+                                      },
+                                child: Text(
+                                  track.name,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
-                      ),
-                  },
+                          ],
+                        ),
+                    },
                   ),
                 ),
                 if (constrains.mdAndUp) ...[
@@ -294,14 +294,14 @@ class TrackTile extends HookConsumerWidget {
             ),
             subtitle: Align(
               alignment: Alignment.centerLeft,
-                    child: track is SpotubeLocalTrackObject
+              child: track is SpotubeLocalTrackObject
                   ? Text(
                       track.artists.asString(),
                     )
                   : ClipRect(
                       child: ConstrainedBox(
                         constraints: const BoxConstraints(maxHeight: 40),
-                          child: AbsorbPointer(
+                        child: AbsorbPointer(
                           absorbing: effectiveSelection,
                           child: ArtistLink(
                             artists: track.artists,
