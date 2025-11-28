@@ -3,7 +3,20 @@
 
 // ignore_for_file: unused_import, unused_element, unnecessary_import, duplicate_ignore, invalid_use_of_internal_member, annotate_overrides, non_constant_identifier_names, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables, unused_field
 
-import 'api/simple.dart';
+import 'api/plugin/commands.dart';
+import 'api/plugin/models/album.dart';
+import 'api/plugin/models/artist.dart';
+import 'api/plugin/models/audio_source.dart';
+import 'api/plugin/models/browse.dart';
+import 'api/plugin/models/core.dart';
+import 'api/plugin/models/image.dart';
+import 'api/plugin/models/pagination.dart';
+import 'api/plugin/models/playlist.dart';
+import 'api/plugin/models/search.dart';
+import 'api/plugin/models/track.dart';
+import 'api/plugin/models/user.dart';
+import 'api/plugin/plugin.dart';
+import 'api/plugin/senders.dart';
 import 'dart:async';
 import 'dart:convert';
 import 'dart:ffi' as ffi;
@@ -18,11 +31,417 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
     required super.portManager,
   });
 
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_OpaqueSenderPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSenderPtr;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_PluginCommandPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommandPtr;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_SenderPluginCommandPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommandPtr;
+
+  @protected
+  AnyhowException dco_decode_AnyhowException(dynamic raw);
+
+  @protected
+  OpaqueSender
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          dynamic raw);
+
+  @protected
+  PluginCommand
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+          dynamic raw);
+
+  @protected
+  SenderPluginCommand
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+          dynamic raw);
+
+  @protected
+  OpaqueSender
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          dynamic raw);
+
+  @protected
+  OpaqueSender
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          dynamic raw);
+
+  @protected
+  OpaqueSender
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          dynamic raw);
+
+  @protected
+  PluginCommand
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+          dynamic raw);
+
+  @protected
+  SenderPluginCommand
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+          dynamic raw);
+
   @protected
   String dco_decode_String(dynamic raw);
 
   @protected
+  bool dco_decode_bool(dynamic raw);
+
+  @protected
+  bool dco_decode_box_autoadd_bool(dynamic raw);
+
+  @protected
+  double dco_decode_box_autoadd_f_64(dynamic raw);
+
+  @protected
+  int dco_decode_box_autoadd_i_32(dynamic raw);
+
+  @protected
+  PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw);
+
+  @protected
+  PluginAlbumSender dco_decode_box_autoadd_plugin_album_sender(dynamic raw);
+
+  @protected
+  PluginArtistSender dco_decode_box_autoadd_plugin_artist_sender(dynamic raw);
+
+  @protected
+  PluginAudioSourceSender dco_decode_box_autoadd_plugin_audio_source_sender(
+      dynamic raw);
+
+  @protected
+  PluginAuthSender dco_decode_box_autoadd_plugin_auth_sender(dynamic raw);
+
+  @protected
+  PluginBrowseSender dco_decode_box_autoadd_plugin_browse_sender(dynamic raw);
+
+  @protected
+  PluginConfiguration dco_decode_box_autoadd_plugin_configuration(dynamic raw);
+
+  @protected
+  PluginCoreSender dco_decode_box_autoadd_plugin_core_sender(dynamic raw);
+
+  @protected
+  PluginPlaylistSender dco_decode_box_autoadd_plugin_playlist_sender(
+      dynamic raw);
+
+  @protected
+  PluginSearchSender dco_decode_box_autoadd_plugin_search_sender(dynamic raw);
+
+  @protected
+  PluginTrackSender dco_decode_box_autoadd_plugin_track_sender(dynamic raw);
+
+  @protected
+  PluginUpdateAvailable dco_decode_box_autoadd_plugin_update_available(
+      dynamic raw);
+
+  @protected
+  PluginUserSender dco_decode_box_autoadd_plugin_user_sender(dynamic raw);
+
+  @protected
+  ScrobbleDetails dco_decode_box_autoadd_scrobble_details(dynamic raw);
+
+  @protected
+  SpotubeAudioLosslessContainerQuality
+      dco_decode_box_autoadd_spotube_audio_lossless_container_quality(
+          dynamic raw);
+
+  @protected
+  SpotubeAudioLossyContainerQuality
+      dco_decode_box_autoadd_spotube_audio_lossy_container_quality(dynamic raw);
+
+  @protected
+  SpotubeAudioSourceContainerPreset
+      dco_decode_box_autoadd_spotube_audio_source_container_preset(dynamic raw);
+
+  @protected
+  SpotubeAudioSourceMatchObject
+      dco_decode_box_autoadd_spotube_audio_source_match_object(dynamic raw);
+
+  @protected
+  SpotubeBrowseSectionObject
+      dco_decode_box_autoadd_spotube_browse_section_object(dynamic raw);
+
+  @protected
+  SpotubeFullAlbumObject dco_decode_box_autoadd_spotube_full_album_object(
+      dynamic raw);
+
+  @protected
+  SpotubeFullArtistObject dco_decode_box_autoadd_spotube_full_artist_object(
+      dynamic raw);
+
+  @protected
+  SpotubeFullPlaylistObject dco_decode_box_autoadd_spotube_full_playlist_object(
+      dynamic raw);
+
+  @protected
+  SpotubePlugin dco_decode_box_autoadd_spotube_plugin(dynamic raw);
+
+  @protected
+  SpotubeSimpleAlbumObject dco_decode_box_autoadd_spotube_simple_album_object(
+      dynamic raw);
+
+  @protected
+  SpotubeSimpleArtistObject dco_decode_box_autoadd_spotube_simple_artist_object(
+      dynamic raw);
+
+  @protected
+  SpotubeSimplePlaylistObject
+      dco_decode_box_autoadd_spotube_simple_playlist_object(dynamic raw);
+
+  @protected
+  SpotubeTrackObject dco_decode_box_autoadd_spotube_track_object(dynamic raw);
+
+  @protected
+  int dco_decode_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  double dco_decode_f_64(dynamic raw);
+
+  @protected
+  int dco_decode_i_32(dynamic raw);
+
+  @protected
+  PlatformInt64 dco_decode_i_64(dynamic raw);
+
+  @protected
+  List<String> dco_decode_list_String(dynamic raw);
+
+  @protected
+  List<PluginAbility> dco_decode_list_plugin_ability(dynamic raw);
+
+  @protected
+  List<PluginApi> dco_decode_list_plugin_api(dynamic raw);
+
+  @protected
   Uint8List dco_decode_list_prim_u_8_strict(dynamic raw);
+
+  @protected
+  List<ScrobbleArtist> dco_decode_list_scrobble_artist(dynamic raw);
+
+  @protected
+  List<SpotubeAudioLosslessContainerQuality>
+      dco_decode_list_spotube_audio_lossless_container_quality(dynamic raw);
+
+  @protected
+  List<SpotubeAudioLossyContainerQuality>
+      dco_decode_list_spotube_audio_lossy_container_quality(dynamic raw);
+
+  @protected
+  List<SpotubeAudioSourceMatchObject>
+      dco_decode_list_spotube_audio_source_match_object(dynamic raw);
+
+  @protected
+  List<SpotubeAudioSourceStreamObject>
+      dco_decode_list_spotube_audio_source_stream_object(dynamic raw);
+
+  @protected
+  List<SpotubeBrowseSectionResponseObjectItem>
+      dco_decode_list_spotube_browse_section_response_object_item(dynamic raw);
+
+  @protected
+  List<SpotubeFullArtistObject> dco_decode_list_spotube_full_artist_object(
+      dynamic raw);
+
+  @protected
+  List<SpotubeImageObject> dco_decode_list_spotube_image_object(dynamic raw);
+
+  @protected
+  List<SpotubePaginationResponseObjectItem>
+      dco_decode_list_spotube_pagination_response_object_item(dynamic raw);
+
+  @protected
+  List<SpotubeSimpleAlbumObject> dco_decode_list_spotube_simple_album_object(
+      dynamic raw);
+
+  @protected
+  List<SpotubeSimpleArtistObject> dco_decode_list_spotube_simple_artist_object(
+      dynamic raw);
+
+  @protected
+  List<SpotubeSimplePlaylistObject>
+      dco_decode_list_spotube_simple_playlist_object(dynamic raw);
+
+  @protected
+  List<SpotubeTrackObject> dco_decode_list_spotube_track_object(dynamic raw);
+
+  @protected
+  List<SpotubeUserObject> dco_decode_list_spotube_user_object(dynamic raw);
+
+  @protected
+  String? dco_decode_opt_String(dynamic raw);
+
+  @protected
+  bool? dco_decode_opt_box_autoadd_bool(dynamic raw);
+
+  @protected
+  double? dco_decode_opt_box_autoadd_f_64(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
+
+  @protected
+  PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw);
+
+  @protected
+  PluginUpdateAvailable? dco_decode_opt_box_autoadd_plugin_update_available(
+      dynamic raw);
+
+  @protected
+  SpotubeFullPlaylistObject?
+      dco_decode_opt_box_autoadd_spotube_full_playlist_object(dynamic raw);
+
+  @protected
+  int? dco_decode_opt_box_autoadd_u_32(dynamic raw);
+
+  @protected
+  List<String>? dco_decode_opt_list_String(dynamic raw);
+
+  @protected
+  List<SpotubeImageObject>? dco_decode_opt_list_spotube_image_object(
+      dynamic raw);
+
+  @protected
+  PluginAbility dco_decode_plugin_ability(dynamic raw);
+
+  @protected
+  PluginAlbumSender dco_decode_plugin_album_sender(dynamic raw);
+
+  @protected
+  PluginApi dco_decode_plugin_api(dynamic raw);
+
+  @protected
+  PluginArtistSender dco_decode_plugin_artist_sender(dynamic raw);
+
+  @protected
+  PluginAudioSourceSender dco_decode_plugin_audio_source_sender(dynamic raw);
+
+  @protected
+  PluginAuthSender dco_decode_plugin_auth_sender(dynamic raw);
+
+  @protected
+  PluginBrowseSender dco_decode_plugin_browse_sender(dynamic raw);
+
+  @protected
+  PluginConfiguration dco_decode_plugin_configuration(dynamic raw);
+
+  @protected
+  PluginCoreSender dco_decode_plugin_core_sender(dynamic raw);
+
+  @protected
+  PluginPlaylistSender dco_decode_plugin_playlist_sender(dynamic raw);
+
+  @protected
+  PluginSearchSender dco_decode_plugin_search_sender(dynamic raw);
+
+  @protected
+  PluginTrackSender dco_decode_plugin_track_sender(dynamic raw);
+
+  @protected
+  PluginUpdateAvailable dco_decode_plugin_update_available(dynamic raw);
+
+  @protected
+  PluginUserSender dco_decode_plugin_user_sender(dynamic raw);
+
+  @protected
+  ScrobbleAlbum dco_decode_scrobble_album(dynamic raw);
+
+  @protected
+  ScrobbleArtist dco_decode_scrobble_artist(dynamic raw);
+
+  @protected
+  ScrobbleDetails dco_decode_scrobble_details(dynamic raw);
+
+  @protected
+  SpotubeAlbumType dco_decode_spotube_album_type(dynamic raw);
+
+  @protected
+  SpotubeAudioLosslessContainerQuality
+      dco_decode_spotube_audio_lossless_container_quality(dynamic raw);
+
+  @protected
+  SpotubeAudioLossyContainerQuality
+      dco_decode_spotube_audio_lossy_container_quality(dynamic raw);
+
+  @protected
+  SpotubeAudioSourceContainerPreset
+      dco_decode_spotube_audio_source_container_preset(dynamic raw);
+
+  @protected
+  SpotubeAudioSourceMatchObject dco_decode_spotube_audio_source_match_object(
+      dynamic raw);
+
+  @protected
+  SpotubeAudioSourceStreamObject dco_decode_spotube_audio_source_stream_object(
+      dynamic raw);
+
+  @protected
+  SpotubeBrowseSectionObject dco_decode_spotube_browse_section_object(
+      dynamic raw);
+
+  @protected
+  SpotubeBrowseSectionResponseObjectItem
+      dco_decode_spotube_browse_section_response_object_item(dynamic raw);
+
+  @protected
+  SpotubeFullAlbumObject dco_decode_spotube_full_album_object(dynamic raw);
+
+  @protected
+  SpotubeFullArtistObject dco_decode_spotube_full_artist_object(dynamic raw);
+
+  @protected
+  SpotubeFullPlaylistObject dco_decode_spotube_full_playlist_object(
+      dynamic raw);
+
+  @protected
+  SpotubeImageObject dco_decode_spotube_image_object(dynamic raw);
+
+  @protected
+  SpotubeMediaCompressionType dco_decode_spotube_media_compression_type(
+      dynamic raw);
+
+  @protected
+  SpotubePaginationResponseObject dco_decode_spotube_pagination_response_object(
+      dynamic raw);
+
+  @protected
+  SpotubePaginationResponseObjectItem
+      dco_decode_spotube_pagination_response_object_item(dynamic raw);
+
+  @protected
+  SpotubePlugin dco_decode_spotube_plugin(dynamic raw);
+
+  @protected
+  SpotubeSearchResponseObject dco_decode_spotube_search_response_object(
+      dynamic raw);
+
+  @protected
+  SpotubeSimpleAlbumObject dco_decode_spotube_simple_album_object(dynamic raw);
+
+  @protected
+  SpotubeSimpleArtistObject dco_decode_spotube_simple_artist_object(
+      dynamic raw);
+
+  @protected
+  SpotubeSimplePlaylistObject dco_decode_spotube_simple_playlist_object(
+      dynamic raw);
+
+  @protected
+  SpotubeTrackObject dco_decode_spotube_track_object(dynamic raw);
+
+  @protected
+  SpotubeUserObject dco_decode_spotube_user_object(dynamic raw);
+
+  @protected
+  int dco_decode_u_32(dynamic raw);
+
+  @protected
+  BigInt dco_decode_u_64(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -31,10 +450,457 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void dco_decode_unit(dynamic raw);
 
   @protected
+  BigInt dco_decode_usize(dynamic raw);
+
+  @protected
+  AnyhowException sse_decode_AnyhowException(SseDeserializer deserializer);
+
+  @protected
+  OpaqueSender
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          SseDeserializer deserializer);
+
+  @protected
+  PluginCommand
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+          SseDeserializer deserializer);
+
+  @protected
+  SenderPluginCommand
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+          SseDeserializer deserializer);
+
+  @protected
+  OpaqueSender
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          SseDeserializer deserializer);
+
+  @protected
+  OpaqueSender
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          SseDeserializer deserializer);
+
+  @protected
+  OpaqueSender
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          SseDeserializer deserializer);
+
+  @protected
+  PluginCommand
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+          SseDeserializer deserializer);
+
+  @protected
+  SenderPluginCommand
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+          SseDeserializer deserializer);
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer);
 
   @protected
+  bool sse_decode_bool(SseDeserializer deserializer);
+
+  @protected
+  bool sse_decode_box_autoadd_bool(SseDeserializer deserializer);
+
+  @protected
+  double sse_decode_box_autoadd_f_64(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
+
+  @protected
+  PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer);
+
+  @protected
+  PluginAlbumSender sse_decode_box_autoadd_plugin_album_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginArtistSender sse_decode_box_autoadd_plugin_artist_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginAudioSourceSender sse_decode_box_autoadd_plugin_audio_source_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginAuthSender sse_decode_box_autoadd_plugin_auth_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginBrowseSender sse_decode_box_autoadd_plugin_browse_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginConfiguration sse_decode_box_autoadd_plugin_configuration(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginCoreSender sse_decode_box_autoadd_plugin_core_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginPlaylistSender sse_decode_box_autoadd_plugin_playlist_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginSearchSender sse_decode_box_autoadd_plugin_search_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginTrackSender sse_decode_box_autoadd_plugin_track_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginUpdateAvailable sse_decode_box_autoadd_plugin_update_available(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginUserSender sse_decode_box_autoadd_plugin_user_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  ScrobbleDetails sse_decode_box_autoadd_scrobble_details(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeAudioLosslessContainerQuality
+      sse_decode_box_autoadd_spotube_audio_lossless_container_quality(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeAudioLossyContainerQuality
+      sse_decode_box_autoadd_spotube_audio_lossy_container_quality(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeAudioSourceContainerPreset
+      sse_decode_box_autoadd_spotube_audio_source_container_preset(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeAudioSourceMatchObject
+      sse_decode_box_autoadd_spotube_audio_source_match_object(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeBrowseSectionObject
+      sse_decode_box_autoadd_spotube_browse_section_object(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeFullAlbumObject sse_decode_box_autoadd_spotube_full_album_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeFullArtistObject sse_decode_box_autoadd_spotube_full_artist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeFullPlaylistObject sse_decode_box_autoadd_spotube_full_playlist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubePlugin sse_decode_box_autoadd_spotube_plugin(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeSimpleAlbumObject sse_decode_box_autoadd_spotube_simple_album_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeSimpleArtistObject sse_decode_box_autoadd_spotube_simple_artist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeSimplePlaylistObject
+      sse_decode_box_autoadd_spotube_simple_playlist_object(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeTrackObject sse_decode_box_autoadd_spotube_track_object(
+      SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  double sse_decode_f_64(SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_i_32(SseDeserializer deserializer);
+
+  @protected
+  PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
+
+  @protected
+  List<String> sse_decode_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<PluginAbility> sse_decode_list_plugin_ability(
+      SseDeserializer deserializer);
+
+  @protected
+  List<PluginApi> sse_decode_list_plugin_api(SseDeserializer deserializer);
+
+  @protected
   Uint8List sse_decode_list_prim_u_8_strict(SseDeserializer deserializer);
+
+  @protected
+  List<ScrobbleArtist> sse_decode_list_scrobble_artist(
+      SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeAudioLosslessContainerQuality>
+      sse_decode_list_spotube_audio_lossless_container_quality(
+          SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeAudioLossyContainerQuality>
+      sse_decode_list_spotube_audio_lossy_container_quality(
+          SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeAudioSourceMatchObject>
+      sse_decode_list_spotube_audio_source_match_object(
+          SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeAudioSourceStreamObject>
+      sse_decode_list_spotube_audio_source_stream_object(
+          SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeBrowseSectionResponseObjectItem>
+      sse_decode_list_spotube_browse_section_response_object_item(
+          SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeFullArtistObject> sse_decode_list_spotube_full_artist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeImageObject> sse_decode_list_spotube_image_object(
+      SseDeserializer deserializer);
+
+  @protected
+  List<SpotubePaginationResponseObjectItem>
+      sse_decode_list_spotube_pagination_response_object_item(
+          SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeSimpleAlbumObject> sse_decode_list_spotube_simple_album_object(
+      SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeSimpleArtistObject> sse_decode_list_spotube_simple_artist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeSimplePlaylistObject>
+      sse_decode_list_spotube_simple_playlist_object(
+          SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeTrackObject> sse_decode_list_spotube_track_object(
+      SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeUserObject> sse_decode_list_spotube_user_object(
+      SseDeserializer deserializer);
+
+  @protected
+  String? sse_decode_opt_String(SseDeserializer deserializer);
+
+  @protected
+  bool? sse_decode_opt_box_autoadd_bool(SseDeserializer deserializer);
+
+  @protected
+  double? sse_decode_opt_box_autoadd_f_64(SseDeserializer deserializer);
+
+  @protected
+  int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
+
+  @protected
+  PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer);
+
+  @protected
+  PluginUpdateAvailable? sse_decode_opt_box_autoadd_plugin_update_available(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeFullPlaylistObject?
+      sse_decode_opt_box_autoadd_spotube_full_playlist_object(
+          SseDeserializer deserializer);
+
+  @protected
+  int? sse_decode_opt_box_autoadd_u_32(SseDeserializer deserializer);
+
+  @protected
+  List<String>? sse_decode_opt_list_String(SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeImageObject>? sse_decode_opt_list_spotube_image_object(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginAbility sse_decode_plugin_ability(SseDeserializer deserializer);
+
+  @protected
+  PluginAlbumSender sse_decode_plugin_album_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginApi sse_decode_plugin_api(SseDeserializer deserializer);
+
+  @protected
+  PluginArtistSender sse_decode_plugin_artist_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginAudioSourceSender sse_decode_plugin_audio_source_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginAuthSender sse_decode_plugin_auth_sender(SseDeserializer deserializer);
+
+  @protected
+  PluginBrowseSender sse_decode_plugin_browse_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginConfiguration sse_decode_plugin_configuration(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginCoreSender sse_decode_plugin_core_sender(SseDeserializer deserializer);
+
+  @protected
+  PluginPlaylistSender sse_decode_plugin_playlist_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginSearchSender sse_decode_plugin_search_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginTrackSender sse_decode_plugin_track_sender(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginUpdateAvailable sse_decode_plugin_update_available(
+      SseDeserializer deserializer);
+
+  @protected
+  PluginUserSender sse_decode_plugin_user_sender(SseDeserializer deserializer);
+
+  @protected
+  ScrobbleAlbum sse_decode_scrobble_album(SseDeserializer deserializer);
+
+  @protected
+  ScrobbleArtist sse_decode_scrobble_artist(SseDeserializer deserializer);
+
+  @protected
+  ScrobbleDetails sse_decode_scrobble_details(SseDeserializer deserializer);
+
+  @protected
+  SpotubeAlbumType sse_decode_spotube_album_type(SseDeserializer deserializer);
+
+  @protected
+  SpotubeAudioLosslessContainerQuality
+      sse_decode_spotube_audio_lossless_container_quality(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeAudioLossyContainerQuality
+      sse_decode_spotube_audio_lossy_container_quality(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeAudioSourceContainerPreset
+      sse_decode_spotube_audio_source_container_preset(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeAudioSourceMatchObject sse_decode_spotube_audio_source_match_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeAudioSourceStreamObject sse_decode_spotube_audio_source_stream_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeBrowseSectionObject sse_decode_spotube_browse_section_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeBrowseSectionResponseObjectItem
+      sse_decode_spotube_browse_section_response_object_item(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubeFullAlbumObject sse_decode_spotube_full_album_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeFullArtistObject sse_decode_spotube_full_artist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeFullPlaylistObject sse_decode_spotube_full_playlist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeImageObject sse_decode_spotube_image_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeMediaCompressionType sse_decode_spotube_media_compression_type(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubePaginationResponseObject sse_decode_spotube_pagination_response_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubePaginationResponseObjectItem
+      sse_decode_spotube_pagination_response_object_item(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubePlugin sse_decode_spotube_plugin(SseDeserializer deserializer);
+
+  @protected
+  SpotubeSearchResponseObject sse_decode_spotube_search_response_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeSimpleAlbumObject sse_decode_spotube_simple_album_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeSimpleArtistObject sse_decode_spotube_simple_artist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeSimplePlaylistObject sse_decode_spotube_simple_playlist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeTrackObject sse_decode_spotube_track_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeUserObject sse_decode_spotube_user_object(
+      SseDeserializer deserializer);
+
+  @protected
+  int sse_decode_u_32(SseDeserializer deserializer);
+
+  @protected
+  BigInt sse_decode_u_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
@@ -43,17 +909,451 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_decode_unit(SseDeserializer deserializer);
 
   @protected
-  int sse_decode_i_32(SseDeserializer deserializer);
+  BigInt sse_decode_usize(SseDeserializer deserializer);
 
   @protected
-  bool sse_decode_bool(SseDeserializer deserializer);
+  void sse_encode_AnyhowException(
+      AnyhowException self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          OpaqueSender self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+          PluginCommand self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+          SenderPluginCommand self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          OpaqueSender self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          OpaqueSender self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          OpaqueSender self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+          PluginCommand self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+          SenderPluginCommand self, SseSerializer serializer);
 
   @protected
   void sse_encode_String(String self, SseSerializer serializer);
 
   @protected
+  void sse_encode_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_bool(bool self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_f_64(double self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_i_64(
+      PlatformInt64 self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_album_sender(
+      PluginAlbumSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_artist_sender(
+      PluginArtistSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_audio_source_sender(
+      PluginAudioSourceSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_auth_sender(
+      PluginAuthSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_browse_sender(
+      PluginBrowseSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_configuration(
+      PluginConfiguration self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_core_sender(
+      PluginCoreSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_playlist_sender(
+      PluginPlaylistSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_search_sender(
+      PluginSearchSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_track_sender(
+      PluginTrackSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_update_available(
+      PluginUpdateAvailable self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_plugin_user_sender(
+      PluginUserSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_scrobble_details(
+      ScrobbleDetails self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_audio_lossless_container_quality(
+      SpotubeAudioLosslessContainerQuality self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_audio_lossy_container_quality(
+      SpotubeAudioLossyContainerQuality self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_audio_source_container_preset(
+      SpotubeAudioSourceContainerPreset self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_audio_source_match_object(
+      SpotubeAudioSourceMatchObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_browse_section_object(
+      SpotubeBrowseSectionObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_full_album_object(
+      SpotubeFullAlbumObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_full_artist_object(
+      SpotubeFullArtistObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_full_playlist_object(
+      SpotubeFullPlaylistObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_plugin(
+      SpotubePlugin self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_simple_album_object(
+      SpotubeSimpleAlbumObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_simple_artist_object(
+      SpotubeSimpleArtistObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_simple_playlist_object(
+      SpotubeSimplePlaylistObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_track_object(
+      SpotubeTrackObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_f_64(double self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_String(List<String> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_plugin_ability(
+      List<PluginAbility> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_plugin_api(
+      List<PluginApi> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_prim_u_8_strict(
       Uint8List self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_scrobble_artist(
+      List<ScrobbleArtist> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_audio_lossless_container_quality(
+      List<SpotubeAudioLosslessContainerQuality> self,
+      SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_audio_lossy_container_quality(
+      List<SpotubeAudioLossyContainerQuality> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_audio_source_match_object(
+      List<SpotubeAudioSourceMatchObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_audio_source_stream_object(
+      List<SpotubeAudioSourceStreamObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_browse_section_response_object_item(
+      List<SpotubeBrowseSectionResponseObjectItem> self,
+      SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_full_artist_object(
+      List<SpotubeFullArtistObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_image_object(
+      List<SpotubeImageObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_pagination_response_object_item(
+      List<SpotubePaginationResponseObjectItem> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_simple_album_object(
+      List<SpotubeSimpleAlbumObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_simple_artist_object(
+      List<SpotubeSimpleArtistObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_simple_playlist_object(
+      List<SpotubeSimplePlaylistObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_track_object(
+      List<SpotubeTrackObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_user_object(
+      List<SpotubeUserObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_String(String? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_bool(bool? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_f_64(double? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_i_64(
+      PlatformInt64? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_plugin_update_available(
+      PluginUpdateAvailable? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_spotube_full_playlist_object(
+      SpotubeFullPlaylistObject? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_box_autoadd_u_32(int? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_String(List<String>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_opt_list_spotube_image_object(
+      List<SpotubeImageObject>? self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_ability(PluginAbility self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_album_sender(
+      PluginAlbumSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_api(PluginApi self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_artist_sender(
+      PluginArtistSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_audio_source_sender(
+      PluginAudioSourceSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_auth_sender(
+      PluginAuthSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_browse_sender(
+      PluginBrowseSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_configuration(
+      PluginConfiguration self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_core_sender(
+      PluginCoreSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_playlist_sender(
+      PluginPlaylistSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_search_sender(
+      PluginSearchSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_track_sender(
+      PluginTrackSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_update_available(
+      PluginUpdateAvailable self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_plugin_user_sender(
+      PluginUserSender self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_scrobble_album(ScrobbleAlbum self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_scrobble_artist(
+      ScrobbleArtist self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_scrobble_details(
+      ScrobbleDetails self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_album_type(
+      SpotubeAlbumType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_audio_lossless_container_quality(
+      SpotubeAudioLosslessContainerQuality self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_audio_lossy_container_quality(
+      SpotubeAudioLossyContainerQuality self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_audio_source_container_preset(
+      SpotubeAudioSourceContainerPreset self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_audio_source_match_object(
+      SpotubeAudioSourceMatchObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_audio_source_stream_object(
+      SpotubeAudioSourceStreamObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_browse_section_object(
+      SpotubeBrowseSectionObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_browse_section_response_object_item(
+      SpotubeBrowseSectionResponseObjectItem self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_full_album_object(
+      SpotubeFullAlbumObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_full_artist_object(
+      SpotubeFullArtistObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_full_playlist_object(
+      SpotubeFullPlaylistObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_image_object(
+      SpotubeImageObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_media_compression_type(
+      SpotubeMediaCompressionType self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_pagination_response_object(
+      SpotubePaginationResponseObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_pagination_response_object_item(
+      SpotubePaginationResponseObjectItem self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_plugin(SpotubePlugin self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_search_response_object(
+      SpotubeSearchResponseObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_simple_album_object(
+      SpotubeSimpleAlbumObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_simple_artist_object(
+      SpotubeSimpleArtistObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_simple_playlist_object(
+      SpotubeSimplePlaylistObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_track_object(
+      SpotubeTrackObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_user_object(
+      SpotubeUserObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_u_32(int self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_u_64(BigInt self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_8(int self, SseSerializer serializer);
@@ -62,10 +1362,7 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_unit(void self, SseSerializer serializer);
 
   @protected
-  void sse_encode_i_32(int self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_bool(bool self, SseSerializer serializer);
+  void sse_encode_usize(BigInt self, SseSerializer serializer);
 }
 
 // Section: wire_class
@@ -81,4 +1378,100 @@ class RustLibWire implements BaseWire {
   /// The symbols are looked up in [dynamicLibrary].
   RustLibWire(ffi.DynamicLibrary dynamicLibrary)
       : _lookup = dynamicLibrary.lookup;
+
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSenderPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_spotube_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender');
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSenderPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSenderPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_spotube_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender');
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSenderPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommandPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_spotube_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand');
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommandPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommandPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_spotube_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand');
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommand =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerPluginCommandPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommandPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_spotube_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand');
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommandPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommandPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_spotube_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand');
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommandPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 }

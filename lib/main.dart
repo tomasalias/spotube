@@ -45,6 +45,9 @@ import 'package:spotube/services/kv_store/encrypted_kv_store.dart';
 import 'package:spotube/services/kv_store/kv_store.dart';
 import 'package:spotube/services/logger/logger.dart';
 import 'package:spotube/services/wm_tools/wm_tools.dart';
+import 'package:spotube/src/rust/api/plugin/models/core.dart';
+import 'package:spotube/src/rust/api/plugin/plugin.dart';
+import 'package:spotube/src/rust/frb_generated.dart';
 import 'package:spotube/utils/migrations/sandbox.dart';
 import 'package:spotube/utils/platform.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -54,6 +57,23 @@ import 'package:window_manager/window_manager.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:yt_dlp_dart/yt_dlp_dart.dart';
 import 'package:flutter_new_pipe_extractor/flutter_new_pipe_extractor.dart';
+
+const pluginJS = """
+class CoreEndpoint {
+    async checkUpdate() {
+        console.log('Core checkUpdate');
+    }
+    support() {
+        return 'Metadata';
+    }
+}
+
+class TestingPlugin {
+    constructor() {
+        this.core = new CoreEndpoint();
+    }
+}
+""";
 
 Future<void> main(List<String> rawArgs) async {
   if (rawArgs.contains("web_view_title_bar")) {
@@ -93,6 +113,26 @@ Future<void> main(List<String> rawArgs) async {
     }
 
     await KVStoreService.initialize();
+
+    await RustLib.init();
+
+    final plugin = SpotubePlugin();
+    final sender = SpotubePlugin.newContext(
+      pluginScript: pluginJS,
+      pluginConfig: const PluginConfiguration(
+        entryPoint: "TestingPlugin",
+        abilities: [PluginAbility.metadata],
+        apis: [],
+        author: "KRTirtho",
+        description: "Testing Plugin",
+        name: "Testing Plugin",
+        pluginApiVersion: "2.0.0",
+        repository: null,
+        version: "0.1.0",
+      ),
+    );
+
+    await plugin.dispose(tx: sender);
 
     if (kIsDesktop) {
       await windowManager.setPreventClose(true);
