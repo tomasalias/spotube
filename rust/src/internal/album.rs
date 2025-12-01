@@ -40,7 +40,7 @@ impl<'a> PluginAlbumEndpoint<'a> {
         let args = [JsValue::from(js_string!(id))];
 
         let res_json =
-            utils::js_call_to_json(get_album_fn.call(&album_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(get_album_fn.call(&album_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -73,7 +73,7 @@ impl<'a> PluginAlbumEndpoint<'a> {
             },
         ];
 
-        let res_json = utils::js_call_to_json(tracks_fn.call(&album_val, &args, self.0), self.0)?;
+        let res_json = utils::js_call_to_json(tracks_fn.call(&album_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -105,7 +105,7 @@ impl<'a> PluginAlbumEndpoint<'a> {
         ];
 
         let res_json =
-            utils::js_call_to_json(releases_fn.call(&album_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(releases_fn.call(&album_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -123,7 +123,7 @@ impl<'a> PluginAlbumEndpoint<'a> {
         let ids_val = utils::vec_string_to_js_array(ids, self.0)?;
         let args = [ids_val.into()];
 
-        utils::js_call_to_void(save_fn.call(&album_val, &args, self.0), self.0)?;
+        utils::js_call_to_void(save_fn.call(&album_val, &args, self.0), self.0).await?;
 
         Ok(())
     }
@@ -141,7 +141,7 @@ impl<'a> PluginAlbumEndpoint<'a> {
         let ids_val = utils::vec_string_to_js_array(ids, self.0)?;
         let args = [ids_val.into()];
 
-        utils::js_call_to_void(unsave_fn.call(&album_val, &args, self.0), self.0)?;
+        utils::js_call_to_void(unsave_fn.call(&album_val, &args, self.0), self.0).await?;
 
         Ok(())
     }

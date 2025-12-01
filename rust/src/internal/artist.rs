@@ -40,7 +40,7 @@ impl<'a> PluginArtistEndpoint<'a> {
         let args = [JsValue::from(js_string!(id))];
 
         let res_json =
-            utils::js_call_to_json(get_artist_fn.call(&artist_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(get_artist_fn.call(&artist_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -73,7 +73,7 @@ impl<'a> PluginArtistEndpoint<'a> {
         ];
 
         let res_json =
-            utils::js_call_to_json(top_tracks_fn.call(&artist_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(top_tracks_fn.call(&artist_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -105,7 +105,8 @@ impl<'a> PluginArtistEndpoint<'a> {
             },
         ];
 
-        let res_json = utils::js_call_to_json(albums_fn.call(&artist_val, &args, self.0), self.0)?;
+        let res_json =
+            utils::js_call_to_json(albums_fn.call(&artist_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -137,7 +138,8 @@ impl<'a> PluginArtistEndpoint<'a> {
             },
         ];
 
-        let res_json = utils::js_call_to_json(related_fn.call(&artist_val, &args, self.0), self.0)?;
+        let res_json =
+            utils::js_call_to_json(related_fn.call(&artist_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -155,9 +157,7 @@ impl<'a> PluginArtistEndpoint<'a> {
         let ids_val = utils::vec_string_to_js_array(ids, self.0)?;
         let args = [ids_val.into()];
 
-        utils::js_call_to_void(save_fn.call(&artist_val, &args, self.0), self.0)?;
-
-        Ok(())
+        utils::js_call_to_void(save_fn.call(&artist_val, &args, self.0), self.0).await
     }
 
     pub async fn unsave(&mut self, ids: Vec<String>) -> anyhow::Result<()> {
@@ -173,8 +173,6 @@ impl<'a> PluginArtistEndpoint<'a> {
         let ids_val = utils::vec_string_to_js_array(ids, self.0)?;
         let args = [ids_val.into()];
 
-        utils::js_call_to_void(unsave_fn.call(&artist_val, &args, self.0), self.0)?;
-
-        Ok(())
+        utils::js_call_to_void(unsave_fn.call(&artist_val, &args, self.0), self.0).await
     }
 }

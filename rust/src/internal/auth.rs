@@ -37,7 +37,7 @@ impl<'a> PluginAuthEndpoint<'a> {
 
         let args = [];
 
-        utils::js_call_to_void(authenticate_fn.call(&auth_val, &args, self.0), self.0)
+        utils::js_call_to_void(authenticate_fn.call(&auth_val, &args, self.0), self.0).await
     }
 
     pub fn is_authenticated(&mut self) -> anyhow::Result<bool> {
@@ -69,6 +69,6 @@ impl<'a> PluginAuthEndpoint<'a> {
 
         let args = [];
 
-        utils::js_call_to_void(logout_fn.call(&auth_val, &args, self.0), self.0)
+        utils::js_call_to_void(logout_fn.call(&auth_val, &args, self.0), self.0).await
     }
 }

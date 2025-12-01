@@ -65,7 +65,7 @@ impl<'a> PluginSearchEndpoint<'a> {
 
         let args = [JsValue::from(js_string!(query))];
 
-        let res_json = utils::js_call_to_json(all_fn.call(&search_val, &args, self.0), self.0)?;
+        let res_json = utils::js_call_to_json(all_fn.call(&search_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -97,7 +97,7 @@ impl<'a> PluginSearchEndpoint<'a> {
             },
         ];
 
-        let res_json = utils::js_call_to_json(albums_fn.call(&search_val, &args, self.0), self.0)?;
+        let res_json = utils::js_call_to_json(albums_fn.call(&search_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -129,7 +129,7 @@ impl<'a> PluginSearchEndpoint<'a> {
             },
         ];
 
-        let res_json = utils::js_call_to_json(artists_fn.call(&search_val, &args, self.0), self.0)?;
+        let res_json = utils::js_call_to_json(artists_fn.call(&search_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -162,7 +162,7 @@ impl<'a> PluginSearchEndpoint<'a> {
         ];
 
         let res_json =
-            utils::js_call_to_json(playlists_fn.call(&search_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(playlists_fn.call(&search_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -194,7 +194,7 @@ impl<'a> PluginSearchEndpoint<'a> {
             },
         ];
 
-        let res_json = utils::js_call_to_json(tracks_fn.call(&search_val, &args, self.0), self.0)?;
+        let res_json = utils::js_call_to_json(tracks_fn.call(&search_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }

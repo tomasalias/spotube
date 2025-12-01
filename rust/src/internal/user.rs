@@ -37,7 +37,7 @@ impl<'a> PluginUserEndpoint<'a> {
             .as_function()
             .ok_or(anyhow!("me is not a function"))?;
 
-        let res_json = utils::js_call_to_json(me_fn.call(&user_val, &[], self.0), self.0)?;
+        let res_json = utils::js_call_to_json(me_fn.call(&user_val, &[], self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -68,7 +68,7 @@ impl<'a> PluginUserEndpoint<'a> {
             },
         ];
 
-        let res_json = utils::js_call_to_json(saved_fn.call(&user_val, &args, self.0), self.0)?;
+        let res_json = utils::js_call_to_json(saved_fn.call(&user_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }

@@ -49,7 +49,7 @@ impl<'a> PluginAudioSourceEndpoint<'a> {
         let args = [track_val];
 
         let res =
-            utils::js_call_to_json(matches_fn.call(&audio_source_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(matches_fn.call(&audio_source_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res).map_err(|e| anyhow!("{}", e))
     }
@@ -74,7 +74,7 @@ impl<'a> PluginAudioSourceEndpoint<'a> {
         let args = [matched_val];
 
         let res =
-            utils::js_call_to_json(matches_fn.call(&audio_source_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(matches_fn.call(&audio_source_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res).map_err(|e| anyhow!("{}", e))
     }

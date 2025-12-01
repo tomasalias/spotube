@@ -1,8 +1,6 @@
 use anyhow::anyhow;
 use boa_engine::property::PropertyKey;
-use boa_engine::{
-    object::builtins::JsArray, Context, JsObject, JsResult, JsString, JsValue,
-};
+use boa_engine::{object::builtins::JsArray, Context, JsObject, JsResult, JsString, JsValue};
 use serde_json::{Map, Value};
 
 pub fn vec_string_to_js_array(
@@ -22,14 +20,15 @@ pub fn vec_string_to_js_array(
 }
 
 #[allow(dead_code)]
-pub fn js_call_to_string(
+pub async fn js_call_to_string(
     result: JsResult<JsValue>,
     context: &mut Context,
 ) -> anyhow::Result<String> {
     let res = result
         .map_err(|e| anyhow!("{}", e))
         .and_then(|f| f.as_promise().ok_or(anyhow!("Not a promise")))?
-        .await_blocking(context)
+        .into_js_future(context)
+        .await
         .map_err(|e| anyhow!("{}", e))?
         .as_string()
         .ok_or(anyhow!("No response string returned"))?
@@ -39,21 +38,29 @@ pub fn js_call_to_string(
     Ok(res)
 }
 
-pub fn js_call_to_json(result: JsResult<JsValue>, context: &mut Context) -> anyhow::Result<Value> {
+pub async fn js_call_to_json(
+    result: JsResult<JsValue>,
+    context: &mut Context,
+) -> anyhow::Result<Value> {
     let res = result
         .map_err(|e| anyhow!("{}", e))
         .and_then(|f| f.as_promise().ok_or(anyhow!("Not a promise")))?
-        .await_blocking(context)
+        .into_js_future(context)
+        .await
         .map_err(|e| anyhow!("{}", e))?;
     let ls = js_value_to_json(&res, context)?;
     Ok(ls)
 }
 
-pub fn js_call_to_void(result: JsResult<JsValue>, context: &mut Context) -> anyhow::Result<()> {
+pub async fn js_call_to_void(
+    result: JsResult<JsValue>,
+    context: &mut Context,
+) -> anyhow::Result<()> {
     result
         .map_err(|e| anyhow!("{}", e))
         .and_then(|f| f.as_promise().ok_or(anyhow!("Not a promise")))?
-        .await_blocking(context)
+        .into_js_future(context)
+        .await
         .map_err(|e| anyhow!("{}", e))?;
 
     Ok(())

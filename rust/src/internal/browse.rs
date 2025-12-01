@@ -51,7 +51,7 @@ impl<'a> PluginBrowseEndpoint<'a> {
             },
         ];
 
-        let res = utils::js_call_to_json(sections_fn.call(&browse_val, &args, self.0), self.0)?;
+        let res = utils::js_call_to_json(sections_fn.call(&browse_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res).map_err(|e| anyhow!("{}", e))
     }
@@ -84,7 +84,7 @@ impl<'a> PluginBrowseEndpoint<'a> {
         ];
 
         let res =
-            utils::js_call_to_json(section_items_fn.call(&browse_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(section_items_fn.call(&browse_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res).map_err(|e| anyhow!("{}", e))
     }

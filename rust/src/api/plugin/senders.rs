@@ -1,3 +1,4 @@
+use std::backtrace::Backtrace;
 use crate::api::plugin::commands::{
     AlbumCommands, ArtistCommands, AudioSourceCommands, AuthCommands, BrowseCommands, CoreCommands,
     PlaylistCommands, PluginCommand, SearchCommands, TrackCommands, UserCommands,
@@ -377,6 +378,7 @@ impl PluginCoreSender {
         mpsc_tx: OpaqueSender,
         plugin_config: PluginConfiguration,
     ) -> anyhow::Result<Option<PluginUpdateAvailable>> {
+
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -386,7 +388,11 @@ impl PluginCoreSender {
             }))
             .await?;
 
-        rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
+        rx.await.map_err(|e| {
+            eprintln!("RecvError: {}", e);
+            eprintln!("Stack trace:\n{:?}", Backtrace::capture());
+            anyhow!("{e}")
+        }).and_then(|o| o)
     }
 
     pub async fn support(&self, mpsc_tx: OpaqueSender) -> anyhow::Result<String> {

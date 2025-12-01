@@ -14,6 +14,7 @@ use crate::api::plugin::models::track::SpotubeTrackObject;
 use crate::api::plugin::models::user::SpotubeUserObject;
 use tokio::sync::oneshot;
 
+#[derive(Debug)]
 pub enum ArtistCommands {
     GetArtist {
         id: String,
@@ -47,6 +48,7 @@ pub enum ArtistCommands {
     },
 }
 
+#[derive(Debug)]
 pub enum AlbumCommands {
     GetAlbum {
         id: String,
@@ -73,6 +75,7 @@ pub enum AlbumCommands {
     },
 }
 
+#[derive(Debug)]
 pub enum AudioSourceCommands {
     Matches {
         track: SpotubeTrackObject,
@@ -84,6 +87,7 @@ pub enum AudioSourceCommands {
     },
 }
 
+#[derive(Debug)]
 pub enum AuthCommands {
     Authenticate {
         response_tx: oneshot::Sender<anyhow::Result<()>>,
@@ -96,6 +100,7 @@ pub enum AuthCommands {
     },
 }
 
+#[derive(Debug)]
 pub enum BrowseCommands {
     Sections {
         offset: Option<u32>,
@@ -110,6 +115,7 @@ pub enum BrowseCommands {
     },
 }
 
+#[derive(Debug)]
 pub enum CoreCommands {
     CheckUpdate {
         plugin_config: PluginConfiguration,
@@ -124,6 +130,7 @@ pub enum CoreCommands {
     },
 }
 
+#[derive(Debug)]
 pub enum PlaylistCommands {
     GetPlaylist {
         id: String,
@@ -176,6 +183,7 @@ pub enum PlaylistCommands {
     },
 }
 
+#[derive(Debug)]
 pub enum SearchCommands {
     Chips {
         response_tx: oneshot::Sender<anyhow::Result<Vec<String>>>,
@@ -210,6 +218,7 @@ pub enum SearchCommands {
     },
 }
 
+#[derive(Debug)]
 pub enum TrackCommands {
     GetTrack {
         id: String,
@@ -229,6 +238,7 @@ pub enum TrackCommands {
     },
 }
 
+#[derive(Debug)]
 pub enum UserCommands {
     Me {
         response_tx: oneshot::Sender<anyhow::Result<SpotubeUserObject>>,
@@ -255,6 +265,7 @@ pub enum UserCommands {
     },
 }
 
+#[derive(Debug)]
 #[frb(unignore)]
 pub enum PluginCommand {
     Artist(ArtistCommands),

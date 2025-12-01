@@ -39,7 +39,7 @@ impl<'a> PluginTrackEndpoint<'a> {
         let args = [JsValue::from(js_string!(id))];
 
         let res_json =
-            utils::js_call_to_json(get_track_fn.call(&track_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(get_track_fn.call(&track_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -57,9 +57,7 @@ impl<'a> PluginTrackEndpoint<'a> {
         let ids_val = utils::vec_string_to_js_array(ids, self.0)?;
         let args = [ids_val.into()];
 
-        utils::js_call_to_void(save_fn.call(&track_val, &args, self.0), self.0)?;
-
-        Ok(())
+        utils::js_call_to_void(save_fn.call(&track_val, &args, self.0), self.0).await
     }
 
     pub async fn unsave(&mut self, ids: Vec<String>) -> anyhow::Result<()> {
@@ -75,9 +73,7 @@ impl<'a> PluginTrackEndpoint<'a> {
         let ids_val = utils::vec_string_to_js_array(ids, self.0)?;
         let args = [ids_val.into()];
 
-        utils::js_call_to_void(unsave_fn.call(&track_val, &args, self.0), self.0)?;
-
-        Ok(())
+        utils::js_call_to_void(unsave_fn.call(&track_val, &args, self.0), self.0).await
     }
 
     pub async fn radio(&mut self, id: String) -> anyhow::Result<Vec<SpotubeTrackObject>> {
@@ -93,7 +89,7 @@ impl<'a> PluginTrackEndpoint<'a> {
         let args = [JsValue::from(js_string!(id))];
 
         let res_json =
-            utils::js_call_to_json(get_track_fn.call(&track_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(get_track_fn.call(&track_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }

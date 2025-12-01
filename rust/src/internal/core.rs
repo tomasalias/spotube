@@ -43,8 +43,7 @@ impl<'a> PluginCoreEndpoint<'a> {
         let config_val = utils::json_value_to_js(&value, self.0).map_err(|e| anyhow!("{}", e))?;
         let args = [config_val];
 
-        let res = utils::js_call_to_json(check_update_fn.call(&core_val, &args, self.0), self.0)?;
-
+        let res = utils::js_call_to_json(check_update_fn.call(&core_val, &args, self.0), self.0).await?;
         if res.is_null() {
             Ok(None)
         } else {
@@ -81,6 +80,6 @@ impl<'a> PluginCoreEndpoint<'a> {
         let details_val = utils::json_value_to_js(&value, self.0).map_err(|e| anyhow!("{}", e))?;
         let args = [details_val];
 
-        utils::js_call_to_void(scrobble_fn.call(&core_val, &args, self.0), self.0)
+        utils::js_call_to_void(scrobble_fn.call(&core_val, &args, self.0), self.0).await
     }
 }

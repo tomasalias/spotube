@@ -1,48 +1,52 @@
-pub mod api;
-pub mod internal;
-pub mod frb_generated;
-use api::plugin::models::core::{PluginAbility, PluginConfiguration};
-use api::plugin::plugin::SpotubePlugin;
+use rquickjs::function::Async;
+use rquickjs::prelude::Func;
+use rquickjs::{
+    async_with, AsyncContext, AsyncRuntime, CatchResultExt, CaughtError, Function, Object, Promise,
+    Result,
+};
+use std::time::Duration;
 
-const PLUGIN_JS: &str = "\
-class Core {
-    async checkUpdate() {
-        console.log('Core checkUpdate');
-    }
-    support() {
-        return 'Metadata';
-    }
+fn print(msg: String) {
+    println!("{}", msg);
 }
 
-class TestingPlugin {
-    constructor() {
-        this.core = new Core();
-    }
+async fn set_timeout<'js>(cb: Function<'js>, number: f64) -> Result<()> {
+    tokio::time::sleep(Duration::from_millis(number as u64)).await;
+    cb.call::<_, ()>(())
 }
-";
 
 #[tokio::main]
-async fn main() -> anyhow::Result<()> {
-    let sp_plugin = SpotubePlugin::new();
-    let sender = SpotubePlugin::new_context(
-        PLUGIN_JS.to_string(),
-        PluginConfiguration {
-            entry_point: "TestingPlugin".to_string(),
-            abilities: vec![PluginAbility::Metadata],
-            apis: vec![],
-            author: "KRTirtho".to_string(),
-            description: "Testing Plugin".to_string(),
-            name: "Testing Plugin".to_string(),
-            plugin_api_version: "2.0.0".to_string(),
-            repository: None,
-            version: "0.1.0".to_string(),
+async fn main() -> Result<()> {
+    let rt = AsyncRuntime::new()?;
+    let ctx = AsyncContext::full(&rt).await?;
+
+    async_with!(ctx => |ctx| {
+         let global = ctx.globals();
+         let console = Object::new(ctx.clone()).unwrap();
+         console.set("log", Func::from(print)).unwrap();
+         global.set("console", console).unwrap();
+
+         global.set("setTimeout",
+            Function::new(ctx.clone(), Async(set_timeout)).unwrap().with_name("setTimeout")
+        ).unwrap();
+
+        if let Ok(function) = ctx.eval::<Function, _>(r#"
+            (function(){
+                return new Promise((resolve, reject) => {
+                    setTimeout(() => {
+                        console.log("hello world");
+                        resolve();
+                    }, 100);
+                })
+            })
+        "#) {
+            let promise: Promise = function.call(()).unwrap();
+            if let Err(err) = promise.into_future::<()>().await.catch(&ctx) {
+                eprintln!("{:?}", err);
+            }
         }
-    )?;
-    let result = sp_plugin.core.support(sender.clone()).await?;
-
-    println!("Result: {:?}", result);
-
-    sp_plugin.dispose(sender.clone()).await?;
+    })
+    .await;
 
     Ok(())
 }

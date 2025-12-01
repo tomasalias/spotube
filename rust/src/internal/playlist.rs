@@ -40,7 +40,8 @@ impl<'a> PluginPlaylistEndpoint<'a> {
         let args = [JsValue::from(js_string!(id))];
 
         let res_json =
-            utils::js_call_to_json(get_playlist_fn.call(&playlist_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(get_playlist_fn.call(&playlist_val, &args, self.0), self.0)
+                .await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -74,7 +75,7 @@ impl<'a> PluginPlaylistEndpoint<'a> {
         ];
 
         let res_json =
-            utils::js_call_to_json(tracks_fn.call(&playlist_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(tracks_fn.call(&playlist_val, &args, self.0), self.0).await?;
 
         serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
     }
@@ -115,7 +116,7 @@ impl<'a> PluginPlaylistEndpoint<'a> {
         ];
 
         let res_json =
-            utils::js_call_to_json(create_fn.call(&playlist_val, &args, self.0), self.0)?;
+            utils::js_call_to_json(create_fn.call(&playlist_val, &args, self.0), self.0).await?;
 
         if res_json.is_null() {
             Ok(None)
@@ -164,7 +165,7 @@ impl<'a> PluginPlaylistEndpoint<'a> {
             },
         ];
 
-        utils::js_call_to_void(update_fn.call(&playlist_val, &args, self.0), self.0)
+        utils::js_call_to_void(update_fn.call(&playlist_val, &args, self.0), self.0).await
     }
 
     pub async fn add_tracks(
@@ -192,7 +193,7 @@ impl<'a> PluginPlaylistEndpoint<'a> {
             },
         ];
 
-        utils::js_call_to_void(add_tracks_fn.call(&playlist_val, &args, self.0), self.0)
+        utils::js_call_to_void(add_tracks_fn.call(&playlist_val, &args, self.0), self.0).await
     }
 
     pub async fn remove_tracks(
@@ -215,7 +216,7 @@ impl<'a> PluginPlaylistEndpoint<'a> {
             utils::vec_string_to_js_array(track_ids, self.0)?,
         ];
 
-        utils::js_call_to_void(remove_tracks_fn.call(&playlist_val, &args, self.0), self.0)
+        utils::js_call_to_void(remove_tracks_fn.call(&playlist_val, &args, self.0), self.0).await
     }
 
     pub async fn save(&mut self, playlist_id: String) -> anyhow::Result<()> {
@@ -230,7 +231,7 @@ impl<'a> PluginPlaylistEndpoint<'a> {
 
         let args = [JsValue::from(js_string!(playlist_id))];
 
-        utils::js_call_to_void(save_fn.call(&playlist_val, &args, self.0), self.0)
+        utils::js_call_to_void(save_fn.call(&playlist_val, &args, self.0), self.0).await
     }
 
     pub async fn unsave(&mut self, playlist_id: String) -> anyhow::Result<()> {
@@ -245,7 +246,7 @@ impl<'a> PluginPlaylistEndpoint<'a> {
 
         let args = [JsValue::from(js_string!(playlist_id))];
 
-        utils::js_call_to_void(unsave_fn.call(&playlist_val, &args, self.0), self.0)
+        utils::js_call_to_void(unsave_fn.call(&playlist_val, &args, self.0), self.0).await
     }
 
     pub async fn delete_playlist(&mut self, playlist_id: String) -> anyhow::Result<()> {
@@ -264,5 +265,6 @@ impl<'a> PluginPlaylistEndpoint<'a> {
             delete_playlist_fn.call(&playlist_val, &args, self.0),
             self.0,
         )
+        .await
     }
 }

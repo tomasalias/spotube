@@ -59,11 +59,16 @@ import 'package:yt_dlp_dart/yt_dlp_dart.dart';
 import 'package:flutter_new_pipe_extractor/flutter_new_pipe_extractor.dart';
 
 const pluginJS = """
+function timeout(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 class CoreEndpoint {
     async checkUpdate() {
         console.log('Core checkUpdate');
+        await timeout(5000);
+        console.log('Core checkUpdate done. No updates!');
     }
-    support() {
+    get support() {
         return 'Metadata';
     }
 }
@@ -117,22 +122,23 @@ Future<void> main(List<String> rawArgs) async {
     await RustLib.init();
 
     final plugin = SpotubePlugin();
+    const config = PluginConfiguration(
+      entryPoint: "TestingPlugin",
+      abilities: [PluginAbility.metadata],
+      apis: [],
+      author: "KRTirtho",
+      description: "Testing Plugin",
+      name: "Testing Plugin",
+      pluginApiVersion: "2.0.0",
+      repository: null,
+      version: "0.1.0",
+    );
     final sender = SpotubePlugin.newContext(
       pluginScript: pluginJS,
-      pluginConfig: const PluginConfiguration(
-        entryPoint: "TestingPlugin",
-        abilities: [PluginAbility.metadata],
-        apis: [],
-        author: "KRTirtho",
-        description: "Testing Plugin",
-        name: "Testing Plugin",
-        pluginApiVersion: "2.0.0",
-        repository: null,
-        version: "0.1.0",
-      ),
+      pluginConfig: config,
     );
 
-    await plugin.dispose(tx: sender);
+    await plugin.core.checkUpdate(mpscTx: sender, pluginConfig: config);
 
     if (kIsDesktop) {
       await windowManager.setPreventClose(true);
