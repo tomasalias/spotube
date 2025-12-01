@@ -1,107 +1,106 @@
 use crate::api::plugin::models::pagination::SpotubePaginationResponseObject;
-use crate::internal::utils;
-use anyhow::anyhow;
-use boa_engine::{js_string, Context, JsValue};
-use flutter_rust_bridge::frb;
 use crate::api::plugin::models::user::SpotubeUserObject;
+use crate::internal::utils::js_invoke_async_method_to_json;
+use flutter_rust_bridge::frb;
+use rquickjs::{async_with, AsyncContext};
 
-#[derive(Debug)]
-pub struct PluginUserEndpoint<'a>(&'a mut Context);
+pub struct PluginUserEndpoint<'a>(&'a AsyncContext);
 
 impl<'a> PluginUserEndpoint<'a> {
     #[frb(ignore)]
-    pub fn new(context: &'a mut Context) -> PluginUserEndpoint<'a> {
+    pub fn new(context: &'a AsyncContext) -> PluginUserEndpoint<'a> {
         PluginUserEndpoint(context)
     }
 
-    fn user_obj(&mut self) -> anyhow::Result<JsValue> {
-        let global = self.0.global_object();
-
-        let plugin_instance = global
-            .get(js_string!("pluginInstance"), self.0)
-            .map_err(|e| anyhow!("{}", e))
-            .and_then(|a| a.as_object().ok_or(anyhow!("Not an object")))?;
-
-        plugin_instance
-            .get(js_string!("user"), self.0)
-            .or_else(|e| Err(anyhow!("user not found: \n{}", e)))
-    }
-
-    pub async fn me(&mut self) -> anyhow::Result<SpotubeUserObject> {
-        let user_val = self.user_obj()?;
-        let user_object = user_val.as_object().ok_or(anyhow!("Not an object"))?;
-
-        let me_fn = user_object
-            .get(js_string!("me"), self.0)
-            .map_err(|e| anyhow!("JS error while accessing me: {}", e))?
-            .as_function()
-            .ok_or(anyhow!("me is not a function"))?;
-
-        let res_json = utils::js_call_to_json(me_fn.call(&user_val, &[], self.0), self.0).await?;
-
-        serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
-    }
-
-    async fn get_saved(
-        &mut self,
-        method: &str,
-        offset: Option<u32>,
-        limit: Option<u32>,
-    ) -> anyhow::Result<SpotubePaginationResponseObject> {
-        let user_val = self.user_obj()?;
-        let user_object = user_val.as_object().ok_or(anyhow!("Not an object"))?;
-
-        let saved_fn = user_object
-            .get(js_string!(method), self.0)
-            .map_err(|e| anyhow!("JS error while accessing {}: {}", method, e))?
-            .as_function()
-            .ok_or(anyhow!("{} is not a function", method))?;
-
-        let args: [JsValue; 2] = [
-            match offset {
-                Some(o) => JsValue::from(o),
-                None => JsValue::undefined(),
-            },
-            match limit {
-                Some(o) => JsValue::from(o),
-                None => JsValue::undefined(),
-            },
-        ];
-
-        let res_json = utils::js_call_to_json(saved_fn.call(&user_val, &args, self.0), self.0).await?;
-
-        serde_json::from_value(res_json).map_err(|e| anyhow!("{}", e))
+    pub async fn me(&self) -> anyhow::Result<SpotubeUserObject> {
+        async_with!(self.0 => |ctx| {
+            Ok(
+                js_invoke_async_method_to_json::<(), SpotubeUserObject>(
+                    ctx.clone(),
+                    "user",
+                    "me",
+                    &[],
+                )
+                .await?
+                .expect("[hey][smartypants] user.me should return a SpotifyUserObject")
+            )
+        })
+        .await
     }
 
     pub async fn saved_playlists(
-        &mut self,
+        &self,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {
-        self.get_saved("savedPlaylists", offset, limit).await
+        async_with!(self.0 => |ctx| {
+            let res= js_invoke_async_method_to_json::<_, SpotubePaginationResponseObject>(
+                    ctx,
+                    "user",
+                    "savedPlaylists",
+                    &[serde_json::to_value(offset)?, serde_json::to_value(limit.unwrap())?]
+                )
+                .await?
+                .expect("[hey][smartypants] user.savedPlaylists should return a SpotifyPaginationResponseObject");
+
+            Ok(res)
+        }).await
     }
 
     pub async fn saved_tracks(
-        &mut self,
+        &self,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {
-        self.get_saved("savedTracks", offset, limit).await
+        async_with!(self.0 => |ctx| {
+            let res= js_invoke_async_method_to_json::<_, SpotubePaginationResponseObject>(
+                    ctx,
+                    "user",
+                    "savedTracks",
+                    &[serde_json::to_value(offset)?, serde_json::to_value(limit.unwrap())?]
+                )
+                .await?
+                .expect("[hey][smartypants] user.savedTracks should return a SpotifyPaginationResponseObject");
+
+            Ok(res)
+        }).await
     }
 
     pub async fn saved_albums(
-        &mut self,
+        &self,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {
-        self.get_saved("savedAlbums", offset, limit).await
+        async_with!(self.0 => |ctx| {
+            let res= js_invoke_async_method_to_json::<_, SpotubePaginationResponseObject>(
+                    ctx,
+                    "user",
+                    "savedAlbums",
+                    &[serde_json::to_value(offset)?, serde_json::to_value(limit.unwrap())?]
+                )
+                .await?
+                .expect("[hey][smartypants] user.savedAlbums should return a SpotifyPaginationResponseObject");
+
+            Ok(res)
+        }).await
     }
 
     pub async fn saved_artists(
-        &mut self,
+        &self,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {
-        self.get_saved("savedArtists", offset, limit).await
+        async_with!(self.0 => |ctx| {
+            let res= js_invoke_async_method_to_json::<_, SpotubePaginationResponseObject>(
+                    ctx,
+                    "user",
+                    "savedArtists",
+                    &[serde_json::to_value(offset)?, serde_json::to_value(limit.unwrap())?]
+                )
+                .await?
+                .expect("[hey][smartypants] user.savedArtists should return a SpotifyPaginationResponseObject");
+
+            Ok(res)
+        }).await
     }
 }

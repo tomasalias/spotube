@@ -1,74 +1,60 @@
-use crate::internal::utils;
-use anyhow::anyhow;
-use boa_engine::{js_string, Context, JsValue};
+use crate::internal::utils::js_invoke_async_method_to_json;
 use flutter_rust_bridge::frb;
+use rquickjs::{async_with, AsyncContext};
 
-#[derive(Debug)]
-pub struct PluginAuthEndpoint<'a>(&'a mut Context);
+pub struct PluginAuthEndpoint<'a>(&'a AsyncContext);
 
 impl<'a> PluginAuthEndpoint<'a> {
     #[frb(ignore)]
-    pub fn new(context: &'a mut Context) -> PluginAuthEndpoint<'a> {
+    pub fn new(context: &'a AsyncContext) -> PluginAuthEndpoint<'a> {
         PluginAuthEndpoint(context)
     }
 
-    fn auth_obj(&mut self) -> anyhow::Result<JsValue> {
-        let global = self.0.global_object();
-
-        let plugin_instance = global
-            .get(js_string!("pluginInstance"), self.0)
-            .map_err(|e| anyhow!("{}", e))
-            .and_then(|a| a.as_object().ok_or(anyhow!("Not an object")))?;
-
-        return plugin_instance
-            .get(js_string!("auth"), self.0)
-            .or_else(|e| Err(anyhow!("auth not found:\n{}", e)));
+    pub async fn authenticate(&self) -> anyhow::Result<()> {
+        async_with!(self.0 => |ctx| {
+            Ok(
+                js_invoke_async_method_to_json::<(), ()>(
+                    ctx.clone(),
+                    "auth",
+                    "authenticate",
+                    &[]
+                )
+                .await?
+                .expect("[hey][smartypants] auth.authenticate should return a void")
+            )
+        })
+        .await
     }
 
-    pub async fn authenticate(&mut self) -> anyhow::Result<()> {
-        let auth_val = self.auth_obj()?;
-        let auth_object = auth_val.as_object().ok_or(anyhow!("Not an object"))?;
-
-        let authenticate_fn = auth_object
-            .get(js_string!("authenticate"), self.0)
-            .map_err(|e| anyhow!("JS error while accessing authenticate: {}", e))?
-            .as_function()
-            .ok_or(anyhow!("authenticate is not a function"))?;
-
-        let args = [];
-
-        utils::js_call_to_void(authenticate_fn.call(&auth_val, &args, self.0), self.0).await
+    pub async fn is_authenticated(&self) -> anyhow::Result<bool> {
+        async_with!(self.0 => |ctx| {
+            Ok(
+                js_invoke_async_method_to_json::<(), bool>(
+                    ctx.clone(),
+                    "auth",
+                    "is_authenticated",
+                    &[]
+                )
+                .await?
+                .expect("[hey][smartypants] auth.is_authenticated should return a boolean")
+            )
+        })
+        .await
     }
 
-    pub fn is_authenticated(&mut self) -> anyhow::Result<bool> {
-        let auth_val = self.auth_obj()?;
-        let auth_object = auth_val.as_object().ok_or(anyhow!("Not an object"))?;
-
-        let authenticate_fn = auth_object
-            .get(js_string!("is_authenticated"), self.0)
-            .map_err(|e| anyhow!("JS error while accessing authenticate: {}", e))?
-            .as_function()
-            .ok_or(anyhow!("authenticate is not a function"))?;
-
-        authenticate_fn
-            .call(&auth_val, &[], self.0)
-            .map_err(|e| anyhow!("{}", e))?
-            .as_boolean()
-            .ok_or(anyhow!("Not a boolean"))
-    }
-
-    pub async fn logout(&mut self) -> anyhow::Result<()> {
-        let auth_val = self.auth_obj()?;
-        let auth_object = auth_val.as_object().ok_or(anyhow!("Not an object"))?;
-
-        let logout_fn = auth_object
-            .get(js_string!("logout"), self.0)
-            .map_err(|e| anyhow!("JS error while accessing authenticate: {}", e))?
-            .as_function()
-            .ok_or(anyhow!("authenticate is not a function"))?;
-
-        let args = [];
-
-        utils::js_call_to_void(logout_fn.call(&auth_val, &args, self.0), self.0).await
+    pub async fn logout(&self) -> anyhow::Result<()> {
+        async_with!(self.0 => |ctx| {
+            Ok(
+                js_invoke_async_method_to_json::<(), ()>(
+                    ctx.clone(),
+                    "auth",
+                    "logout",
+                    &[]
+                )
+                .await?
+                .expect("[hey][smartypants] auth.logout should return a void")
+            )
+        })
+        .await
     }
 }

@@ -1,116 +1,57 @@
 use anyhow::anyhow;
-use boa_engine::property::PropertyKey;
-use boa_engine::{object::builtins::JsArray, Context, JsObject, JsResult, JsString, JsValue};
+use rquickjs::function::Args;
+use rquickjs::{Array, CatchResultExt, Ctx, Filter, FromJs, Function, IntoJs, Object, Promise};
+use serde::de::DeserializeOwned;
+use serde::{Deserialize, Deserializer, Serialize};
 use serde_json::{Map, Value};
-
-pub fn vec_string_to_js_array(
-    rust_vec: Vec<String>,
-    context: &mut Context,
-) -> anyhow::Result<JsValue> {
-    let builder = JsArray::new(context);
-
-    for (index, rust_string) in rust_vec.into_iter().enumerate() {
-        let js_string_value = JsString::from(rust_string);
-        builder
-            .set(index as u32, js_string_value, true, context)
-            .map_err(|e| anyhow::anyhow!(e.to_string()))?;
-    }
-
-    Ok(builder.into())
-}
-
-#[allow(dead_code)]
-pub async fn js_call_to_string(
-    result: JsResult<JsValue>,
-    context: &mut Context,
-) -> anyhow::Result<String> {
-    let res = result
-        .map_err(|e| anyhow!("{}", e))
-        .and_then(|f| f.as_promise().ok_or(anyhow!("Not a promise")))?
-        .into_js_future(context)
-        .await
-        .map_err(|e| anyhow!("{}", e))?
-        .as_string()
-        .ok_or(anyhow!("No response string returned"))?
-        .to_std_string()
-        .map_err(|e| anyhow!("{}", e))?;
-
-    Ok(res)
-}
-
-pub async fn js_call_to_json(
-    result: JsResult<JsValue>,
-    context: &mut Context,
-) -> anyhow::Result<Value> {
-    let res = result
-        .map_err(|e| anyhow!("{}", e))
-        .and_then(|f| f.as_promise().ok_or(anyhow!("Not a promise")))?
-        .into_js_future(context)
-        .await
-        .map_err(|e| anyhow!("{}", e))?;
-    let ls = js_value_to_json(&res, context)?;
-    Ok(ls)
-}
-
-pub async fn js_call_to_void(
-    result: JsResult<JsValue>,
-    context: &mut Context,
-) -> anyhow::Result<()> {
-    result
-        .map_err(|e| anyhow!("{}", e))
-        .and_then(|f| f.as_promise().ok_or(anyhow!("Not a promise")))?
-        .into_js_future(context)
-        .await
-        .map_err(|e| anyhow!("{}", e))?;
-
-    Ok(())
-}
+use std::collections::HashMap;
 
 /// Convert a `serde_json::Value` into a Boa `JsValue`
-pub fn json_value_to_js(value: &Value, ctx: &mut Context) -> JsResult<JsValue> {
+pub fn json_value_to_js<'a>(value: &Value, ctx: Ctx<'a>) -> anyhow::Result<rquickjs::Value<'a>> {
     match value {
-        Value::Null => Ok(JsValue::null()),
-        Value::Bool(b) => Ok(JsValue::from(*b)),
+        Value::Null => Ok(rquickjs::Value::new_null(ctx)),
+        Value::Bool(b) => Ok(rquickjs::Value::new_bool(ctx, *b)),
         Value::Number(n) => {
             if let Some(i) = n.as_i64() {
-                Ok(JsValue::new(i))
+                Ok(rquickjs::Value::new_int(ctx, i as i32))
             } else if let Some(f) = n.as_f64() {
-                Ok(JsValue::new(f))
+                Ok(rquickjs::Value::new_float(ctx, f))
             } else {
-                Ok(JsValue::null()) // fallback (rare)
+                Ok(rquickjs::Value::new_null(ctx)) // fallback (rare)
             }
         }
-        Value::String(s) => Ok(JsValue::from(JsString::from(s.as_str()))),
-
+        Value::String(s) => {
+            let sts = rquickjs::String::from_str(ctx, s.as_str())?;
+            Ok(rquickjs::Value::from_string(sts))
+        }
         Value::Array(arr) => {
-            let js_arr = JsArray::new(ctx);
-            for (idx, item) in arr.iter().enumerate() {
-                let js_val = json_value_to_js(item, ctx)?;
-                js_arr.set(idx, js_val, false, ctx)?;
+            let mut js_arr = Vec::<rquickjs::Value>::with_capacity(arr.len());
+            for item in arr.iter() {
+                let js_val = json_value_to_js(item, ctx.clone())?;
+                js_arr.push(js_val);
             }
-            Ok(JsValue::from(js_arr))
+            js_arr.into_js(&ctx).map_err(|e| anyhow!(e))
         }
-
         Value::Object(obj) => {
-            let js_obj = JsObject::with_null_proto();
+            let mut js_obj = HashMap::<String, rquickjs::Value>::with_capacity(obj.len());
 
             for (key, val) in obj {
-                let js_val = json_value_to_js(val, ctx)?;
-                js_obj.set(JsString::from(key.as_str()), js_val, true, ctx)?;
+                let js_val = json_value_to_js(val, ctx.clone())?;
+                js_obj.insert(key.clone(), js_val);
             }
 
-            Ok(JsValue::from(js_obj))
+            js_obj.into_js(&ctx).map_err(|e| anyhow!(e))
         }
     }
 }
 
 /// Convert a Boa `JsValue` into a `serde_json::Value`
-pub fn js_value_to_json(value: &JsValue, ctx: &mut Context) -> anyhow::Result<Value> {
+pub fn js_value_to_json<'a>(value: rquickjs::Value<'a>, ctx: Ctx<'a>) -> anyhow::Result<Value> {
     if value.is_null() || value.is_undefined() {
         return Ok(Value::Null);
     }
 
-    if let Some(b) = value.as_boolean() {
+    if let Some(b) = value.as_bool() {
         return Ok(Value::Bool(b));
     }
 
@@ -120,27 +61,22 @@ pub fn js_value_to_json(value: &JsValue, ctx: &mut Context) -> anyhow::Result<Va
     }
 
     if let Some(s) = value.as_string() {
-        let s = s.to_std_string().map_err(|e| anyhow!("{}", e))?;
+        let s = s.to_string()?;
         return Ok(Value::String(s));
     }
 
-    if value.is_bigint() {
-        // BigInts are NOT JSON-compatible → store as string
-        return Ok(Value::String(value.display().to_string()));
-    }
-
     if value.is_object() {
-        let obj = value.as_object().ok_or(anyhow!("Not an object"))?;
+        let obj = value.into_object().ok_or(anyhow!("Not an object"))?;
 
         // Array?
         if obj.is_array() {
-            let obj = JsArray::from_object(obj).map_err(|e| anyhow!("{}", e))?;
-            let length = obj.length(ctx).map_err(|e| anyhow!("{}", e))?;
-            let mut json_arr = Vec::<Value>::with_capacity(length as usize);
+            let obj: Array = Array::from_value(obj.into_value()).map_err(|e| anyhow!("{}", e))?;
+            let length = obj.len();
+            let mut json_arr = Vec::<Value>::with_capacity(length);
 
             for i in 0..length {
-                let item = obj.get(i, ctx).unwrap_or(JsValue::null());
-                let item_json = js_value_to_json(&item, ctx)?;
+                let item = obj.get(i).unwrap_or(rquickjs::Value::new_null(ctx.clone()));
+                let item_json = js_value_to_json(item, ctx.clone())?;
                 json_arr.push(item_json);
             }
 
@@ -150,19 +86,14 @@ pub fn js_value_to_json(value: &JsValue, ctx: &mut Context) -> anyhow::Result<Va
         // Regular Object
         let mut map = Map::<String, Value>::new();
 
-        for key in obj.own_property_keys(ctx).map_err(|e| anyhow!("{}", e))? {
-            let key_val: Option<String> = match key.clone() {
-                PropertyKey::String(s) => Some(s.to_std_string().map_err(|e| anyhow!("{}", e))?),
-                PropertyKey::Index(i) => Some(serde_json::Number::from(i.get()).to_string()),
-                _ => None,
-            };
+        for key in obj.own_keys::<rquickjs::String>(Filter::default()) {
+            let key = key?;
+            let v_js = obj
+                .get(key.clone())
+                .unwrap_or(rquickjs::Value::new_null(ctx.clone()));
+            let v_json = js_value_to_json(v_js, ctx.clone())?;
 
-            let v_js = obj.get(key, ctx).unwrap_or(JsValue::null());
-            let v_json = js_value_to_json(&v_js, ctx)?;
-
-            if let Some(key_val) = key_val {
-                map.insert(key_val, v_json);
-            }
+            map.insert(key.clone().to_string()?, v_json);
         }
 
         return Ok(Value::Object(map));
@@ -170,4 +101,80 @@ pub fn js_value_to_json(value: &JsValue, ctx: &mut Context) -> anyhow::Result<Va
 
     // Fallback for unsupported JS types: functions, symbols, etc.
     Ok(Value::Null)
+}
+
+pub async fn js_invoke_async_method_to_json<'b, T, R>(
+    ctx: Ctx<'b>,
+    endpoint_name: &'b str,
+    name: &'b str,
+    args: &[T],
+) -> anyhow::Result<Option<R>>
+where
+    T: Serialize,
+    R: DeserializeOwned,
+{
+    let global = ctx.globals();
+    let plugin_instance: Object<'b> = global.get("pluginInstance").map_err(|e| anyhow!("{e}"))?;
+    let core_val: Object<'b> = plugin_instance
+        .get(endpoint_name)
+        .map_err(|e| anyhow!("{e}"))?;
+    let js_fn: Function<'b> = core_val.get(name).map_err(|e| anyhow!("{e}"))?;
+    let mut args_js = Args::new(ctx.clone(), args.len() as usize);
+    for (i, arg) in args.iter().enumerate() {
+        let arg_value = serde_json::to_value(arg).map_err(|e| anyhow!("{e}"))?;
+        let arg_js = json_value_to_js(&arg_value, ctx.clone()).map_err(|e| anyhow!("{e}"))?;
+        args_js.push_arg(arg_js).map_err(|e| anyhow!("{e}"))?;
+    }
+
+    let result_promise: Promise = js_fn.call_arg(args_js).map_err(|e| anyhow!("{e}"))?;
+    let result_future: rquickjs::Value = result_promise
+        .into_future()
+        .await
+        .catch(&ctx)
+        .map_err(|e| anyhow!("{e}"))?;
+
+    let value = js_value_to_json(result_future, ctx.clone()).map_err(|e| anyhow!("{e}"))?;
+
+    if value.is_null() {
+        return Ok(None);
+    }
+
+    Ok(Some(
+        serde_json::from_value::<R>(value).map_err(|e| anyhow!("{e}"))?,
+    ))
+}
+
+pub fn js_invoke_method_to_json<'b, T, R>(
+    ctx: Ctx<'b>,
+    endpoint_name: &'b str,
+    name: &'b str,
+    args: &[T],
+) -> anyhow::Result<Option<R>>
+where
+    T: Serialize,
+    R: DeserializeOwned,
+{
+    let global = ctx.globals();
+    let plugin_instance: Object<'b> = global.get("pluginInstance").map_err(|e| anyhow!("{e}"))?;
+    let core_val: Object<'b> = plugin_instance
+        .get(endpoint_name)
+        .map_err(|e| anyhow!("{e}"))?;
+    let js_fn: Function<'b> = core_val.get(name).map_err(|e| anyhow!("{e}"))?;
+    let mut args_js = Args::new(ctx.clone(), args.len() as usize);
+    for (i, arg) in args.iter().enumerate() {
+        let arg_value = serde_json::to_value(arg).map_err(|e| anyhow!("{e}"))?;
+        let arg_js = json_value_to_js(&arg_value, ctx.clone()).map_err(|e| anyhow!("{e}"))?;
+        args_js.push_arg(arg_js).map_err(|e| anyhow!("{e}"))?;
+    }
+
+    let result: rquickjs::Value = js_fn.call_arg(args_js).map_err(|e| anyhow!("{e}"))?;
+    let value = js_value_to_json(result, ctx.clone()).map_err(|e| anyhow!("{e}"))?;
+
+    if value.is_null() {
+        return Ok(None);
+    }
+
+    Ok(Some(
+        serde_json::from_value::<R>(value).map_err(|e| anyhow!("{e}"))?,
+    ))
 }

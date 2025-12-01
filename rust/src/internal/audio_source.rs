@@ -2,80 +2,51 @@ use crate::api::plugin::models::audio_source::{
     SpotubeAudioSourceMatchObject, SpotubeAudioSourceStreamObject,
 };
 use crate::api::plugin::models::track::SpotubeTrackObject;
-use crate::internal::utils;
-use anyhow::anyhow;
-use boa_engine::{js_string, Context, JsValue};
+use crate::internal::utils::js_invoke_async_method_to_json;
 use flutter_rust_bridge::frb;
+use rquickjs::{async_with, AsyncContext};
 
-#[derive(Debug)]
-pub struct PluginAudioSourceEndpoint<'a>(&'a mut Context);
+pub struct PluginAudioSourceEndpoint<'a>(&'a AsyncContext);
 
 impl<'a> PluginAudioSourceEndpoint<'a> {
     #[frb(ignore)]
-    pub fn new(context: &'a mut Context) -> PluginAudioSourceEndpoint<'a> {
+    pub fn new(context: &'a AsyncContext) -> PluginAudioSourceEndpoint<'a> {
         PluginAudioSourceEndpoint(context)
     }
 
-    fn audio_source_obj(&mut self) -> anyhow::Result<JsValue> {
-        let global = self.0.global_object();
-
-        let plugin_instance = global
-            .get(js_string!("pluginInstance"), self.0)
-            .map_err(|e| anyhow!("{}", e))
-            .and_then(|a| a.as_object().ok_or(anyhow!("Not an object")))?;
-
-        plugin_instance
-            .get(js_string!("audioSource"), self.0)
-            .or_else(|e| Err(anyhow!("artist not found: \n{}", e)))
-    }
-
     pub async fn matches(
-        &mut self,
+        &self,
         track: SpotubeTrackObject,
     ) -> anyhow::Result<Vec<SpotubeAudioSourceMatchObject>> {
-        let audio_source_val = self.audio_source_obj()?;
-        let audio_source_object = audio_source_val
-            .as_object()
-            .ok_or(anyhow!("Not an object"))?;
-
-        let matches_fn = audio_source_object
-            .get(js_string!("matches"), self.0)
-            .map_err(|e| anyhow!("JS error while accessing matches: {}", e))?
-            .as_function()
-            .ok_or(anyhow!("matches is not a function"))?;
-
-        let value = serde_json::to_value(track)?;
-        let track_val = utils::json_value_to_js(&value, self.0).map_err(|e| anyhow!("{}", e))?;
-        let args = [track_val];
-
-        let res =
-            utils::js_call_to_json(matches_fn.call(&audio_source_val, &args, self.0), self.0).await?;
-
-        serde_json::from_value(res).map_err(|e| anyhow!("{}", e))
+        async_with!(self.0 => |ctx| {
+            Ok(
+                js_invoke_async_method_to_json(
+                    ctx.clone(),
+                    "audioSource",
+                    "matches",
+                    &[track]
+                )
+                .await?
+                .expect("[hey][smartypants] album.tracks should return a SpotifyPaginationResponseObject")
+            )
+        }).await
     }
 
     pub async fn streams(
-        &mut self,
+        &self,
         matched: SpotubeAudioSourceMatchObject,
     ) -> anyhow::Result<Vec<SpotubeAudioSourceStreamObject>> {
-        let audio_source_val = self.audio_source_obj()?;
-        let audio_source_object = audio_source_val
-            .as_object()
-            .ok_or(anyhow!("Not an object"))?;
-
-        let matches_fn = audio_source_object
-            .get(js_string!("streams"), self.0)
-            .map_err(|e| anyhow!("JS error while accessing matches: {}", e))?
-            .as_function()
-            .ok_or(anyhow!("matches is not a function"))?;
-
-        let value = serde_json::to_value(matched)?;
-        let matched_val = utils::json_value_to_js(&value, self.0).map_err(|e| anyhow!("{}", e))?;
-        let args = [matched_val];
-
-        let res =
-            utils::js_call_to_json(matches_fn.call(&audio_source_val, &args, self.0), self.0).await?;
-
-        serde_json::from_value(res).map_err(|e| anyhow!("{}", e))
+        async_with!(self.0 => |ctx| {
+            Ok(
+                js_invoke_async_method_to_json(
+                    ctx.clone(),
+                    "audioSource",
+                    "streams",
+                    &[matched]
+                )
+                .await?
+                .expect("[hey][smartypants] audioSource.streams should return a SpotifyPaginationResponseObject")
+            )
+        }).await
     }
 }

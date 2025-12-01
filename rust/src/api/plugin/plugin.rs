@@ -1,5 +1,4 @@
 use crate::api::plugin::commands::PluginCommand;
-use crate::api::plugin::event_loop::Queue;
 use crate::api::plugin::executors::{
     execute_albums, execute_artists, execute_audio_source, execute_auth, execute_browse,
     execute_core, execute_playlist, execute_search, execute_track, execute_user,
@@ -10,120 +9,94 @@ use crate::api::plugin::senders::{
     PluginBrowseSender, PluginCoreSender, PluginPlaylistSender, PluginSearchSender,
     PluginTrackSender, PluginUserSender,
 };
-use crate::internal::apis::fetcher::ReqwestFetcher;
 use anyhow::anyhow;
-use boa_engine::job::JobExecutor;
-use boa_engine::{Context, Source};
-use boa_runtime::{fetch, interval, microtask, text, Console, DefaultLogger};
 use flutter_rust_bridge::frb;
-use std::cell::RefCell;
-use std::rc::Rc;
-use std::sync::Arc;
+use llrt_modules::{abort, buffer, console, crypto, events, exceptions, fetch, navigator, timers, url, util};
+use llrt_modules::module_builder::ModuleBuilder;
+use rquickjs::{async_with, AsyncContext, AsyncRuntime, Error};
 use std::thread;
-use std::time::Duration;
-use tokio::runtime::Runtime;
+use tokio::sync::mpsc;
 use tokio::sync::mpsc::Sender;
-use tokio::sync::{mpsc, Mutex};
 use tokio::task;
+use tokio::task::LocalSet;
 
 #[derive(Debug, Clone)]
-#[frb(opaque)]
 pub struct OpaqueSender {
     pub sender: Sender<PluginCommand>,
 }
 
-async fn js_poller_thread(context: Arc<Mutex<Context>>, queue: Rc<Queue>) -> anyhow::Result<()> {
-    let local_set = task::LocalSet::new();
+#[frb(ignore)]
+async fn create_context() -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
+    let runtime = AsyncRuntime::new().expect("Unable to create async runtime");
 
-    local_set
-        .run_until(async {
-            let mut ctx = context.lock().await;
-            queue.run_jobs_async(&RefCell::new(&mut *ctx)).await
-        })
+    let mut module_builder = ModuleBuilder::new();
+
+    module_builder = module_builder
+        .with_global(abort::init)
+        .with_global(buffer::init)
+        .with_global(console::init)
+        .with_global(crypto::init)
+        .with_global(events::init)
+        .with_global(exceptions::init)
+        .with_global(fetch::init)
+        .with_global(navigator::init)
+        .with_global(url::init)
+        .with_global(timers::init)
+        .with_global(util::init)
+    ;
+
+    let (module_resolver, module_loader, global_attachment) = module_builder.build();
+    runtime
+        .set_loader((module_resolver,), (module_loader,))
+        .await;
+
+    let context = AsyncContext::full(&runtime)
         .await
-        .map_err(|e| anyhow!("{}", e))?;
-    Ok(())
-}
+        .expect("Unable to create async context");
 
-// #[frb(ignore)]
+    async_with!(context => |ctx| {
+        global_attachment.attach(&ctx)?;
+        Ok::<(), Error>(())
+    })
+    .await
+    .map_err(|e| anyhow!("Failed to register globals: {}", e))?;
+
+    Ok((context, runtime))
+}
+#[frb(ignore)]
 async fn js_executor_thread(
     rx: &mut mpsc::Receiver<PluginCommand>,
-    context: Arc<Mutex<Context>>,
+    ctx: &AsyncContext,
 ) -> anyhow::Result<()> {
-    if let Some(command) = rx.recv().await {
-        let result = {
-            println!("JS Executor thread received command: {:?}", command);
-            match command {
-                PluginCommand::Artist(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_artists(commands, &mut *ctx).await
-                }
-                PluginCommand::Album(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_albums(commands, &mut *ctx).await
-                }
-                PluginCommand::AudioSource(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_audio_source(commands, &mut *ctx).await
-                }
-                PluginCommand::Auth(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_auth(commands, &mut *ctx).await
-                }
-                PluginCommand::Browse(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_browse(commands, &mut *ctx).await
-                }
-                PluginCommand::Core(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_core(commands, &mut *ctx).await
-                }
-                PluginCommand::Playlist(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_playlist(commands, &mut *ctx).await
-                }
-                PluginCommand::Search(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_search(commands, &mut *ctx).await
-                }
-                PluginCommand::Track(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_track(commands, &mut *ctx).await
-                }
-                PluginCommand::User(commands) => {
-                    let mut ctx = context.lock().await;
-                    execute_user(commands, &mut *ctx).await
-                }
-                PluginCommand::Shutdown => {
-                    println!("JS Executor thread shutting down.");
-                    return anyhow::Ok(());
-                }
-            }
-        };
+    while let Some(command) = rx.recv().await {
+        println!("JS Executor thread received command: {:?}", command);
+        if let PluginCommand::Shutdown = command {
+            println!("JS Executor thread shutting down.");
+            return anyhow::Ok(());
+        }
 
-        println!("JS executor command completed");
-        return result;
+        let ctx = ctx.clone();
+        task::spawn_local(async move {
+            let result = match command {
+                PluginCommand::Artist(commands) => execute_artists(commands, &ctx).await,
+                PluginCommand::Album(commands) => execute_albums(commands, &ctx).await,
+                PluginCommand::AudioSource(commands) => execute_audio_source(commands, &ctx).await,
+                PluginCommand::Auth(commands) => execute_auth(commands, &ctx).await,
+                PluginCommand::Browse(commands) => execute_browse(commands, &ctx).await,
+                PluginCommand::Core(commands) => execute_core(commands, &ctx).await,
+                PluginCommand::Playlist(commands) => execute_playlist(commands, &ctx).await,
+                PluginCommand::Search(commands) => execute_search(commands, &ctx).await,
+                PluginCommand::Track(commands) => execute_track(commands, &ctx).await,
+                PluginCommand::User(commands) => execute_user(commands, &ctx).await,
+                PluginCommand::Shutdown => unreachable!(),
+            };
+
+            if let Err(e) = result {
+                eprintln!("Error executing command: {:?}", e);
+            }
+        });
     }
     Ok(())
-}
-
-#[frb(ignore)]
-pub async fn create_context() -> anyhow::Result<(Context, Rc<Queue>)> {
-    let queue = Rc::new(Queue::new());
-    let mut context = Context::builder()
-        .job_executor(queue.clone())
-        .build()
-        .map_err(|e| anyhow!("{}", e))?;
-
-    Console::register_with_logger(DefaultLogger, &mut context).map_err(|e| anyhow!("{}", e))?;
-    fetch::register(ReqwestFetcher::new(), None, &mut context).map_err(|e| anyhow!("{}", e))?;
-    interval::register(&mut context).map_err(|e| anyhow!("{}", e))?;
-    microtask::register(None, &mut context).map_err(|e| anyhow!("{}", e))?;
-    text::register(None, &mut context).map_err(|e| anyhow!("{}", e))?;
-    interval::register(&mut context).map_err(|e| anyhow!("{}", e))?;
-    microtask::register(None, &mut context).map_err(|e| anyhow!("{}", e))?;
-
-    Ok((context, queue))
 }
 
 pub struct SpotubePlugin {
@@ -156,7 +129,7 @@ impl SpotubePlugin {
         }
     }
 
-    // #[frb(sync)]
+    #[frb(sync)]
     pub fn new_context(
         plugin_script: String,
         plugin_config: PluginConfiguration,
@@ -164,10 +137,13 @@ impl SpotubePlugin {
         let (command_tx, mut command_rx) = mpsc::channel(32);
 
         let _thread_handle = thread::spawn(move || {
-            let rt = Runtime::new().unwrap();
-            if let Err(e) = rt.block_on(async {
-                let (context, queue) = create_context().await.unwrap();
-                let context_arc_mutex = Arc::new(Mutex::new(context));
+            let rt = tokio::runtime::Builder::new_current_thread()
+                .enable_all()
+                .build()
+                .unwrap();
+            let local = LocalSet::new();
+            if let Err(e) = local.block_on(&rt, async {
+                let (ctx, runtime) = create_context().await?;
 
                 let injection = format!(
                     "globalThis.pluginInstance = new {}();",
@@ -175,38 +151,11 @@ impl SpotubePlugin {
                 );
                 let script = format!("{}\n{}", plugin_script, injection);
 
-                {
-                    let context_refcell = context_arc_mutex.clone();
+                ctx.with(|cx| cx.eval::<(), _>(script.as_str())).await?;
 
-                    context_refcell
-                        .lock()
-                        .await
-                        .eval(Source::from_bytes(script.as_bytes()))
-                        .map_err(|e| anyhow!("{}", e))?;
+                if let Err(e) = js_executor_thread(&mut command_rx, &ctx).await {
+                    eprintln!("JS executor error: {}", e);
                 }
-
-                loop {
-                    let executor = js_executor_thread(&mut command_rx, context_arc_mutex.clone());
-                    let poller = js_poller_thread(context_arc_mutex.clone(), queue.clone());
-                    let sleep_timer = tokio::time::sleep(Duration::from_millis(10));
-
-                    tokio::select!(
-                        res = executor => {
-                            if let Err(e) = res {
-                                eprintln!("JS Executor task error: {}", e);
-                                break;
-                            }
-                        },
-                        res = poller => {
-                            if let Err(e) = res {
-                                eprintln!("JS Poller task error: {}", e);
-                                break;
-                            }
-                        },
-                        _ = sleep_timer => {},
-                    );
-                }
-
                 anyhow::Ok(())
             }) {
                 eprintln!("JS Executor thread error: {}", e);

@@ -27,6 +27,7 @@
 
 use crate::api::plugin::commands::*;
 use crate::api::plugin::plugin::*;
+use crate::*;
 use flutter_rust_bridge::for_generated::byteorder::{NativeEndian, ReadBytesExt, WriteBytesExt};
 use flutter_rust_bridge::for_generated::{transform_result_dco, Lifetimeable, Lockable};
 use flutter_rust_bridge::{Handler, IntoIntoDart};
@@ -5764,6 +5765,7 @@ mod io {
     use super::*;
     use crate::api::plugin::commands::*;
     use crate::api::plugin::plugin::*;
+    use crate::*;
     use flutter_rust_bridge::for_generated::byteorder::{
         NativeEndian, ReadBytesExt, WriteBytesExt,
     };

@@ -12,9 +12,9 @@ use crate::internal::playlist::PluginPlaylistEndpoint;
 use crate::internal::search::PluginSearchEndpoint;
 use crate::internal::track::PluginTrackEndpoint;
 use crate::internal::user::PluginUserEndpoint;
-use boa_engine::Context;
 use flutter_rust_bridge::frb;
 use std::fmt::Debug;
+use rquickjs::AsyncContext;
 use tokio::sync::oneshot;
 
 fn send_response<T>(tx: oneshot::Sender<T>, response: T) -> anyhow::Result<()>
@@ -26,8 +26,8 @@ where
 }
 
 #[frb(ignore)]
-pub async fn execute_artists(command: ArtistCommands, context: &mut Context) -> anyhow::Result<()> {
-    let mut artist = PluginArtistEndpoint::new(context);
+pub async fn execute_artists(command: ArtistCommands, context: &AsyncContext) -> anyhow::Result<()> {
+    let artist = PluginArtistEndpoint::new(context);
     match command {
         ArtistCommands::GetArtist { id, response_tx } => {
             let artist = artist.get_artist(id).await;
@@ -72,8 +72,8 @@ pub async fn execute_artists(command: ArtistCommands, context: &mut Context) -> 
 }
 
 #[frb(ignore)]
-pub async fn execute_albums(command: AlbumCommands, context: &mut Context) -> anyhow::Result<()> {
-    let mut album = PluginAlbumEndpoint::new(context);
+pub async fn execute_albums(command: AlbumCommands, context: &AsyncContext) -> anyhow::Result<()> {
+    let album = PluginAlbumEndpoint::new(context);
     match command {
         AlbumCommands::GetAlbum { id, response_tx } => {
             let album = album.get_album(id).await;
@@ -110,9 +110,9 @@ pub async fn execute_albums(command: AlbumCommands, context: &mut Context) -> an
 #[frb(ignore)]
 pub async fn execute_audio_source(
     command: AudioSourceCommands,
-    context: &mut Context,
+    context: &AsyncContext,
 ) -> anyhow::Result<()> {
-    let mut audio_source = PluginAudioSourceEndpoint::new(context);
+    let audio_source = PluginAudioSourceEndpoint::new(context);
     match command {
         AudioSourceCommands::Matches { track, response_tx } => {
             let audio_source = audio_source.matches(track).await;
@@ -129,15 +129,15 @@ pub async fn execute_audio_source(
 }
 
 #[frb(ignore)]
-pub async fn execute_auth(command: AuthCommands, context: &mut Context) -> anyhow::Result<()> {
-    let mut auth = PluginAuthEndpoint::new(context);
+pub async fn execute_auth(command: AuthCommands, context: &AsyncContext) -> anyhow::Result<()> {
+    let auth = PluginAuthEndpoint::new(context);
     match command {
         AuthCommands::Authenticate { response_tx } => {
             let res = auth.authenticate().await;
             send_response(response_tx, res)
         }
         AuthCommands::IsAuthenticated { response_tx } => {
-            let res = auth.is_authenticated();
+            let res = auth.is_authenticated().await;
             send_response(response_tx, res)
         }
         AuthCommands::Logout { response_tx } => {
@@ -148,8 +148,8 @@ pub async fn execute_auth(command: AuthCommands, context: &mut Context) -> anyho
 }
 
 #[frb(ignore)]
-pub async fn execute_browse(command: BrowseCommands, context: &mut Context) -> anyhow::Result<()> {
-    let mut browse = PluginBrowseEndpoint::new(context);
+pub async fn execute_browse(command: BrowseCommands, context: &AsyncContext) -> anyhow::Result<()> {
+    let browse = PluginBrowseEndpoint::new(context);
     match command {
         BrowseCommands::Sections {
             offset,
@@ -172,8 +172,8 @@ pub async fn execute_browse(command: BrowseCommands, context: &mut Context) -> a
 }
 
 #[frb(ignore)]
-pub async fn execute_core(command: CoreCommands, context: &mut Context) -> anyhow::Result<()> {
-    let mut core = PluginCoreEndpoint::new(context);
+pub async fn execute_core(command: CoreCommands, context: &AsyncContext) -> anyhow::Result<()> {
+    let core = PluginCoreEndpoint::new(context);
     match command {
         CoreCommands::CheckUpdate {
             response_tx,
@@ -190,7 +190,7 @@ pub async fn execute_core(command: CoreCommands, context: &mut Context) -> anyho
             send_response(response_tx, res)
         }
         CoreCommands::Support { response_tx } => {
-            let res = core.support();
+            let res = core.support().await;
             send_response(response_tx, res)
         }
     }
@@ -199,9 +199,9 @@ pub async fn execute_core(command: CoreCommands, context: &mut Context) -> anyho
 #[frb(ignore)]
 pub async fn execute_playlist(
     command: PlaylistCommands,
-    context: &mut Context,
+    context: &AsyncContext,
 ) -> anyhow::Result<()> {
-    let mut playlist = PluginPlaylistEndpoint::new(context);
+    let playlist = PluginPlaylistEndpoint::new(context);
     match command {
         PlaylistCommands::GetPlaylist { id, response_tx } => {
             let playlist = playlist.get_playlist(id).await;
@@ -284,11 +284,11 @@ pub async fn execute_playlist(
 }
 
 #[frb(ignore)]
-pub async fn execute_search(command: SearchCommands, context: &mut Context) -> anyhow::Result<()> {
-    let mut search = PluginSearchEndpoint::new(context);
+pub async fn execute_search(command: SearchCommands, context: &AsyncContext) -> anyhow::Result<()> {
+    let search = PluginSearchEndpoint::new(context);
     match command {
         SearchCommands::Chips { response_tx } => {
-            let chips = search.chips();
+            let chips = search.chips().await;
             send_response(response_tx, chips)
         }
         SearchCommands::All { query, response_tx } => {
@@ -335,8 +335,8 @@ pub async fn execute_search(command: SearchCommands, context: &mut Context) -> a
 }
 
 #[frb(ignore)]
-pub async fn execute_track(command: TrackCommands, context: &mut Context) -> anyhow::Result<()> {
-    let mut track = PluginTrackEndpoint::new(context);
+pub async fn execute_track(command: TrackCommands, context: &AsyncContext) -> anyhow::Result<()> {
+    let track = PluginTrackEndpoint::new(context);
     match command {
         TrackCommands::GetTrack { id, response_tx } => {
             let res = track.get_track(id).await;
@@ -358,8 +358,8 @@ pub async fn execute_track(command: TrackCommands, context: &mut Context) -> any
 }
 
 #[frb(ignore)]
-pub async fn execute_user(command: UserCommands, context: &mut Context) -> anyhow::Result<()> {
-    let mut user = PluginUserEndpoint::new(context);
+pub async fn execute_user(command: UserCommands, context: &AsyncContext) -> anyhow::Result<()> {
+    let user = PluginUserEndpoint::new(context);
     match command {
         UserCommands::Me { response_tx } => {
             let me = user.me().await;
