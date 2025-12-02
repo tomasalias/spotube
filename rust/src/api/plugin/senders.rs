@@ -21,6 +21,7 @@ use anyhow::anyhow;
 use flutter_rust_bridge::frb;
 use tokio::sync::oneshot;
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginArtistSender {}
 
 impl PluginArtistSender {
@@ -136,6 +137,7 @@ impl PluginArtistSender {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginAlbumSender {}
 
 impl PluginAlbumSender {
@@ -228,6 +230,7 @@ impl PluginAlbumSender {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginAudioSourceSender {}
 
 impl PluginAudioSourceSender {
@@ -271,6 +274,7 @@ impl PluginAudioSourceSender {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginAuthSender {}
 
 impl PluginAuthSender {
@@ -316,6 +320,7 @@ impl PluginAuthSender {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginBrowseSender {}
 
 impl PluginBrowseSender {
@@ -365,6 +370,7 @@ impl PluginBrowseSender {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginCoreSender {}
 
 impl PluginCoreSender {
@@ -425,6 +431,7 @@ impl PluginCoreSender {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginPlaylistSender {}
 
 impl PluginPlaylistSender {
@@ -605,6 +612,7 @@ impl PluginPlaylistSender {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginSearchSender {}
 
 impl PluginSearchSender {
@@ -727,6 +735,7 @@ impl PluginSearchSender {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginTrackSender {}
 
 impl PluginTrackSender {
@@ -796,6 +805,7 @@ impl PluginTrackSender {
     }
 }
 
+#[derive(Debug, Clone, Copy)]
 pub struct PluginUserSender {}
 
 impl PluginUserSender {

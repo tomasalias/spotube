@@ -7,6 +7,7 @@ import 'api/plugin/commands.dart';
 import 'api/plugin/models/album.dart';
 import 'api/plugin/models/artist.dart';
 import 'api/plugin/models/audio_source.dart';
+import 'api/plugin/models/auth.dart';
 import 'api/plugin/models/browse.dart';
 import 'api/plugin/models/core.dart';
 import 'api/plugin/models/image.dart';
@@ -84,7 +85,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => -836755871;
+  int get rustContentHash => 1716120288;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -100,6 +101,81 @@ abstract class RustLibApi extends BaseApi {
 
   void crateApiPluginPluginOpaqueSenderAutoAccessorSetSender(
       {required OpaqueSender that, required SenderPluginCommand sender});
+
+  Stream<AuthEventObject> crateApiPluginPluginSpotubePluginAuthState(
+      {required SpotubePlugin that});
+
+  PluginAlbumSender crateApiPluginPluginSpotubePluginAutoAccessorGetAlbum(
+      {required SpotubePlugin that});
+
+  PluginArtistSender crateApiPluginPluginSpotubePluginAutoAccessorGetArtist(
+      {required SpotubePlugin that});
+
+  PluginAudioSourceSender
+      crateApiPluginPluginSpotubePluginAutoAccessorGetAudioSource(
+          {required SpotubePlugin that});
+
+  PluginAuthSender crateApiPluginPluginSpotubePluginAutoAccessorGetAuth(
+      {required SpotubePlugin that});
+
+  PluginBrowseSender crateApiPluginPluginSpotubePluginAutoAccessorGetBrowse(
+      {required SpotubePlugin that});
+
+  PluginCoreSender crateApiPluginPluginSpotubePluginAutoAccessorGetCore(
+      {required SpotubePlugin that});
+
+  PluginPlaylistSender crateApiPluginPluginSpotubePluginAutoAccessorGetPlaylist(
+      {required SpotubePlugin that});
+
+  PluginSearchSender crateApiPluginPluginSpotubePluginAutoAccessorGetSearch(
+      {required SpotubePlugin that});
+
+  PluginTrackSender crateApiPluginPluginSpotubePluginAutoAccessorGetTrack(
+      {required SpotubePlugin that});
+
+  PluginUserSender crateApiPluginPluginSpotubePluginAutoAccessorGetUser(
+      {required SpotubePlugin that});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetAlbum(
+      {required SpotubePlugin that, required PluginAlbumSender album});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetArtist(
+      {required SpotubePlugin that, required PluginArtistSender artist});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetAudioSource(
+      {required SpotubePlugin that,
+      required PluginAudioSourceSender audioSource});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetAuth(
+      {required SpotubePlugin that, required PluginAuthSender auth});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetBrowse(
+      {required SpotubePlugin that, required PluginBrowseSender browse});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetCore(
+      {required SpotubePlugin that, required PluginCoreSender core});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetPlaylist(
+      {required SpotubePlugin that, required PluginPlaylistSender playlist});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetSearch(
+      {required SpotubePlugin that, required PluginSearchSender search});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetTrack(
+      {required SpotubePlugin that, required PluginTrackSender track});
+
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetUser(
+      {required SpotubePlugin that, required PluginUserSender user});
+
+  Future<void> crateApiPluginPluginSpotubePluginClose(
+      {required SpotubePlugin that, required OpaqueSender tx});
+
+  Future<OpaqueSender> crateApiPluginPluginSpotubePluginCreateContext(
+      {required SpotubePlugin that,
+      required String pluginScript,
+      required PluginConfiguration pluginConfig});
+
+  SpotubePlugin crateApiPluginPluginSpotubePluginNew();
 
   Future<void> crateApiInitApp();
 
@@ -391,15 +467,6 @@ abstract class RustLibApi extends BaseApi {
       crateApiPluginModelsAudioSourceSpotubeAudioSourceContainerPresetFileExtension(
           {required SpotubeAudioSourceContainerPreset that});
 
-  Future<void> crateApiPluginPluginSpotubePluginDispose(
-      {required SpotubePlugin that, required OpaqueSender tx});
-
-  SpotubePlugin crateApiPluginPluginSpotubePluginNew();
-
-  OpaqueSender crateApiPluginPluginSpotubePluginNewContext(
-      {required String pluginScript,
-      required PluginConfiguration pluginConfig});
-
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_OpaqueSender;
 
@@ -425,6 +492,15 @@ abstract class RustLibApi extends BaseApi {
 
   CrossPlatformFinalizerArg
       get rust_arc_decrement_strong_count_SenderPluginCommandPtr;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_SpotubePlugin;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_SpotubePlugin;
+
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_SpotubePluginPtr;
 }
 
 class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
@@ -495,12 +571,693 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
 
   @override
+  Stream<AuthEventObject> crateApiPluginPluginSpotubePluginAuthState(
+      {required SpotubePlugin that}) {
+    final sink = RustStreamSink<AuthEventObject>();
+    unawaited(handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_StreamSink_auth_event_object_Sse(sink, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 3, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginAuthStateConstMeta,
+      argValues: [that, sink],
+      apiImpl: this,
+    )));
+    return sink.stream;
+  }
+
+  TaskConstMeta get kCrateApiPluginPluginSpotubePluginAuthStateConstMeta =>
+      const TaskConstMeta(
+        debugName: "SpotubePlugin_auth_state",
+        argNames: ["that", "sink"],
+      );
+
+  @override
+  PluginAlbumSender crateApiPluginPluginSpotubePluginAutoAccessorGetAlbum(
+      {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 4)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_album_sender,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorGetAlbumConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetAlbumConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_album",
+            argNames: ["that"],
+          );
+
+  @override
+  PluginArtistSender crateApiPluginPluginSpotubePluginAutoAccessorGetArtist(
+      {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 5)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_artist_sender,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorGetArtistConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetArtistConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_artist",
+            argNames: ["that"],
+          );
+
+  @override
+  PluginAudioSourceSender
+      crateApiPluginPluginSpotubePluginAutoAccessorGetAudioSource(
+          {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 6)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_audio_source_sender,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorGetAudioSourceConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetAudioSourceConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_audio_source",
+            argNames: ["that"],
+          );
+
+  @override
+  PluginAuthSender crateApiPluginPluginSpotubePluginAutoAccessorGetAuth(
+      {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 7)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_auth_sender,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginAutoAccessorGetAuthConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetAuthConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_auth",
+            argNames: ["that"],
+          );
+
+  @override
+  PluginBrowseSender crateApiPluginPluginSpotubePluginAutoAccessorGetBrowse(
+      {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 8)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_browse_sender,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorGetBrowseConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetBrowseConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_browse",
+            argNames: ["that"],
+          );
+
+  @override
+  PluginCoreSender crateApiPluginPluginSpotubePluginAutoAccessorGetCore(
+      {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 9)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_core_sender,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginAutoAccessorGetCoreConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetCoreConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_core",
+            argNames: ["that"],
+          );
+
+  @override
+  PluginPlaylistSender crateApiPluginPluginSpotubePluginAutoAccessorGetPlaylist(
+      {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 10)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_playlist_sender,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorGetPlaylistConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetPlaylistConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_playlist",
+            argNames: ["that"],
+          );
+
+  @override
+  PluginSearchSender crateApiPluginPluginSpotubePluginAutoAccessorGetSearch(
+      {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 11)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_search_sender,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorGetSearchConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetSearchConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_search",
+            argNames: ["that"],
+          );
+
+  @override
+  PluginTrackSender crateApiPluginPluginSpotubePluginAutoAccessorGetTrack(
+      {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 12)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_track_sender,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorGetTrackConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetTrackConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_track",
+            argNames: ["that"],
+          );
+
+  @override
+  PluginUserSender crateApiPluginPluginSpotubePluginAutoAccessorGetUser(
+      {required SpotubePlugin that}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 13)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_plugin_user_sender,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginAutoAccessorGetUserConstMeta,
+      argValues: [that],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorGetUserConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_get_user",
+            argNames: ["that"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetAlbum(
+      {required SpotubePlugin that, required PluginAlbumSender album}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_album_sender(album, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 14)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorSetAlbumConstMeta,
+      argValues: [that, album],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetAlbumConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_album",
+            argNames: ["that", "album"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetArtist(
+      {required SpotubePlugin that, required PluginArtistSender artist}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_artist_sender(artist, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 15)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorSetArtistConstMeta,
+      argValues: [that, artist],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetArtistConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_artist",
+            argNames: ["that", "artist"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetAudioSource(
+      {required SpotubePlugin that,
+      required PluginAudioSourceSender audioSource}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_audio_source_sender(audioSource, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 16)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorSetAudioSourceConstMeta,
+      argValues: [that, audioSource],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetAudioSourceConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_audio_source",
+            argNames: ["that", "audioSource"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetAuth(
+      {required SpotubePlugin that, required PluginAuthSender auth}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_auth_sender(auth, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 17)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginAutoAccessorSetAuthConstMeta,
+      argValues: [that, auth],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetAuthConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_auth",
+            argNames: ["that", "auth"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetBrowse(
+      {required SpotubePlugin that, required PluginBrowseSender browse}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_browse_sender(browse, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 18)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorSetBrowseConstMeta,
+      argValues: [that, browse],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetBrowseConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_browse",
+            argNames: ["that", "browse"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetCore(
+      {required SpotubePlugin that, required PluginCoreSender core}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_core_sender(core, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 19)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginAutoAccessorSetCoreConstMeta,
+      argValues: [that, core],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetCoreConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_core",
+            argNames: ["that", "core"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetPlaylist(
+      {required SpotubePlugin that, required PluginPlaylistSender playlist}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_playlist_sender(playlist, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 20)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorSetPlaylistConstMeta,
+      argValues: [that, playlist],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetPlaylistConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_playlist",
+            argNames: ["that", "playlist"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetSearch(
+      {required SpotubePlugin that, required PluginSearchSender search}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_search_sender(search, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 21)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorSetSearchConstMeta,
+      argValues: [that, search],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetSearchConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_search",
+            argNames: ["that", "search"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetTrack(
+      {required SpotubePlugin that, required PluginTrackSender track}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_track_sender(track, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 22)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta:
+          kCrateApiPluginPluginSpotubePluginAutoAccessorSetTrackConstMeta,
+      argValues: [that, track],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetTrackConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_track",
+            argNames: ["that", "track"],
+          );
+
+  @override
+  void crateApiPluginPluginSpotubePluginAutoAccessorSetUser(
+      {required SpotubePlugin that, required PluginUserSender user}) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_plugin_user_sender(user, serializer);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 23)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginAutoAccessorSetUserConstMeta,
+      argValues: [that, user],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginPluginSpotubePluginAutoAccessorSetUserConstMeta =>
+          const TaskConstMeta(
+            debugName: "SpotubePlugin_auto_accessor_set_user",
+            argNames: ["that", "user"],
+          );
+
+  @override
+  Future<void> crateApiPluginPluginSpotubePluginClose(
+      {required SpotubePlugin that, required OpaqueSender tx}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+            tx, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 24, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData: sse_decode_unit,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginCloseConstMeta,
+      argValues: [that, tx],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiPluginPluginSpotubePluginCloseConstMeta =>
+      const TaskConstMeta(
+        debugName: "SpotubePlugin_close",
+        argNames: ["that", "tx"],
+      );
+
+  @override
+  Future<OpaqueSender> crateApiPluginPluginSpotubePluginCreateContext(
+      {required SpotubePlugin that,
+      required String pluginScript,
+      required PluginConfiguration pluginConfig}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+            that, serializer);
+        sse_encode_String(pluginScript, serializer);
+        sse_encode_box_autoadd_plugin_configuration(pluginConfig, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 25, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginCreateContextConstMeta,
+      argValues: [that, pluginScript, pluginConfig],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiPluginPluginSpotubePluginCreateContextConstMeta =>
+      const TaskConstMeta(
+        debugName: "SpotubePlugin_create_context",
+        argNames: ["that", "pluginScript", "pluginConfig"],
+      );
+
+  @override
+  SpotubePlugin crateApiPluginPluginSpotubePluginNew() {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 26)!;
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin,
+        decodeErrorData: null,
+      ),
+      constMeta: kCrateApiPluginPluginSpotubePluginNewConstMeta,
+      argValues: [],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta get kCrateApiPluginPluginSpotubePluginNewConstMeta =>
+      const TaskConstMeta(
+        debugName: "SpotubePlugin_new",
+        argNames: [],
+      );
+
+  @override
   Future<void> crateApiInitApp() {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 3, port: port_);
+            funcId: 27, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -530,7 +1287,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(id, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 4, port: port_);
+            funcId: 28, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_full_album_object,
@@ -564,7 +1321,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 5, port: port_);
+            funcId: 29, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -595,7 +1352,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_list_String(ids, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 6, port: port_);
+            funcId: 30, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -631,7 +1388,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 7, port: port_);
+            funcId: 31, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -662,7 +1419,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_list_String(ids, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 8, port: port_);
+            funcId: 32, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -698,7 +1455,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 9, port: port_);
+            funcId: 33, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -730,7 +1487,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(id, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 10, port: port_);
+            funcId: 34, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_full_artist_object,
@@ -767,7 +1524,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 11, port: port_);
+            funcId: 35, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -798,7 +1555,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_list_String(ids, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 12, port: port_);
+            funcId: 36, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -834,7 +1591,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 13, port: port_);
+            funcId: 37, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -866,7 +1623,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_list_String(ids, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 14, port: port_);
+            funcId: 38, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -898,7 +1655,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_box_autoadd_spotube_track_object(track, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 15, port: port_);
+            funcId: 39, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_spotube_audio_source_match_object,
@@ -932,7 +1689,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_spotube_audio_source_match_object(
             matched, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 16, port: port_);
+            funcId: 40, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_spotube_audio_source_stream_object,
@@ -961,7 +1718,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 17, port: port_);
+            funcId: 41, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -990,7 +1747,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 18, port: port_);
+            funcId: 42, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_bool,
@@ -1019,7 +1776,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 19, port: port_);
+            funcId: 43, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1055,7 +1812,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 20, port: port_);
+            funcId: 44, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1090,7 +1847,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 21, port: port_);
+            funcId: 45, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1116,7 +1873,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_plugin_configuration(that, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 22, port: port_);
+            funcId: 46, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1148,7 +1905,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_box_autoadd_plugin_configuration(pluginConfig, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 23, port: port_);
+            funcId: 47, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_opt_box_autoadd_plugin_update_available,
@@ -1180,7 +1937,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_box_autoadd_scrobble_details(details, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 24, port: port_);
+            funcId: 48, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1208,7 +1965,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 25, port: port_);
+            funcId: 49, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1243,7 +2000,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_String(trackIds, serializer);
         sse_encode_opt_box_autoadd_u_32(position, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 26, port: port_);
+            funcId: 50, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1284,7 +2041,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_bool(public, serializer);
         sse_encode_opt_box_autoadd_bool(collaborative, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 27, port: port_);
+            funcId: 51, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1334,7 +2091,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(playlistId, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 28, port: port_);
+            funcId: 52, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1368,7 +2125,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(id, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 29, port: port_);
+            funcId: 53, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_full_playlist_object,
@@ -1402,7 +2159,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(playlistId, serializer);
         sse_encode_list_String(trackIds, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 30, port: port_);
+            funcId: 54, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1435,7 +2192,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(playlistId, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 31, port: port_);
+            funcId: 55, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1471,7 +2228,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 32, port: port_);
+            funcId: 56, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1502,7 +2259,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(playlistId, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 33, port: port_);
+            funcId: 57, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1541,7 +2298,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_bool(public, serializer);
         sse_encode_opt_box_autoadd_bool(collaborative, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 34, port: port_);
+            funcId: 58, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1595,7 +2352,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 35, port: port_);
+            funcId: 59, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1627,7 +2384,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(query, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 36, port: port_);
+            funcId: 60, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_search_response_object,
@@ -1663,7 +2420,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 37, port: port_);
+            funcId: 61, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1691,7 +2448,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 38, port: port_);
+            funcId: 62, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_String,
@@ -1727,7 +2484,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 39, port: port_);
+            funcId: 63, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1764,7 +2521,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 40, port: port_);
+            funcId: 64, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1795,7 +2552,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(id, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 41, port: port_);
+            funcId: 65, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_track_object,
@@ -1826,7 +2583,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(id, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 42, port: port_);
+            funcId: 66, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_spotube_track_object,
@@ -1857,7 +2614,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_list_String(ids, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 43, port: port_);
+            funcId: 67, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1888,7 +2645,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_list_String(ids, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 44, port: port_);
+            funcId: 68, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1916,7 +2673,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 45, port: port_);
+            funcId: 69, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_user_object,
@@ -1950,7 +2707,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 46, port: port_);
+            funcId: 70, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1985,7 +2742,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 47, port: port_);
+            funcId: 71, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2020,7 +2777,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 48, port: port_);
+            funcId: 72, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2055,7 +2812,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 49, port: port_);
+            funcId: 73, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2083,7 +2840,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_spotube_audio_lossless_container_quality(
             that, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 50)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 74)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -2113,7 +2870,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_spotube_audio_lossy_container_quality(
             that, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 51, port: port_);
+            funcId: 75, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -2142,7 +2899,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_spotube_audio_source_container_preset(
             that, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 52)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 76)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -2161,85 +2918,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             debugName: "spotube_audio_source_container_preset_file_extension",
             argNames: ["that"],
           );
-
-  @override
-  Future<void> crateApiPluginPluginSpotubePluginDispose(
-      {required SpotubePlugin that, required OpaqueSender tx}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_box_autoadd_spotube_plugin(that, serializer);
-        sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
-            tx, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 53, port: port_);
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_unit,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiPluginPluginSpotubePluginDisposeConstMeta,
-      argValues: [that, tx],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiPluginPluginSpotubePluginDisposeConstMeta =>
-      const TaskConstMeta(
-        debugName: "spotube_plugin_dispose",
-        argNames: ["that", "tx"],
-      );
-
-  @override
-  SpotubePlugin crateApiPluginPluginSpotubePluginNew() {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 54)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData: sse_decode_spotube_plugin,
-        decodeErrorData: null,
-      ),
-      constMeta: kCrateApiPluginPluginSpotubePluginNewConstMeta,
-      argValues: [],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiPluginPluginSpotubePluginNewConstMeta =>
-      const TaskConstMeta(
-        debugName: "spotube_plugin_new",
-        argNames: [],
-      );
-
-  @override
-  OpaqueSender crateApiPluginPluginSpotubePluginNewContext(
-      {required String pluginScript,
-      required PluginConfiguration pluginConfig}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
-        final serializer = SseSerializer(generalizedFrbRustBinding);
-        sse_encode_String(pluginScript, serializer);
-        sse_encode_box_autoadd_plugin_configuration(pluginConfig, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 55)!;
-      },
-      codec: SseCodec(
-        decodeSuccessData:
-            sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender,
-        decodeErrorData: sse_decode_AnyhowException,
-      ),
-      constMeta: kCrateApiPluginPluginSpotubePluginNewContextConstMeta,
-      argValues: [pluginScript, pluginConfig],
-      apiImpl: this,
-    ));
-  }
-
-  TaskConstMeta get kCrateApiPluginPluginSpotubePluginNewContextConstMeta =>
-      const TaskConstMeta(
-        debugName: "spotube_plugin_new_context",
-        argNames: ["pluginScript", "pluginConfig"],
-      );
 
   RustArcIncrementStrongCountFnType
       get rust_arc_increment_strong_count_OpaqueSender => wire
@@ -2264,6 +2942,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   RustArcDecrementStrongCountFnType
       get rust_arc_decrement_strong_count_SenderPluginCommand => wire
           .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand;
+
+  RustArcIncrementStrongCountFnType
+      get rust_arc_increment_strong_count_SpotubePlugin => wire
+          .rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin;
+
+  RustArcDecrementStrongCountFnType
+      get rust_arc_decrement_strong_count_SpotubePlugin => wire
+          .rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin;
 
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw) {
@@ -2296,6 +2982,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubePlugin
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SpotubePluginImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   OpaqueSender
       dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           dynamic raw) {
@@ -2304,11 +2998,27 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubePlugin
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SpotubePluginImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
   OpaqueSender
       dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return OpaqueSenderImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  SpotubePlugin
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SpotubePluginImpl.frbInternalDcoDecode(raw as List<dynamic>);
   }
 
   @protected
@@ -2336,9 +3046,41 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubePlugin
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return SpotubePluginImpl.frbInternalDcoDecode(raw as List<dynamic>);
+  }
+
+  @protected
+  RustStreamSink<AuthEventObject> dco_decode_StreamSink_auth_event_object_Sse(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    throw UnimplementedError();
+  }
+
+  @protected
   String dco_decode_String(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as String;
+  }
+
+  @protected
+  AuthEventObject dco_decode_auth_event_object(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 1)
+      throw Exception('unexpected arr length: expect 1 but see ${arr.length}');
+    return AuthEventObject(
+      eventType: dco_decode_auth_event_type(arr[0]),
+    );
+  }
+
+  @protected
+  AuthEventType dco_decode_auth_event_type(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return AuthEventType.values[raw as int];
   }
 
   @protected
@@ -2509,12 +3251,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_spotube_full_playlist_object(raw);
-  }
-
-  @protected
-  SpotubePlugin dco_decode_box_autoadd_spotube_plugin(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_spotube_plugin(raw);
   }
 
   @protected
@@ -3235,26 +3971,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  SpotubePlugin dco_decode_spotube_plugin(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 10)
-      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
-    return SpotubePlugin.raw(
-      artist: dco_decode_plugin_artist_sender(arr[0]),
-      album: dco_decode_plugin_album_sender(arr[1]),
-      audioSource: dco_decode_plugin_audio_source_sender(arr[2]),
-      auth: dco_decode_plugin_auth_sender(arr[3]),
-      browse: dco_decode_plugin_browse_sender(arr[4]),
-      core: dco_decode_plugin_core_sender(arr[5]),
-      playlist: dco_decode_plugin_playlist_sender(arr[6]),
-      search: dco_decode_plugin_search_sender(arr[7]),
-      track: dco_decode_plugin_track_sender(arr[8]),
-      user: dco_decode_plugin_user_sender(arr[9]),
-    );
-  }
-
-  @protected
   SpotubeSearchResponseObject dco_decode_spotube_search_response_object(
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -3421,6 +4137,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubePlugin
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SpotubePluginImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   OpaqueSender
       sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           SseDeserializer deserializer) {
@@ -3430,11 +4155,29 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubePlugin
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SpotubePluginImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
   OpaqueSender
       sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return OpaqueSenderImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  SpotubePlugin
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SpotubePluginImpl.frbInternalSseDecode(
         sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
   }
 
@@ -3466,10 +4209,40 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubePlugin
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return SpotubePluginImpl.frbInternalSseDecode(
+        sse_decode_usize(deserializer), sse_decode_i_32(deserializer));
+  }
+
+  @protected
+  RustStreamSink<AuthEventObject> sse_decode_StreamSink_auth_event_object_Sse(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    throw UnimplementedError('Unreachable ()');
+  }
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     var inner = sse_decode_list_prim_u_8_strict(deserializer);
     return utf8.decoder.convert(inner);
+  }
+
+  @protected
+  AuthEventObject sse_decode_auth_event_object(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_eventType = sse_decode_auth_event_type(deserializer);
+    return AuthEventObject(eventType: var_eventType);
+  }
+
+  @protected
+  AuthEventType sse_decode_auth_event_type(SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var inner = sse_decode_i_32(deserializer);
+    return AuthEventType.values[inner];
   }
 
   @protected
@@ -3652,13 +4425,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_spotube_full_playlist_object(deserializer));
-  }
-
-  @protected
-  SpotubePlugin sse_decode_box_autoadd_spotube_plugin(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_spotube_plugin(deserializer));
   }
 
   @protected
@@ -4553,32 +5319,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  SpotubePlugin sse_decode_spotube_plugin(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_artist = sse_decode_plugin_artist_sender(deserializer);
-    var var_album = sse_decode_plugin_album_sender(deserializer);
-    var var_audioSource = sse_decode_plugin_audio_source_sender(deserializer);
-    var var_auth = sse_decode_plugin_auth_sender(deserializer);
-    var var_browse = sse_decode_plugin_browse_sender(deserializer);
-    var var_core = sse_decode_plugin_core_sender(deserializer);
-    var var_playlist = sse_decode_plugin_playlist_sender(deserializer);
-    var var_search = sse_decode_plugin_search_sender(deserializer);
-    var var_track = sse_decode_plugin_track_sender(deserializer);
-    var var_user = sse_decode_plugin_user_sender(deserializer);
-    return SpotubePlugin.raw(
-        artist: var_artist,
-        album: var_album,
-        audioSource: var_audioSource,
-        auth: var_auth,
-        browse: var_browse,
-        core: var_core,
-        playlist: var_playlist,
-        search: var_search,
-        track: var_track,
-        user: var_user);
-  }
-
-  @protected
   SpotubeSearchResponseObject sse_decode_spotube_search_response_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4769,6 +5509,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SpotubePlugin self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as SpotubePluginImpl).frbInternalSseEncode(move: true),
+        serializer);
+  }
+
+  @protected
+  void
       sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           OpaqueSender self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4779,11 +5529,31 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
   @protected
   void
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SpotubePlugin self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as SpotubePluginImpl).frbInternalSseEncode(move: false),
+        serializer);
+  }
+
+  @protected
+  void
       sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           OpaqueSender self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_usize(
         (self as OpaqueSenderImpl).frbInternalSseEncode(move: false),
+        serializer);
+  }
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SpotubePlugin self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as SpotubePluginImpl).frbInternalSseEncode(move: false),
         serializer);
   }
 
@@ -4818,9 +5588,46 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SpotubePlugin self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_usize(
+        (self as SpotubePluginImpl).frbInternalSseEncode(move: null),
+        serializer);
+  }
+
+  @protected
+  void sse_encode_StreamSink_auth_event_object_Sse(
+      RustStreamSink<AuthEventObject> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(
+        self.setupAndSerialize(
+            codec: SseCodec(
+          decodeSuccessData: sse_decode_auth_event_object,
+          decodeErrorData: sse_decode_AnyhowException,
+        )),
+        serializer);
+  }
+
+  @protected
   void sse_encode_String(String self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_list_prim_u_8_strict(utf8.encoder.convert(self), serializer);
+  }
+
+  @protected
+  void sse_encode_auth_event_object(
+      AuthEventObject self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_auth_event_type(self.eventType, serializer);
+  }
+
+  @protected
+  void sse_encode_auth_event_type(
+      AuthEventType self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.index, serializer);
   }
 
   @protected
@@ -4999,13 +5806,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       SpotubeFullPlaylistObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_spotube_full_playlist_object(self, serializer);
-  }
-
-  @protected
-  void sse_encode_box_autoadd_spotube_plugin(
-      SpotubePlugin self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_spotube_plugin(self, serializer);
   }
 
   @protected
@@ -5721,21 +6521,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_spotube_plugin(SpotubePlugin self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_plugin_artist_sender(self.artist, serializer);
-    sse_encode_plugin_album_sender(self.album, serializer);
-    sse_encode_plugin_audio_source_sender(self.audioSource, serializer);
-    sse_encode_plugin_auth_sender(self.auth, serializer);
-    sse_encode_plugin_browse_sender(self.browse, serializer);
-    sse_encode_plugin_core_sender(self.core, serializer);
-    sse_encode_plugin_playlist_sender(self.playlist, serializer);
-    sse_encode_plugin_search_sender(self.search, serializer);
-    sse_encode_plugin_track_sender(self.track, serializer);
-    sse_encode_plugin_user_sender(self.user, serializer);
-  }
-
-  @protected
   void sse_encode_spotube_search_response_object(
       SpotubeSearchResponseObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5909,4 +6694,128 @@ class SenderPluginCommandImpl extends RustOpaque
     rustArcDecrementStrongCountPtr: RustLib
         .instance.api.rust_arc_decrement_strong_count_SenderPluginCommandPtr,
   );
+}
+
+@sealed
+class SpotubePluginImpl extends RustOpaque implements SpotubePlugin {
+  // Not to be used by end users
+  SpotubePluginImpl.frbInternalDcoDecode(List<dynamic> wire)
+      : super.frbInternalDcoDecode(wire, _kStaticData);
+
+  // Not to be used by end users
+  SpotubePluginImpl.frbInternalSseDecode(BigInt ptr, int externalSizeOnNative)
+      : super.frbInternalSseDecode(ptr, externalSizeOnNative, _kStaticData);
+
+  static final _kStaticData = RustArcStaticData(
+    rustArcIncrementStrongCount:
+        RustLib.instance.api.rust_arc_increment_strong_count_SpotubePlugin,
+    rustArcDecrementStrongCount:
+        RustLib.instance.api.rust_arc_decrement_strong_count_SpotubePlugin,
+    rustArcDecrementStrongCountPtr:
+        RustLib.instance.api.rust_arc_decrement_strong_count_SpotubePluginPtr,
+  );
+
+  Stream<AuthEventObject> authState() =>
+      RustLib.instance.api.crateApiPluginPluginSpotubePluginAuthState(
+        that: this,
+      );
+
+  PluginAlbumSender get album => RustLib.instance.api
+          .crateApiPluginPluginSpotubePluginAutoAccessorGetAlbum(
+        that: this,
+      );
+
+  PluginArtistSender get artist => RustLib.instance.api
+          .crateApiPluginPluginSpotubePluginAutoAccessorGetArtist(
+        that: this,
+      );
+
+  PluginAudioSourceSender get audioSource => RustLib.instance.api
+          .crateApiPluginPluginSpotubePluginAutoAccessorGetAudioSource(
+        that: this,
+      );
+
+  PluginAuthSender get auth =>
+      RustLib.instance.api.crateApiPluginPluginSpotubePluginAutoAccessorGetAuth(
+        that: this,
+      );
+
+  PluginBrowseSender get browse => RustLib.instance.api
+          .crateApiPluginPluginSpotubePluginAutoAccessorGetBrowse(
+        that: this,
+      );
+
+  PluginCoreSender get core =>
+      RustLib.instance.api.crateApiPluginPluginSpotubePluginAutoAccessorGetCore(
+        that: this,
+      );
+
+  PluginPlaylistSender get playlist => RustLib.instance.api
+          .crateApiPluginPluginSpotubePluginAutoAccessorGetPlaylist(
+        that: this,
+      );
+
+  PluginSearchSender get search => RustLib.instance.api
+          .crateApiPluginPluginSpotubePluginAutoAccessorGetSearch(
+        that: this,
+      );
+
+  PluginTrackSender get track => RustLib.instance.api
+          .crateApiPluginPluginSpotubePluginAutoAccessorGetTrack(
+        that: this,
+      );
+
+  PluginUserSender get user =>
+      RustLib.instance.api.crateApiPluginPluginSpotubePluginAutoAccessorGetUser(
+        that: this,
+      );
+
+  set album(PluginAlbumSender album) => RustLib.instance.api
+      .crateApiPluginPluginSpotubePluginAutoAccessorSetAlbum(
+          that: this, album: album);
+
+  set artist(PluginArtistSender artist) => RustLib.instance.api
+      .crateApiPluginPluginSpotubePluginAutoAccessorSetArtist(
+          that: this, artist: artist);
+
+  set audioSource(PluginAudioSourceSender audioSource) => RustLib.instance.api
+      .crateApiPluginPluginSpotubePluginAutoAccessorSetAudioSource(
+          that: this, audioSource: audioSource);
+
+  set auth(PluginAuthSender auth) =>
+      RustLib.instance.api.crateApiPluginPluginSpotubePluginAutoAccessorSetAuth(
+          that: this, auth: auth);
+
+  set browse(PluginBrowseSender browse) => RustLib.instance.api
+      .crateApiPluginPluginSpotubePluginAutoAccessorSetBrowse(
+          that: this, browse: browse);
+
+  set core(PluginCoreSender core) =>
+      RustLib.instance.api.crateApiPluginPluginSpotubePluginAutoAccessorSetCore(
+          that: this, core: core);
+
+  set playlist(PluginPlaylistSender playlist) => RustLib.instance.api
+      .crateApiPluginPluginSpotubePluginAutoAccessorSetPlaylist(
+          that: this, playlist: playlist);
+
+  set search(PluginSearchSender search) => RustLib.instance.api
+      .crateApiPluginPluginSpotubePluginAutoAccessorSetSearch(
+          that: this, search: search);
+
+  set track(PluginTrackSender track) => RustLib.instance.api
+      .crateApiPluginPluginSpotubePluginAutoAccessorSetTrack(
+          that: this, track: track);
+
+  set user(PluginUserSender user) =>
+      RustLib.instance.api.crateApiPluginPluginSpotubePluginAutoAccessorSetUser(
+          that: this, user: user);
+
+  Future<void> close({required OpaqueSender tx}) => RustLib.instance.api
+      .crateApiPluginPluginSpotubePluginClose(that: this, tx: tx);
+
+  Future<OpaqueSender> createContext(
+          {required String pluginScript,
+          required PluginConfiguration pluginConfig}) =>
+      RustLib.instance.api.crateApiPluginPluginSpotubePluginCreateContext(
+          that: this, pluginScript: pluginScript, pluginConfig: pluginConfig);
 }

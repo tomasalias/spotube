@@ -2,7 +2,6 @@ use crate::api::plugin::models::core::{
     PluginConfiguration, PluginUpdateAvailable, ScrobbleDetails,
 };
 use crate::internal::utils::{js_invoke_async_method_to_json, js_invoke_method_to_json};
-use anyhow::anyhow;
 use flutter_rust_bridge::frb;
 use rquickjs::{async_with, AsyncContext};
 

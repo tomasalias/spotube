@@ -5,11 +5,12 @@
 
 import '../../frb_generated.dart';
 import '../../lib.dart';
+import 'models/auth.dart';
 import 'models/core.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'senders.dart';
 
-// These functions are ignored because they are not marked as `pub`: `console_log`, `js_executor_thread`, `register_globals`, `set_timeout`
+// These functions are ignored because they are not marked as `pub`: `create_context`, `js_executor_thread`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<OpaqueSender>>
@@ -19,69 +20,56 @@ abstract class OpaqueSender implements RustOpaqueInterface {
   set sender(SenderPluginCommand sender);
 }
 
-class SpotubePlugin {
-  final PluginArtistSender artist;
-  final PluginAlbumSender album;
-  final PluginAudioSourceSender audioSource;
-  final PluginAuthSender auth;
-  final PluginBrowseSender browse;
-  final PluginCoreSender core;
-  final PluginPlaylistSender playlist;
-  final PluginSearchSender search;
-  final PluginTrackSender track;
-  final PluginUserSender user;
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>>
+abstract class SpotubePlugin implements RustOpaqueInterface {
+  Stream<AuthEventObject> authState();
 
-  const SpotubePlugin.raw({
-    required this.artist,
-    required this.album,
-    required this.audioSource,
-    required this.auth,
-    required this.browse,
-    required this.core,
-    required this.playlist,
-    required this.search,
-    required this.track,
-    required this.user,
-  });
+  PluginAlbumSender get album;
 
-  Future<void> dispose({required OpaqueSender tx}) => RustLib.instance.api
-      .crateApiPluginPluginSpotubePluginDispose(that: this, tx: tx);
+  PluginArtistSender get artist;
+
+  PluginAudioSourceSender get audioSource;
+
+  PluginAuthSender get auth;
+
+  PluginBrowseSender get browse;
+
+  PluginCoreSender get core;
+
+  PluginPlaylistSender get playlist;
+
+  PluginSearchSender get search;
+
+  PluginTrackSender get track;
+
+  PluginUserSender get user;
+
+  set album(PluginAlbumSender album);
+
+  set artist(PluginArtistSender artist);
+
+  set audioSource(PluginAudioSourceSender audioSource);
+
+  set auth(PluginAuthSender auth);
+
+  set browse(PluginBrowseSender browse);
+
+  set core(PluginCoreSender core);
+
+  set playlist(PluginPlaylistSender playlist);
+
+  set search(PluginSearchSender search);
+
+  set track(PluginTrackSender track);
+
+  set user(PluginUserSender user);
+
+  Future<void> close({required OpaqueSender tx});
+
+  Future<OpaqueSender> createContext(
+      {required String pluginScript,
+      required PluginConfiguration pluginConfig});
 
   factory SpotubePlugin() =>
       RustLib.instance.api.crateApiPluginPluginSpotubePluginNew();
-
-  static OpaqueSender newContext(
-          {required String pluginScript,
-          required PluginConfiguration pluginConfig}) =>
-      RustLib.instance.api.crateApiPluginPluginSpotubePluginNewContext(
-          pluginScript: pluginScript, pluginConfig: pluginConfig);
-
-  @override
-  int get hashCode =>
-      artist.hashCode ^
-      album.hashCode ^
-      audioSource.hashCode ^
-      auth.hashCode ^
-      browse.hashCode ^
-      core.hashCode ^
-      playlist.hashCode ^
-      search.hashCode ^
-      track.hashCode ^
-      user.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is SpotubePlugin &&
-          runtimeType == other.runtimeType &&
-          artist == other.artist &&
-          album == other.album &&
-          audioSource == other.audioSource &&
-          auth == other.auth &&
-          browse == other.browse &&
-          core == other.core &&
-          playlist == other.playlist &&
-          search == other.search &&
-          track == other.track &&
-          user == other.user;
 }

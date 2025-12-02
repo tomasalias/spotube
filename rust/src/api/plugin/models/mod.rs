@@ -9,3 +9,4 @@ pub mod track;
 pub mod user;
 pub mod pagination;
 pub mod core;
+pub mod auth;

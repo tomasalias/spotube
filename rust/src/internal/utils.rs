@@ -1,8 +1,8 @@
 use anyhow::anyhow;
 use rquickjs::function::Args;
-use rquickjs::{Array, CatchResultExt, Ctx, Filter, FromJs, Function, IntoJs, Object, Promise};
+use rquickjs::{Array, CatchResultExt, Ctx, Filter, Function, IntoJs, Object, Promise};
 use serde::de::DeserializeOwned;
-use serde::{Deserialize, Deserializer, Serialize};
+use serde::Serialize;
 use serde_json::{Map, Value};
 use std::collections::HashMap;
 
@@ -120,7 +120,7 @@ where
         .map_err(|e| anyhow!("{e}"))?;
     let js_fn: Function<'b> = core_val.get(name).map_err(|e| anyhow!("{e}"))?;
     let mut args_js = Args::new(ctx.clone(), args.len() as usize);
-    for (i, arg) in args.iter().enumerate() {
+    for arg in args.iter() {
         let arg_value = serde_json::to_value(arg).map_err(|e| anyhow!("{e}"))?;
         let arg_js = json_value_to_js(&arg_value, ctx.clone()).map_err(|e| anyhow!("{e}"))?;
         args_js.push_arg(arg_js).map_err(|e| anyhow!("{e}"))?;
@@ -161,7 +161,7 @@ where
         .map_err(|e| anyhow!("{e}"))?;
     let js_fn: Function<'b> = core_val.get(name).map_err(|e| anyhow!("{e}"))?;
     let mut args_js = Args::new(ctx.clone(), args.len() as usize);
-    for (i, arg) in args.iter().enumerate() {
+    for arg in args.iter().enumerate() {
         let arg_value = serde_json::to_value(arg).map_err(|e| anyhow!("{e}"))?;
         let arg_js = json_value_to_js(&arg_value, ctx.clone()).map_err(|e| anyhow!("{e}"))?;
         args_js.push_arg(arg_js).map_err(|e| anyhow!("{e}"))?;

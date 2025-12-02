@@ -1,5 +1,6 @@
 mod api;
 mod internal;
+mod frb_generated;
 
 use rquickjs::function::{Async, Func};
 use rquickjs::{async_with, AsyncContext, AsyncRuntime, Function, Object, Promise};
@@ -67,9 +68,7 @@ function sleep(ms) {
 class Core {
     async checkUpdate() {
         console.log('Core checkUpdate');
-        const response = await fetch('https://api.github.com/repos/KRTirtho/spotube/releases/latest');
-        const data = await response.json();
-        console.log(data);
+        await sleep(1000);
         console.log('No update available');
     }
     support() {
@@ -77,9 +76,12 @@ class Core {
     }
 }
 
+class Auth {}
+
 class TestingPlugin {
     constructor() {
         this.core = new Core();
+        this.auth = new Auth();
     }
 }
 ";
@@ -98,7 +100,7 @@ async fn plugin() -> anyhow::Result<()> {
         repository: None,
         version: "0.1.0".to_string(),
     };
-    let sender = SpotubePlugin::new_context(PLUGIN_JS.to_string(), config.clone())?;
+    let sender = plugin.create_context(PLUGIN_JS.to_string(), config.clone())?;
     let (r1, r2) = tokio::join!(
         plugin.core.check_update(sender.clone(), config.clone()),
         plugin.core.check_update(sender.clone(), config.clone())

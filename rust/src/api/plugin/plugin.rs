@@ -3,20 +3,25 @@ use crate::api::plugin::executors::{
     execute_albums, execute_artists, execute_audio_source, execute_auth, execute_browse,
     execute_core, execute_playlist, execute_search, execute_track, execute_user,
 };
+use crate::api::plugin::models::auth::{AuthEventObject, AuthEventType};
 use crate::api::plugin::models::core::PluginConfiguration;
 use crate::api::plugin::senders::{
     PluginAlbumSender, PluginArtistSender, PluginAudioSourceSender, PluginAuthSender,
     PluginBrowseSender, PluginCoreSender, PluginPlaylistSender, PluginSearchSender,
     PluginTrackSender, PluginUserSender,
 };
+use crate::frb_generated::StreamSink;
 use anyhow::anyhow;
-use flutter_rust_bridge::frb;
-use llrt_modules::{abort, buffer, console, crypto, events, exceptions, fetch, navigator, timers, url, util};
+use flutter_rust_bridge::{frb, Rust2DartSendError};
 use llrt_modules::module_builder::ModuleBuilder;
-use rquickjs::{async_with, AsyncContext, AsyncRuntime, Error};
+use llrt_modules::{
+    abort, buffer, console, crypto, events, exceptions, fetch, navigator, timers, url, util,
+};
+use rquickjs::prelude::Func;
+use rquickjs::{async_with, AsyncContext, AsyncRuntime, Error, Object};
 use std::thread;
 use tokio::sync::mpsc;
-use tokio::sync::mpsc::Sender;
+use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::task;
 use tokio::task::LocalSet;
 
@@ -42,8 +47,7 @@ async fn create_context() -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
         .with_global(navigator::init)
         .with_global(url::init)
         .with_global(timers::init)
-        .with_global(util::init)
-    ;
+        .with_global(util::init);
 
     let (module_resolver, module_loader, global_attachment) = module_builder.build();
     runtime
@@ -65,7 +69,7 @@ async fn create_context() -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
 }
 #[frb(ignore)]
 async fn js_executor_thread(
-    rx: &mut mpsc::Receiver<PluginCommand>,
+    rx: &mut Receiver<PluginCommand>,
     ctx: &AsyncContext,
 ) -> anyhow::Result<()> {
     while let Some(command) = rx.recv().await {
@@ -110,11 +114,15 @@ pub struct SpotubePlugin {
     pub search: PluginSearchSender,
     pub track: PluginTrackSender,
     pub user: PluginUserSender,
+    event_tx: Sender<AuthEventObject>,
+    event_rx: Receiver<AuthEventObject>,
 }
 
 impl SpotubePlugin {
     #[frb(sync)]
     pub fn new() -> Self {
+        let (event_tx, event_rx) = mpsc::channel(32);
+
         Self {
             artist: PluginArtistSender::new(),
             album: PluginAlbumSender::new(),
@@ -126,16 +134,28 @@ impl SpotubePlugin {
             search: PluginSearchSender::new(),
             track: PluginTrackSender::new(),
             user: PluginUserSender::new(),
+            event_tx,
+            event_rx,
         }
     }
 
-    #[frb(sync)]
-    pub fn new_context(
+    pub async fn auth_state(&mut self, sink: StreamSink<AuthEventObject>) -> anyhow::Result<()> {
+        while let Some(event) = self.event_rx.recv().await {
+            sink.add(event)
+                .map_err(|e: Rust2DartSendError| anyhow::anyhow!(e))?;
+        }
+
+        Ok(())
+    }
+
+    // #[frb(sync)]
+    pub fn create_context(
+        &self,
         plugin_script: String,
         plugin_config: PluginConfiguration,
     ) -> anyhow::Result<OpaqueSender> {
         let (command_tx, mut command_rx) = mpsc::channel(32);
-
+        let sender = self.event_tx.clone();
         let _thread_handle = thread::spawn(move || {
             let rt = tokio::runtime::Builder::new_current_thread()
                 .enable_all()
@@ -143,7 +163,7 @@ impl SpotubePlugin {
                 .unwrap();
             let local = LocalSet::new();
             if let Err(e) = local.block_on(&rt, async {
-                let (ctx, runtime) = create_context().await?;
+                let (ctx, _) = create_context().await?;
 
                 let injection = format!(
                     "globalThis.pluginInstance = new {}();",
@@ -152,6 +172,39 @@ impl SpotubePlugin {
                 let script = format!("{}\n{}", plugin_script, injection);
 
                 ctx.with(|cx| cx.eval::<(), _>(script.as_str())).await?;
+
+                async_with!(ctx => |ctx|{
+                    let globals = ctx.globals();
+                    let callback = Func::new(move |event: Object| -> rquickjs::Result<()>{
+                        let sender_clone = sender.clone();
+                        let event_type_js: rquickjs::String = event.get("eventType")?;
+                        let event_type = serde_json::from_value::<AuthEventType>(serde_json::Value::String(event_type_js.to_string()?));
+                        if let Ok(event_type) =  event_type {
+                            tokio::spawn(async move{
+                                if let Err(e) = sender_clone.send(AuthEventObject{event_type}).await {
+                                    eprintln!("Error sending auth event: {:?}", e);
+                                }
+                            });
+                            Ok(())
+                        } else {
+                            Err(Error::FromJs{
+                                from: "event.eventType",
+                                to: "AuthEventType",
+                                message: Some("Failed to deserialize eventType".to_string())
+                            })
+                        }
+                    });
+
+                    if let Err(e) = globals.get::<_, Object>("pluginInstance")?.get::<_, Object>("auth")?.set(
+                        "onAuthEvent", callback
+                    ) {
+                        eprintln!("Error setting auth event handler: {:?}", e);
+                    }
+
+                    Ok::<(), Error>(())
+                })
+                    .await
+                    .map_err(|e| anyhow!("[onAuthEvent] {e}"))?;
 
                 if let Err(e) = js_executor_thread(&mut command_rx, &ctx).await {
                     eprintln!("JS executor error: {}", e);
@@ -165,7 +218,7 @@ impl SpotubePlugin {
         Ok(OpaqueSender { sender: command_tx })
     }
 
-    pub async fn dispose(&self, tx: OpaqueSender) -> anyhow::Result<()> {
+    pub async fn close(&self, tx: OpaqueSender) -> anyhow::Result<()> {
         tx.sender.send(PluginCommand::Shutdown).await?;
         Ok(())
     }

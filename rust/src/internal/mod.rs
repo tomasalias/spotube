@@ -9,5 +9,5 @@ pub mod search;
 pub mod track;
 pub mod user;
 pub mod auth;
-mod utils;
+pub(crate) mod utils;
 // Export Context

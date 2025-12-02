@@ -133,7 +133,7 @@ Future<void> main(List<String> rawArgs) async {
       repository: null,
       version: "0.1.0",
     );
-    final sender = SpotubePlugin.newContext(
+    final sender = plugin.createContext(
       pluginScript: pluginJS,
       pluginConfig: config,
     );

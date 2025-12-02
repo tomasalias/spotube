@@ -7,6 +7,7 @@ import 'api/plugin/commands.dart';
 import 'api/plugin/models/album.dart';
 import 'api/plugin/models/artist.dart';
 import 'api/plugin/models/audio_source.dart';
+import 'api/plugin/models/auth.dart';
 import 'api/plugin/models/browse.dart';
 import 'api/plugin/models/core.dart';
 import 'api/plugin/models/image.dart';
@@ -44,6 +45,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       get rust_arc_decrement_strong_count_SenderPluginCommandPtr => wire
           ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommandPtr;
 
+  CrossPlatformFinalizerArg
+      get rust_arc_decrement_strong_count_SpotubePluginPtr => wire
+          ._rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePluginPtr;
+
   @protected
   AnyhowException dco_decode_AnyhowException(dynamic raw);
 
@@ -63,13 +68,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  SpotubePlugin
+      dco_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          dynamic raw);
+
+  @protected
   OpaqueSender
       dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           dynamic raw);
 
   @protected
+  SpotubePlugin
+      dco_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          dynamic raw);
+
+  @protected
   OpaqueSender
       dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          dynamic raw);
+
+  @protected
+  SpotubePlugin
+      dco_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
           dynamic raw);
 
   @protected
@@ -88,7 +108,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           dynamic raw);
 
   @protected
+  SpotubePlugin
+      dco_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          dynamic raw);
+
+  @protected
+  RustStreamSink<AuthEventObject> dco_decode_StreamSink_auth_event_object_Sse(
+      dynamic raw);
+
+  @protected
   String dco_decode_String(dynamic raw);
+
+  @protected
+  AuthEventObject dco_decode_auth_event_object(dynamic raw);
+
+  @protected
+  AuthEventType dco_decode_auth_event_type(dynamic raw);
 
   @protected
   bool dco_decode_bool(dynamic raw);
@@ -179,9 +214,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   SpotubeFullPlaylistObject dco_decode_box_autoadd_spotube_full_playlist_object(
       dynamic raw);
-
-  @protected
-  SpotubePlugin dco_decode_box_autoadd_spotube_plugin(dynamic raw);
 
   @protected
   SpotubeSimpleAlbumObject dco_decode_box_autoadd_spotube_simple_album_object(
@@ -415,9 +447,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dco_decode_spotube_pagination_response_object_item(dynamic raw);
 
   @protected
-  SpotubePlugin dco_decode_spotube_plugin(dynamic raw);
-
-  @protected
   SpotubeSearchResponseObject dco_decode_spotube_search_response_object(
       dynamic raw);
 
@@ -472,13 +501,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  SpotubePlugin
+      sse_decode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SseDeserializer deserializer);
+
+  @protected
   OpaqueSender
       sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           SseDeserializer deserializer);
 
   @protected
+  SpotubePlugin
+      sse_decode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SseDeserializer deserializer);
+
+  @protected
   OpaqueSender
       sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+          SseDeserializer deserializer);
+
+  @protected
+  SpotubePlugin
+      sse_decode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
           SseDeserializer deserializer);
 
   @protected
@@ -497,7 +541,22 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  SpotubePlugin
+      sse_decode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SseDeserializer deserializer);
+
+  @protected
+  RustStreamSink<AuthEventObject> sse_decode_StreamSink_auth_event_object_Sse(
+      SseDeserializer deserializer);
+
+  @protected
   String sse_decode_String(SseDeserializer deserializer);
+
+  @protected
+  AuthEventObject sse_decode_auth_event_object(SseDeserializer deserializer);
+
+  @protected
+  AuthEventType sse_decode_auth_event_type(SseDeserializer deserializer);
 
   @protected
   bool sse_decode_bool(SseDeserializer deserializer);
@@ -601,10 +660,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   SpotubeFullPlaylistObject sse_decode_box_autoadd_spotube_full_playlist_object(
-      SseDeserializer deserializer);
-
-  @protected
-  SpotubePlugin sse_decode_box_autoadd_spotube_plugin(
       SseDeserializer deserializer);
 
   @protected
@@ -871,9 +926,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  SpotubePlugin sse_decode_spotube_plugin(SseDeserializer deserializer);
-
-  @protected
   SpotubeSearchResponseObject sse_decode_spotube_search_response_object(
       SseDeserializer deserializer);
 
@@ -933,13 +985,28 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void
+      sse_encode_Auto_Owned_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SpotubePlugin self, SseSerializer serializer);
+
+  @protected
+  void
       sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           OpaqueSender self, SseSerializer serializer);
 
   @protected
   void
+      sse_encode_Auto_RefMut_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SpotubePlugin self, SseSerializer serializer);
+
+  @protected
+  void
       sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
           OpaqueSender self, SseSerializer serializer);
+
+  @protected
+  void
+      sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SpotubePlugin self, SseSerializer serializer);
 
   @protected
   void
@@ -957,7 +1024,23 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SenderPluginCommand self, SseSerializer serializer);
 
   @protected
+  void
+      sse_encode_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+          SpotubePlugin self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_StreamSink_auth_event_object_Sse(
+      RustStreamSink<AuthEventObject> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_String(String self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_auth_event_object(
+      AuthEventObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_auth_event_type(AuthEventType self, SseSerializer serializer);
 
   @protected
   void sse_encode_bool(bool self, SseSerializer serializer);
@@ -1058,10 +1141,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_box_autoadd_spotube_full_playlist_object(
       SpotubeFullPlaylistObject self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_box_autoadd_spotube_plugin(
-      SpotubePlugin self, SseSerializer serializer);
 
   @protected
   void sse_encode_box_autoadd_spotube_simple_album_object(
@@ -1324,9 +1403,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SpotubePaginationResponseObjectItem self, SseSerializer serializer);
 
   @protected
-  void sse_encode_spotube_plugin(SpotubePlugin self, SseSerializer serializer);
-
-  @protected
   void sse_encode_spotube_search_response_object(
       SpotubeSearchResponseObject self, SseSerializer serializer);
 
@@ -1474,5 +1550,37 @@ class RustLibWire implements BaseWire {
           'frbgen_spotube_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand');
   late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommand =
       _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSenderPluginCommandPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePluginPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_spotube_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin');
+  late final _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin =
+      _rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePluginPtr
+          .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
+
+  void
+      rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+    ffi.Pointer<ffi.Void> ptr,
+  ) {
+    return _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+      ptr,
+    );
+  }
+
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePluginPtr =
+      _lookup<ffi.NativeFunction<ffi.Void Function(ffi.Pointer<ffi.Void>)>>(
+          'frbgen_spotube_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin');
+  late final _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin =
+      _rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePluginPtr
           .asFunction<void Function(ffi.Pointer<ffi.Void>)>();
 }

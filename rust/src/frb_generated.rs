@@ -42,7 +42,7 @@ flutter_rust_bridge::frb_generated_boilerplate!(
     default_rust_auto_opaque = RustAutoOpaqueMoi,
 );
 pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_VERSION: &str = "2.11.1";
-pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = -836755871;
+pub(crate) const FLUTTER_RUST_BRIDGE_CODEGEN_CONTENT_HASH: i32 = 1716120288;
 
 // Section: executor
 
@@ -142,6 +142,1201 @@ fn wire__crate__api__plugin__plugin__OpaqueSender_auto_accessor_set_sender_impl(
                         api_that_guard.sender = api_sender;
                     };
                 })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auth_state_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auth_state",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_sink = <StreamSink<
+                crate::api::plugin::models::auth::AuthEventObject,
+                flutter_rust_bridge::for_generated::SseCodec,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, true,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref_mut().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let mut api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::plugin::plugin::SpotubePlugin::auth_state(
+                            &mut *api_that_guard,
+                            api_sink,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_album_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_album",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.album.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_artist_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_artist",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.artist.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_audio_source_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_audio_source",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.audio_source.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_auth_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_auth",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.auth.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_browse_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_browse",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.browse.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_core_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_core",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.core.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_playlist_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_playlist",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.playlist.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_search_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_search",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.search.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_track_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_track",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.track.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_user_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_get_user",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, false,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                        _ => unreachable!(),
+                    }
+                }
+                let api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok(api_that_guard.user.clone())?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_album_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_album",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_album =
+                <crate::api::plugin::senders::PluginAlbumSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.album = api_album;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_artist_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_artist",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_artist =
+                <crate::api::plugin::senders::PluginArtistSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.artist = api_artist;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_audio_source_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_audio_source",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_audio_source =
+                <crate::api::plugin::senders::PluginAudioSourceSender>::sse_decode(
+                    &mut deserializer,
+                );
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.audio_source = api_audio_source;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_auth_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_auth",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_auth =
+                <crate::api::plugin::senders::PluginAuthSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.auth = api_auth;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_browse_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_browse",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_browse =
+                <crate::api::plugin::senders::PluginBrowseSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.browse = api_browse;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_core_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_core",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_core =
+                <crate::api::plugin::senders::PluginCoreSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.core = api_core;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_playlist_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_playlist",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_playlist =
+                <crate::api::plugin::senders::PluginPlaylistSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.playlist = api_playlist;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_search_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_search",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_search =
+                <crate::api::plugin::senders::PluginSearchSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.search = api_search;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_track_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_track",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_track =
+                <crate::api::plugin::senders::PluginTrackSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.track = api_track;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_user_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_auto_accessor_set_user",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_user =
+                <crate::api::plugin::senders::PluginUserSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let mut api_that_guard = None;
+                let decode_indices_ =
+                    flutter_rust_bridge::for_generated::lockable_compute_decode_order(vec![
+                        flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                            &api_that, 0, true,
+                        ),
+                    ]);
+                for i in decode_indices_ {
+                    match i {
+                        0 => api_that_guard = Some(api_that.lockable_decode_sync_ref_mut()),
+                        _ => unreachable!(),
+                    }
+                }
+                let mut api_that_guard = api_that_guard.unwrap();
+                let output_ok = Result::<_, ()>::Ok({
+                    {
+                        api_that_guard.user = api_user;
+                    };
+                })?;
+                Ok(output_ok)
+            })())
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_close_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_close",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_tx = <OpaqueSender>::sse_decode(&mut deserializer);
+            deserializer.end();
+            move |context| async move {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || async move {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => {
+                                    api_that_guard =
+                                        Some(api_that.lockable_decode_async_ref().await)
+                                }
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::plugin::plugin::SpotubePlugin::close(
+                            &*api_that_guard,
+                            api_tx,
+                        )
+                        .await?;
+                        Ok(output_ok)
+                    })()
+                    .await,
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_create_context_impl(
+    port_: flutter_rust_bridge::for_generated::MessagePort,
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_normal::<flutter_rust_bridge::for_generated::SseCodec, _, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_create_context",
+            port: Some(port_),
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            let api_that = <RustOpaqueMoi<
+                flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+            >>::sse_decode(&mut deserializer);
+            let api_plugin_script = <String>::sse_decode(&mut deserializer);
+            let api_plugin_config =
+                <crate::api::plugin::models::core::PluginConfiguration>::sse_decode(
+                    &mut deserializer,
+                );
+            deserializer.end();
+            move |context| {
+                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
+                    (move || {
+                        let mut api_that_guard = None;
+                        let decode_indices_ =
+                            flutter_rust_bridge::for_generated::lockable_compute_decode_order(
+                                vec![flutter_rust_bridge::for_generated::LockableOrderInfo::new(
+                                    &api_that, 0, false,
+                                )],
+                            );
+                        for i in decode_indices_ {
+                            match i {
+                                0 => api_that_guard = Some(api_that.lockable_decode_sync_ref()),
+                                _ => unreachable!(),
+                            }
+                        }
+                        let api_that_guard = api_that_guard.unwrap();
+                        let output_ok = crate::api::plugin::plugin::SpotubePlugin::create_context(
+                            &*api_that_guard,
+                            api_plugin_script,
+                            api_plugin_config,
+                        )?;
+                        Ok(output_ok)
+                    })(),
+                )
+            }
+        },
+    )
+}
+fn wire__crate__api__plugin__plugin__SpotubePlugin_new_impl(
+    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
+    rust_vec_len_: i32,
+    data_len_: i32,
+) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
+    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
+        flutter_rust_bridge::for_generated::TaskInfo {
+            debug_name: "SpotubePlugin_new",
+            port: None,
+            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
+        },
+        move || {
+            let message = unsafe {
+                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
+                    ptr_,
+                    rust_vec_len_,
+                    data_len_,
+                )
+            };
+            let mut deserializer =
+                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
+            deserializer.end();
+            transform_result_sse::<_, ()>((move || {
+                let output_ok =
+                    Result::<_, ()>::Ok(crate::api::plugin::plugin::SpotubePlugin::new())?;
                 Ok(output_ok)
             })())
         },
@@ -2298,115 +3493,6 @@ fn wire__crate__api__plugin__models__audio_source__spotube_audio_source_containe
                      let output_ok = Result::<_,()>::Ok(crate::api::plugin::models::audio_source::SpotubeAudioSourceContainerPreset::file_extension(&api_that))?;   Ok(output_ok)
                 })()) })
 }
-fn wire__crate__api__plugin__plugin__spotube_plugin_dispose_impl(
-    port_: flutter_rust_bridge::for_generated::MessagePort,
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_async::<flutter_rust_bridge::for_generated::SseCodec, _, _, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "spotube_plugin_dispose",
-            port: Some(port_),
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Normal,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_that =
-                <crate::api::plugin::plugin::SpotubePlugin>::sse_decode(&mut deserializer);
-            let api_tx = <OpaqueSender>::sse_decode(&mut deserializer);
-            deserializer.end();
-            move |context| async move {
-                transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
-                    (move || async move {
-                        let output_ok =
-                            crate::api::plugin::plugin::SpotubePlugin::dispose(&api_that, api_tx)
-                                .await?;
-                        Ok(output_ok)
-                    })()
-                    .await,
-                )
-            }
-        },
-    )
-}
-fn wire__crate__api__plugin__plugin__spotube_plugin_new_impl(
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "spotube_plugin_new",
-            port: None,
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            deserializer.end();
-            transform_result_sse::<_, ()>((move || {
-                let output_ok =
-                    Result::<_, ()>::Ok(crate::api::plugin::plugin::SpotubePlugin::new())?;
-                Ok(output_ok)
-            })())
-        },
-    )
-}
-fn wire__crate__api__plugin__plugin__spotube_plugin_new_context_impl(
-    ptr_: flutter_rust_bridge::for_generated::PlatformGeneralizedUint8ListPtr,
-    rust_vec_len_: i32,
-    data_len_: i32,
-) -> flutter_rust_bridge::for_generated::WireSyncRust2DartSse {
-    FLUTTER_RUST_BRIDGE_HANDLER.wrap_sync::<flutter_rust_bridge::for_generated::SseCodec, _>(
-        flutter_rust_bridge::for_generated::TaskInfo {
-            debug_name: "spotube_plugin_new_context",
-            port: None,
-            mode: flutter_rust_bridge::for_generated::FfiCallMode::Sync,
-        },
-        move || {
-            let message = unsafe {
-                flutter_rust_bridge::for_generated::Dart2RustMessageSse::from_wire(
-                    ptr_,
-                    rust_vec_len_,
-                    data_len_,
-                )
-            };
-            let mut deserializer =
-                flutter_rust_bridge::for_generated::SseDeserializer::new(message);
-            let api_plugin_script = <String>::sse_decode(&mut deserializer);
-            let api_plugin_config =
-                <crate::api::plugin::models::core::PluginConfiguration>::sse_decode(
-                    &mut deserializer,
-                );
-            deserializer.end();
-            transform_result_sse::<_, flutter_rust_bridge::for_generated::anyhow::Error>(
-                (move || {
-                    let output_ok = crate::api::plugin::plugin::SpotubePlugin::new_context(
-                        api_plugin_script,
-                        api_plugin_config,
-                    )?;
-                    Ok(output_ok)
-                })(),
-            )
-        },
-    )
-}
 
 // Section: related_funcs
 
@@ -2418,6 +3504,9 @@ flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
 );
 flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
     flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Sender<PluginCommand>>
+);
+flutter_rust_bridge::frb_generated_moi_arc_impl_value!(
+    flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>
 );
 
 // Section: dart2rust
@@ -2460,6 +3549,16 @@ impl SseDecode for Sender<PluginCommand> {
     }
 }
 
+impl SseDecode for SpotubePlugin {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <RustOpaqueMoi<
+            flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>,
+        >>::sse_decode(deserializer);
+        return flutter_rust_bridge::for_generated::rust_auto_opaque_decode_owned(inner);
+    }
+}
+
 impl SseDecode
     for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<OpaqueSender>>
 {
@@ -2492,11 +3591,58 @@ impl SseDecode
     }
 }
 
+impl SseDecode
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <usize>::sse_decode(deserializer);
+        return decode_rust_opaque_moi(inner);
+    }
+}
+
+impl SseDecode
+    for StreamSink<
+        crate::api::plugin::models::auth::AuthEventObject,
+        flutter_rust_bridge::for_generated::SseCodec,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <String>::sse_decode(deserializer);
+        return StreamSink::deserialize(inner);
+    }
+}
+
 impl SseDecode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
         let mut inner = <Vec<u8>>::sse_decode(deserializer);
         return String::from_utf8(inner).unwrap();
+    }
+}
+
+impl SseDecode for crate::api::plugin::models::auth::AuthEventObject {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut var_eventType =
+            <crate::api::plugin::models::auth::AuthEventType>::sse_decode(deserializer);
+        return crate::api::plugin::models::auth::AuthEventObject {
+            event_type: var_eventType,
+        };
+    }
+}
+
+impl SseDecode for crate::api::plugin::models::auth::AuthEventType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
+        let mut inner = <i32>::sse_decode(deserializer);
+        return match inner {
+            0 => crate::api::plugin::models::auth::AuthEventType::Login,
+            1 => crate::api::plugin::models::auth::AuthEventType::RefreshSession,
+            2 => crate::api::plugin::models::auth::AuthEventType::Logout,
+            _ => unreachable!("Invalid variant for AuthEventType: {}", inner),
+        };
     }
 }
 
@@ -3481,44 +4627,6 @@ impl SseDecode for crate::api::plugin::models::pagination::SpotubePaginationResp
     }
 }
 
-impl SseDecode for crate::api::plugin::plugin::SpotubePlugin {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_artist =
-            <crate::api::plugin::senders::PluginArtistSender>::sse_decode(deserializer);
-        let mut var_album =
-            <crate::api::plugin::senders::PluginAlbumSender>::sse_decode(deserializer);
-        let mut var_audioSource =
-            <crate::api::plugin::senders::PluginAudioSourceSender>::sse_decode(deserializer);
-        let mut var_auth =
-            <crate::api::plugin::senders::PluginAuthSender>::sse_decode(deserializer);
-        let mut var_browse =
-            <crate::api::plugin::senders::PluginBrowseSender>::sse_decode(deserializer);
-        let mut var_core =
-            <crate::api::plugin::senders::PluginCoreSender>::sse_decode(deserializer);
-        let mut var_playlist =
-            <crate::api::plugin::senders::PluginPlaylistSender>::sse_decode(deserializer);
-        let mut var_search =
-            <crate::api::plugin::senders::PluginSearchSender>::sse_decode(deserializer);
-        let mut var_track =
-            <crate::api::plugin::senders::PluginTrackSender>::sse_decode(deserializer);
-        let mut var_user =
-            <crate::api::plugin::senders::PluginUserSender>::sse_decode(deserializer);
-        return crate::api::plugin::plugin::SpotubePlugin {
-            artist: var_artist,
-            album: var_album,
-            audio_source: var_audioSource,
-            auth: var_auth,
-            browse: var_browse,
-            core: var_core,
-            playlist: var_playlist,
-            search: var_search,
-            track: var_track,
-            user: var_user,
-        };
-    }
-}
-
 impl SseDecode for crate::api::plugin::models::search::SpotubeSearchResponseObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
@@ -3711,55 +4819,57 @@ fn pde_ffi_dispatcher_primary_impl(
 ) {
     // Codec=Pde (Serialization + dispatch), see doc to use other codecs
     match func_id {
-                        3 => wire__crate__api__init_app_impl(port, ptr, rust_vec_len, data_len),
-4 => wire__crate__api__plugin__senders__plugin_album_sender_get_album_impl(port, ptr, rust_vec_len, data_len),
-5 => wire__crate__api__plugin__senders__plugin_album_sender_releases_impl(port, ptr, rust_vec_len, data_len),
-6 => wire__crate__api__plugin__senders__plugin_album_sender_save_impl(port, ptr, rust_vec_len, data_len),
-7 => wire__crate__api__plugin__senders__plugin_album_sender_tracks_impl(port, ptr, rust_vec_len, data_len),
-8 => wire__crate__api__plugin__senders__plugin_album_sender_unsave_impl(port, ptr, rust_vec_len, data_len),
-9 => wire__crate__api__plugin__senders__plugin_artist_sender_albums_impl(port, ptr, rust_vec_len, data_len),
-10 => wire__crate__api__plugin__senders__plugin_artist_sender_get_artist_impl(port, ptr, rust_vec_len, data_len),
-11 => wire__crate__api__plugin__senders__plugin_artist_sender_related_impl(port, ptr, rust_vec_len, data_len),
-12 => wire__crate__api__plugin__senders__plugin_artist_sender_save_impl(port, ptr, rust_vec_len, data_len),
-13 => wire__crate__api__plugin__senders__plugin_artist_sender_top_tracks_impl(port, ptr, rust_vec_len, data_len),
-14 => wire__crate__api__plugin__senders__plugin_artist_sender_unsave_impl(port, ptr, rust_vec_len, data_len),
-15 => wire__crate__api__plugin__senders__plugin_audio_source_sender_matches_impl(port, ptr, rust_vec_len, data_len),
-16 => wire__crate__api__plugin__senders__plugin_audio_source_sender_streams_impl(port, ptr, rust_vec_len, data_len),
-17 => wire__crate__api__plugin__senders__plugin_auth_sender_authenticate_impl(port, ptr, rust_vec_len, data_len),
-18 => wire__crate__api__plugin__senders__plugin_auth_sender_is_authenticated_impl(port, ptr, rust_vec_len, data_len),
-19 => wire__crate__api__plugin__senders__plugin_auth_sender_logout_impl(port, ptr, rust_vec_len, data_len),
-20 => wire__crate__api__plugin__senders__plugin_browse_sender_section_items_impl(port, ptr, rust_vec_len, data_len),
-21 => wire__crate__api__plugin__senders__plugin_browse_sender_sections_impl(port, ptr, rust_vec_len, data_len),
-22 => wire__crate__api__plugin__models__core__plugin_configuration_slug_impl(port, ptr, rust_vec_len, data_len),
-23 => wire__crate__api__plugin__senders__plugin_core_sender_check_update_impl(port, ptr, rust_vec_len, data_len),
-24 => wire__crate__api__plugin__senders__plugin_core_sender_scrobble_impl(port, ptr, rust_vec_len, data_len),
-25 => wire__crate__api__plugin__senders__plugin_core_sender_support_impl(port, ptr, rust_vec_len, data_len),
-26 => wire__crate__api__plugin__senders__plugin_playlist_sender_add_tracks_impl(port, ptr, rust_vec_len, data_len),
-27 => wire__crate__api__plugin__senders__plugin_playlist_sender_create_playlist_impl(port, ptr, rust_vec_len, data_len),
-28 => wire__crate__api__plugin__senders__plugin_playlist_sender_delete_playlist_impl(port, ptr, rust_vec_len, data_len),
-29 => wire__crate__api__plugin__senders__plugin_playlist_sender_get_playlist_impl(port, ptr, rust_vec_len, data_len),
-30 => wire__crate__api__plugin__senders__plugin_playlist_sender_remove_tracks_impl(port, ptr, rust_vec_len, data_len),
-31 => wire__crate__api__plugin__senders__plugin_playlist_sender_save_impl(port, ptr, rust_vec_len, data_len),
-32 => wire__crate__api__plugin__senders__plugin_playlist_sender_tracks_impl(port, ptr, rust_vec_len, data_len),
-33 => wire__crate__api__plugin__senders__plugin_playlist_sender_unsave_impl(port, ptr, rust_vec_len, data_len),
-34 => wire__crate__api__plugin__senders__plugin_playlist_sender_update_playlist_impl(port, ptr, rust_vec_len, data_len),
-35 => wire__crate__api__plugin__senders__plugin_search_sender_albums_impl(port, ptr, rust_vec_len, data_len),
-36 => wire__crate__api__plugin__senders__plugin_search_sender_all_impl(port, ptr, rust_vec_len, data_len),
-37 => wire__crate__api__plugin__senders__plugin_search_sender_artists_impl(port, ptr, rust_vec_len, data_len),
-38 => wire__crate__api__plugin__senders__plugin_search_sender_chips_impl(port, ptr, rust_vec_len, data_len),
-39 => wire__crate__api__plugin__senders__plugin_search_sender_playlists_impl(port, ptr, rust_vec_len, data_len),
-40 => wire__crate__api__plugin__senders__plugin_search_sender_tracks_impl(port, ptr, rust_vec_len, data_len),
-41 => wire__crate__api__plugin__senders__plugin_track_sender_get_track_impl(port, ptr, rust_vec_len, data_len),
-42 => wire__crate__api__plugin__senders__plugin_track_sender_radio_impl(port, ptr, rust_vec_len, data_len),
-43 => wire__crate__api__plugin__senders__plugin_track_sender_save_impl(port, ptr, rust_vec_len, data_len),
-44 => wire__crate__api__plugin__senders__plugin_track_sender_unsave_impl(port, ptr, rust_vec_len, data_len),
-45 => wire__crate__api__plugin__senders__plugin_user_sender_me_impl(port, ptr, rust_vec_len, data_len),
-46 => wire__crate__api__plugin__senders__plugin_user_sender_saved_albums_impl(port, ptr, rust_vec_len, data_len),
-47 => wire__crate__api__plugin__senders__plugin_user_sender_saved_artists_impl(port, ptr, rust_vec_len, data_len),
-48 => wire__crate__api__plugin__senders__plugin_user_sender_saved_playlists_impl(port, ptr, rust_vec_len, data_len),
-49 => wire__crate__api__plugin__senders__plugin_user_sender_saved_tracks_impl(port, ptr, rust_vec_len, data_len),
-51 => wire__crate__api__plugin__models__audio_source__spotube_audio_lossy_container_quality_to_string_fmt_impl(port, ptr, rust_vec_len, data_len),
-53 => wire__crate__api__plugin__plugin__spotube_plugin_dispose_impl(port, ptr, rust_vec_len, data_len),
+                        3 => wire__crate__api__plugin__plugin__SpotubePlugin_auth_state_impl(port, ptr, rust_vec_len, data_len),
+24 => wire__crate__api__plugin__plugin__SpotubePlugin_close_impl(port, ptr, rust_vec_len, data_len),
+25 => wire__crate__api__plugin__plugin__SpotubePlugin_create_context_impl(port, ptr, rust_vec_len, data_len),
+27 => wire__crate__api__init_app_impl(port, ptr, rust_vec_len, data_len),
+28 => wire__crate__api__plugin__senders__plugin_album_sender_get_album_impl(port, ptr, rust_vec_len, data_len),
+29 => wire__crate__api__plugin__senders__plugin_album_sender_releases_impl(port, ptr, rust_vec_len, data_len),
+30 => wire__crate__api__plugin__senders__plugin_album_sender_save_impl(port, ptr, rust_vec_len, data_len),
+31 => wire__crate__api__plugin__senders__plugin_album_sender_tracks_impl(port, ptr, rust_vec_len, data_len),
+32 => wire__crate__api__plugin__senders__plugin_album_sender_unsave_impl(port, ptr, rust_vec_len, data_len),
+33 => wire__crate__api__plugin__senders__plugin_artist_sender_albums_impl(port, ptr, rust_vec_len, data_len),
+34 => wire__crate__api__plugin__senders__plugin_artist_sender_get_artist_impl(port, ptr, rust_vec_len, data_len),
+35 => wire__crate__api__plugin__senders__plugin_artist_sender_related_impl(port, ptr, rust_vec_len, data_len),
+36 => wire__crate__api__plugin__senders__plugin_artist_sender_save_impl(port, ptr, rust_vec_len, data_len),
+37 => wire__crate__api__plugin__senders__plugin_artist_sender_top_tracks_impl(port, ptr, rust_vec_len, data_len),
+38 => wire__crate__api__plugin__senders__plugin_artist_sender_unsave_impl(port, ptr, rust_vec_len, data_len),
+39 => wire__crate__api__plugin__senders__plugin_audio_source_sender_matches_impl(port, ptr, rust_vec_len, data_len),
+40 => wire__crate__api__plugin__senders__plugin_audio_source_sender_streams_impl(port, ptr, rust_vec_len, data_len),
+41 => wire__crate__api__plugin__senders__plugin_auth_sender_authenticate_impl(port, ptr, rust_vec_len, data_len),
+42 => wire__crate__api__plugin__senders__plugin_auth_sender_is_authenticated_impl(port, ptr, rust_vec_len, data_len),
+43 => wire__crate__api__plugin__senders__plugin_auth_sender_logout_impl(port, ptr, rust_vec_len, data_len),
+44 => wire__crate__api__plugin__senders__plugin_browse_sender_section_items_impl(port, ptr, rust_vec_len, data_len),
+45 => wire__crate__api__plugin__senders__plugin_browse_sender_sections_impl(port, ptr, rust_vec_len, data_len),
+46 => wire__crate__api__plugin__models__core__plugin_configuration_slug_impl(port, ptr, rust_vec_len, data_len),
+47 => wire__crate__api__plugin__senders__plugin_core_sender_check_update_impl(port, ptr, rust_vec_len, data_len),
+48 => wire__crate__api__plugin__senders__plugin_core_sender_scrobble_impl(port, ptr, rust_vec_len, data_len),
+49 => wire__crate__api__plugin__senders__plugin_core_sender_support_impl(port, ptr, rust_vec_len, data_len),
+50 => wire__crate__api__plugin__senders__plugin_playlist_sender_add_tracks_impl(port, ptr, rust_vec_len, data_len),
+51 => wire__crate__api__plugin__senders__plugin_playlist_sender_create_playlist_impl(port, ptr, rust_vec_len, data_len),
+52 => wire__crate__api__plugin__senders__plugin_playlist_sender_delete_playlist_impl(port, ptr, rust_vec_len, data_len),
+53 => wire__crate__api__plugin__senders__plugin_playlist_sender_get_playlist_impl(port, ptr, rust_vec_len, data_len),
+54 => wire__crate__api__plugin__senders__plugin_playlist_sender_remove_tracks_impl(port, ptr, rust_vec_len, data_len),
+55 => wire__crate__api__plugin__senders__plugin_playlist_sender_save_impl(port, ptr, rust_vec_len, data_len),
+56 => wire__crate__api__plugin__senders__plugin_playlist_sender_tracks_impl(port, ptr, rust_vec_len, data_len),
+57 => wire__crate__api__plugin__senders__plugin_playlist_sender_unsave_impl(port, ptr, rust_vec_len, data_len),
+58 => wire__crate__api__plugin__senders__plugin_playlist_sender_update_playlist_impl(port, ptr, rust_vec_len, data_len),
+59 => wire__crate__api__plugin__senders__plugin_search_sender_albums_impl(port, ptr, rust_vec_len, data_len),
+60 => wire__crate__api__plugin__senders__plugin_search_sender_all_impl(port, ptr, rust_vec_len, data_len),
+61 => wire__crate__api__plugin__senders__plugin_search_sender_artists_impl(port, ptr, rust_vec_len, data_len),
+62 => wire__crate__api__plugin__senders__plugin_search_sender_chips_impl(port, ptr, rust_vec_len, data_len),
+63 => wire__crate__api__plugin__senders__plugin_search_sender_playlists_impl(port, ptr, rust_vec_len, data_len),
+64 => wire__crate__api__plugin__senders__plugin_search_sender_tracks_impl(port, ptr, rust_vec_len, data_len),
+65 => wire__crate__api__plugin__senders__plugin_track_sender_get_track_impl(port, ptr, rust_vec_len, data_len),
+66 => wire__crate__api__plugin__senders__plugin_track_sender_radio_impl(port, ptr, rust_vec_len, data_len),
+67 => wire__crate__api__plugin__senders__plugin_track_sender_save_impl(port, ptr, rust_vec_len, data_len),
+68 => wire__crate__api__plugin__senders__plugin_track_sender_unsave_impl(port, ptr, rust_vec_len, data_len),
+69 => wire__crate__api__plugin__senders__plugin_user_sender_me_impl(port, ptr, rust_vec_len, data_len),
+70 => wire__crate__api__plugin__senders__plugin_user_sender_saved_albums_impl(port, ptr, rust_vec_len, data_len),
+71 => wire__crate__api__plugin__senders__plugin_user_sender_saved_artists_impl(port, ptr, rust_vec_len, data_len),
+72 => wire__crate__api__plugin__senders__plugin_user_sender_saved_playlists_impl(port, ptr, rust_vec_len, data_len),
+73 => wire__crate__api__plugin__senders__plugin_user_sender_saved_tracks_impl(port, ptr, rust_vec_len, data_len),
+75 => wire__crate__api__plugin__models__audio_source__spotube_audio_lossy_container_quality_to_string_fmt_impl(port, ptr, rust_vec_len, data_len),
                         _ => unreachable!(),
                     }
 }
@@ -3774,10 +4884,29 @@ fn pde_ffi_dispatcher_sync_impl(
     match func_id {
                         1 => wire__crate__api__plugin__plugin__OpaqueSender_auto_accessor_get_sender_impl(ptr, rust_vec_len, data_len),
 2 => wire__crate__api__plugin__plugin__OpaqueSender_auto_accessor_set_sender_impl(ptr, rust_vec_len, data_len),
-50 => wire__crate__api__plugin__models__audio_source__spotube_audio_lossless_container_quality_to_string_fmt_impl(ptr, rust_vec_len, data_len),
-52 => wire__crate__api__plugin__models__audio_source__spotube_audio_source_container_preset_file_extension_impl(ptr, rust_vec_len, data_len),
-54 => wire__crate__api__plugin__plugin__spotube_plugin_new_impl(ptr, rust_vec_len, data_len),
-55 => wire__crate__api__plugin__plugin__spotube_plugin_new_context_impl(ptr, rust_vec_len, data_len),
+4 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_album_impl(ptr, rust_vec_len, data_len),
+5 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_artist_impl(ptr, rust_vec_len, data_len),
+6 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_audio_source_impl(ptr, rust_vec_len, data_len),
+7 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_auth_impl(ptr, rust_vec_len, data_len),
+8 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_browse_impl(ptr, rust_vec_len, data_len),
+9 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_core_impl(ptr, rust_vec_len, data_len),
+10 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_playlist_impl(ptr, rust_vec_len, data_len),
+11 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_search_impl(ptr, rust_vec_len, data_len),
+12 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_track_impl(ptr, rust_vec_len, data_len),
+13 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_get_user_impl(ptr, rust_vec_len, data_len),
+14 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_album_impl(ptr, rust_vec_len, data_len),
+15 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_artist_impl(ptr, rust_vec_len, data_len),
+16 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_audio_source_impl(ptr, rust_vec_len, data_len),
+17 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_auth_impl(ptr, rust_vec_len, data_len),
+18 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_browse_impl(ptr, rust_vec_len, data_len),
+19 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_core_impl(ptr, rust_vec_len, data_len),
+20 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_playlist_impl(ptr, rust_vec_len, data_len),
+21 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_search_impl(ptr, rust_vec_len, data_len),
+22 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_track_impl(ptr, rust_vec_len, data_len),
+23 => wire__crate__api__plugin__plugin__SpotubePlugin_auto_accessor_set_user_impl(ptr, rust_vec_len, data_len),
+26 => wire__crate__api__plugin__plugin__SpotubePlugin_new_impl(ptr, rust_vec_len, data_len),
+74 => wire__crate__api__plugin__models__audio_source__spotube_audio_lossless_container_quality_to_string_fmt_impl(ptr, rust_vec_len, data_len),
+76 => wire__crate__api__plugin__models__audio_source__spotube_audio_source_container_preset_file_extension_impl(ptr, rust_vec_len, data_len),
                         _ => unreachable!(),
                     }
 }
@@ -3834,6 +4963,60 @@ impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<Sender<PluginCommand>>>
     }
 }
 
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for FrbWrapper<SpotubePlugin> {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self.0)
+            .into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive for FrbWrapper<SpotubePlugin> {}
+
+impl flutter_rust_bridge::IntoIntoDart<FrbWrapper<SpotubePlugin>> for SpotubePlugin {
+    fn into_into_dart(self) -> FrbWrapper<SpotubePlugin> {
+        self.into()
+    }
+}
+
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::auth::AuthEventObject {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        [self.event_type.into_into_dart().into_dart()].into_dart()
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::plugin::models::auth::AuthEventObject
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::plugin::models::auth::AuthEventObject>
+    for crate::api::plugin::models::auth::AuthEventObject
+{
+    fn into_into_dart(self) -> crate::api::plugin::models::auth::AuthEventObject {
+        self
+    }
+}
+// Codec=Dco (DartCObject based), see doc to use other codecs
+impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::auth::AuthEventType {
+    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
+        match self {
+            Self::Login => 0.into_dart(),
+            Self::RefreshSession => 1.into_dart(),
+            Self::Logout => 2.into_dart(),
+            _ => unreachable!(),
+        }
+    }
+}
+impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
+    for crate::api::plugin::models::auth::AuthEventType
+{
+}
+impl flutter_rust_bridge::IntoIntoDart<crate::api::plugin::models::auth::AuthEventType>
+    for crate::api::plugin::models::auth::AuthEventType
+{
+    fn into_into_dart(self) -> crate::api::plugin::models::auth::AuthEventType {
+        self
+    }
+}
 // Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::core::PluginAbility {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
@@ -4610,35 +5793,6 @@ impl
     }
 }
 // Codec=Dco (DartCObject based), see doc to use other codecs
-impl flutter_rust_bridge::IntoDart for crate::api::plugin::plugin::SpotubePlugin {
-    fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
-        [
-            self.artist.into_into_dart().into_dart(),
-            self.album.into_into_dart().into_dart(),
-            self.audio_source.into_into_dart().into_dart(),
-            self.auth.into_into_dart().into_dart(),
-            self.browse.into_into_dart().into_dart(),
-            self.core.into_into_dart().into_dart(),
-            self.playlist.into_into_dart().into_dart(),
-            self.search.into_into_dart().into_dart(),
-            self.track.into_into_dart().into_dart(),
-            self.user.into_into_dart().into_dart(),
-        ]
-        .into_dart()
-    }
-}
-impl flutter_rust_bridge::for_generated::IntoDartExceptPrimitive
-    for crate::api::plugin::plugin::SpotubePlugin
-{
-}
-impl flutter_rust_bridge::IntoIntoDart<crate::api::plugin::plugin::SpotubePlugin>
-    for crate::api::plugin::plugin::SpotubePlugin
-{
-    fn into_into_dart(self) -> crate::api::plugin::plugin::SpotubePlugin {
-        self
-    }
-}
-// Codec=Dco (DartCObject based), see doc to use other codecs
 impl flutter_rust_bridge::IntoDart
     for crate::api::plugin::models::search::SpotubeSearchResponseObject
 {
@@ -4836,6 +5990,13 @@ impl SseEncode for Sender<PluginCommand> {
     }
 }
 
+impl SseEncode for SpotubePlugin {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>>>::sse_encode(flutter_rust_bridge::for_generated::rust_auto_opaque_encode::<_, MoiArc<_>>(self), serializer);
+    }
+}
+
 impl SseEncode
     for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<OpaqueSender>>
 {
@@ -4871,10 +6032,57 @@ impl SseEncode
     }
 }
 
+impl SseEncode
+    for RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>>
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        let (ptr, size) = self.sse_encode_raw();
+        <usize>::sse_encode(ptr, serializer);
+        <i32>::sse_encode(size, serializer);
+    }
+}
+
+impl SseEncode
+    for StreamSink<
+        crate::api::plugin::models::auth::AuthEventObject,
+        flutter_rust_bridge::for_generated::SseCodec,
+    >
+{
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        unimplemented!("")
+    }
+}
+
 impl SseEncode for String {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
         <Vec<u8>>::sse_encode(self.into_bytes(), serializer);
+    }
+}
+
+impl SseEncode for crate::api::plugin::models::auth::AuthEventObject {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <crate::api::plugin::models::auth::AuthEventType>::sse_encode(self.event_type, serializer);
+    }
+}
+
+impl SseEncode for crate::api::plugin::models::auth::AuthEventType {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
+        <i32>::sse_encode(
+            match self {
+                crate::api::plugin::models::auth::AuthEventType::Login => 0,
+                crate::api::plugin::models::auth::AuthEventType::RefreshSession => 1,
+                crate::api::plugin::models::auth::AuthEventType::Logout => 2,
+                _ => {
+                    unimplemented!("");
+                }
+            },
+            serializer,
+        );
     }
 }
 
@@ -5590,25 +6798,6 @@ crate::api::plugin::models::pagination::SpotubePaginationResponseObjectItem::Bro
     }
 }
 
-impl SseEncode for crate::api::plugin::plugin::SpotubePlugin {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <crate::api::plugin::senders::PluginArtistSender>::sse_encode(self.artist, serializer);
-        <crate::api::plugin::senders::PluginAlbumSender>::sse_encode(self.album, serializer);
-        <crate::api::plugin::senders::PluginAudioSourceSender>::sse_encode(
-            self.audio_source,
-            serializer,
-        );
-        <crate::api::plugin::senders::PluginAuthSender>::sse_encode(self.auth, serializer);
-        <crate::api::plugin::senders::PluginBrowseSender>::sse_encode(self.browse, serializer);
-        <crate::api::plugin::senders::PluginCoreSender>::sse_encode(self.core, serializer);
-        <crate::api::plugin::senders::PluginPlaylistSender>::sse_encode(self.playlist, serializer);
-        <crate::api::plugin::senders::PluginSearchSender>::sse_encode(self.search, serializer);
-        <crate::api::plugin::senders::PluginTrackSender>::sse_encode(self.track, serializer);
-        <crate::api::plugin::senders::PluginUserSender>::sse_encode(self.user, serializer);
-    }
-}
-
 impl SseEncode for crate::api::plugin::models::search::SpotubeSearchResponseObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
@@ -5818,6 +7007,20 @@ mod io {
         ptr: *const std::ffi::c_void,
     ) {
         MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Sender < PluginCommand >>>::decrement_strong_count(ptr as _);
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_spotube_rust_arc_increment_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>>::increment_strong_count(ptr as _);
+    }
+
+    #[unsafe(no_mangle)]
+    pub extern "C" fn frbgen_spotube_rust_arc_decrement_strong_count_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
+        ptr: *const std::ffi::c_void,
+    ) {
+        MoiArc::<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpotubePlugin>>::decrement_strong_count(ptr as _);
     }
 }
 #[cfg(not(target_family = "wasm"))]
