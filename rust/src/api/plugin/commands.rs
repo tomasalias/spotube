@@ -1,9 +1,7 @@
 use flutter_rust_bridge::frb;
 use crate::api::plugin::models::album::SpotubeFullAlbumObject;
 use crate::api::plugin::models::artist::SpotubeFullArtistObject;
-use crate::api::plugin::models::audio_source::{
-    SpotubeAudioSourceMatchObject, SpotubeAudioSourceStreamObject,
-};
+use crate::api::plugin::models::audio_source::{SpotubeAudioSourceContainerPreset, SpotubeAudioSourceMatchObject, SpotubeAudioSourceStreamObject};
 use crate::api::plugin::models::core::{
     PluginConfiguration, PluginUpdateAvailable, ScrobbleDetails,
 };
@@ -77,6 +75,9 @@ pub enum AlbumCommands {
 
 #[derive(Debug)]
 pub enum AudioSourceCommands {
+    SupportedPresets {
+        response_tx: oneshot::Sender<anyhow::Result<Vec<SpotubeAudioSourceContainerPreset>>>,
+    },
     Matches {
         track: SpotubeTrackObject,
         response_tx: oneshot::Sender<anyhow::Result<Vec<SpotubeAudioSourceMatchObject>>>,

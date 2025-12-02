@@ -13,8 +13,8 @@ use crate::internal::search::PluginSearchEndpoint;
 use crate::internal::track::PluginTrackEndpoint;
 use crate::internal::user::PluginUserEndpoint;
 use flutter_rust_bridge::frb;
-use std::fmt::Debug;
 use rquickjs::AsyncContext;
+use std::fmt::Debug;
 use tokio::sync::oneshot;
 
 fn send_response<T>(tx: oneshot::Sender<T>, response: T) -> anyhow::Result<()>
@@ -26,7 +26,10 @@ where
 }
 
 #[frb(ignore)]
-pub async fn execute_artists(command: ArtistCommands, context: &AsyncContext) -> anyhow::Result<()> {
+pub async fn execute_artists(
+    command: ArtistCommands,
+    context: &AsyncContext,
+) -> anyhow::Result<()> {
     let artist = PluginArtistEndpoint::new(context);
     match command {
         ArtistCommands::GetArtist { id, response_tx } => {
@@ -114,6 +117,10 @@ pub async fn execute_audio_source(
 ) -> anyhow::Result<()> {
     let audio_source = PluginAudioSourceEndpoint::new(context);
     match command {
+        AudioSourceCommands::SupportedPresets { response_tx } => {
+            let audio_source = audio_source.supported_presets().await;
+            send_response(response_tx, audio_source)
+        }
         AudioSourceCommands::Matches { track, response_tx } => {
             let audio_source = audio_source.matches(track).await;
             send_response(response_tx, audio_source)

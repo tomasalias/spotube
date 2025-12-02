@@ -1,8 +1,9 @@
 use crate::api::plugin::models::audio_source::{
-    SpotubeAudioSourceMatchObject, SpotubeAudioSourceStreamObject,
+    SpotubeAudioSourceContainerPreset, SpotubeAudioSourceMatchObject,
+    SpotubeAudioSourceStreamObject,
 };
 use crate::api::plugin::models::track::SpotubeTrackObject;
-use crate::internal::utils::js_invoke_async_method_to_json;
+use crate::internal::utils::{js_invoke_async_method_to_json, js_invoke_method_to_json};
 use flutter_rust_bridge::frb;
 use rquickjs::{async_with, AsyncContext};
 
@@ -12,6 +13,24 @@ impl<'a> PluginAudioSourceEndpoint<'a> {
     #[frb(ignore)]
     pub fn new(context: &'a AsyncContext) -> PluginAudioSourceEndpoint<'a> {
         PluginAudioSourceEndpoint(context)
+    }
+
+    pub async fn supported_presets(
+        &self,
+    ) -> anyhow::Result<Vec<SpotubeAudioSourceContainerPreset>> {
+        self.0
+            .with(|ctx| {
+                anyhow::Ok(
+                    js_invoke_method_to_json::<(), Vec<SpotubeAudioSourceContainerPreset>>(
+                        ctx.clone(),
+                        "audioSource",
+                        "supportedPresets",
+                        &[],
+                    )?
+                        .expect("[hey][smartypants] audioSource.supportedPresets should return a vector of SpotubeAudioSourceContainerPreset"),
+                )
+            })
+            .await
     }
 
     pub async fn matches(

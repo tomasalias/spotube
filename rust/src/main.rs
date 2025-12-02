@@ -66,7 +66,11 @@ function sleep(ms) {
 
 class Core {
     async checkUpdate() {
-        console.log(globalThis);
+        console.log('Core checkUpdate');
+        const response = await fetch('https://api.github.com/repos/KRTirtho/spotube/releases/latest');
+        const data = await response.json();
+        console.log(data);
+        console.log('No update available');
     }
     support() {
         return 'Metadata';
