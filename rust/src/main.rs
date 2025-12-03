@@ -102,8 +102,8 @@ async fn plugin() -> anyhow::Result<()> {
     };
     let sender = plugin.create_context(PLUGIN_JS.to_string(), config.clone())?;
     let (r1, r2) = tokio::join!(
-        plugin.core.check_update(sender.clone(), config.clone()),
-        plugin.core.check_update(sender.clone(), config.clone())
+        plugin.core.check_update(&sender, config.clone()),
+        plugin.core.check_update(&sender, config.clone())
     );
     r1?;
     r2?;

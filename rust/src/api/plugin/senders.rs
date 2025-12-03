@@ -1,4 +1,3 @@
-use std::backtrace::Backtrace;
 use crate::api::plugin::commands::{
     AlbumCommands, ArtistCommands, AudioSourceCommands, AuthCommands, BrowseCommands, CoreCommands,
     PlaylistCommands, PluginCommand, SearchCommands, TrackCommands, UserCommands,
@@ -19,6 +18,7 @@ use crate::api::plugin::models::user::SpotubeUserObject;
 use crate::api::plugin::plugin::OpaqueSender;
 use anyhow::anyhow;
 use flutter_rust_bridge::frb;
+use std::backtrace::Backtrace;
 use tokio::sync::oneshot;
 
 #[derive(Debug, Clone, Copy)]
@@ -32,7 +32,7 @@ impl PluginArtistSender {
 
     pub async fn get_artist(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
     ) -> anyhow::Result<SpotubeFullArtistObject> {
         let (tx, rx) = oneshot::channel();
@@ -49,7 +49,7 @@ impl PluginArtistSender {
 
     pub async fn top_tracks(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -70,7 +70,7 @@ impl PluginArtistSender {
 
     pub async fn albums(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -91,7 +91,7 @@ impl PluginArtistSender {
 
     pub async fn related(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -110,7 +110,7 @@ impl PluginArtistSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn save(&self, mpsc_tx: OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
+    pub async fn save(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -123,7 +123,7 @@ impl PluginArtistSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn unsave(&self, mpsc_tx: OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
+    pub async fn unsave(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -148,7 +148,7 @@ impl PluginAlbumSender {
 
     pub async fn get_album(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
     ) -> anyhow::Result<SpotubeFullAlbumObject> {
         let (tx, rx) = oneshot::channel();
@@ -165,7 +165,7 @@ impl PluginAlbumSender {
 
     pub async fn tracks(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -186,7 +186,7 @@ impl PluginAlbumSender {
 
     pub async fn releases(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {
@@ -203,7 +203,7 @@ impl PluginAlbumSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn save(&self, mpsc_tx: OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
+    pub async fn save(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -216,7 +216,7 @@ impl PluginAlbumSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn unsave(&self, mpsc_tx: OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
+    pub async fn unsave(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -241,7 +241,7 @@ impl PluginAudioSourceSender {
 
     pub async fn matches(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         track: SpotubeTrackObject,
     ) -> anyhow::Result<Vec<SpotubeAudioSourceMatchObject>> {
         let (tx, rx) = oneshot::channel();
@@ -258,7 +258,7 @@ impl PluginAudioSourceSender {
 
     pub async fn streams(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         matched: SpotubeAudioSourceMatchObject,
     ) -> anyhow::Result<Vec<SpotubeAudioSourceStreamObject>> {
         let (tx, rx) = oneshot::channel();
@@ -283,7 +283,7 @@ impl PluginAuthSender {
         Self {}
     }
 
-    pub async fn authenticate(&self, mpsc_tx: OpaqueSender) -> anyhow::Result<()> {
+    pub async fn authenticate(&self, mpsc_tx: &OpaqueSender) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -295,7 +295,7 @@ impl PluginAuthSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn logout(&self, mpsc_tx: OpaqueSender) -> anyhow::Result<()> {
+    pub async fn logout(&self, mpsc_tx: &OpaqueSender) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -307,7 +307,7 @@ impl PluginAuthSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn is_authenticated(&self, mpsc_tx: OpaqueSender) -> anyhow::Result<bool> {
+    pub async fn is_authenticated(&self, mpsc_tx: &OpaqueSender) -> anyhow::Result<bool> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -331,7 +331,7 @@ impl PluginBrowseSender {
 
     pub async fn sections(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {
@@ -350,7 +350,7 @@ impl PluginBrowseSender {
 
     pub async fn section_items(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -381,10 +381,9 @@ impl PluginCoreSender {
 
     pub async fn check_update(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         plugin_config: PluginConfiguration,
     ) -> anyhow::Result<Option<PluginUpdateAvailable>> {
-
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -394,14 +393,16 @@ impl PluginCoreSender {
             }))
             .await?;
 
-        rx.await.map_err(|e| {
-            eprintln!("RecvError: {}", e);
-            eprintln!("Stack trace:\n{:?}", Backtrace::capture());
-            anyhow!("{e}")
-        }).and_then(|o| o)
+        rx.await
+            .map_err(|e| {
+                eprintln!("RecvError: {}", e);
+                eprintln!("Stack trace:\n{:?}", Backtrace::capture());
+                anyhow!("{e}")
+            })
+            .and_then(|o| o)
     }
 
-    pub async fn support(&self, mpsc_tx: OpaqueSender) -> anyhow::Result<String> {
+    pub async fn support(&self, mpsc_tx: &OpaqueSender) -> anyhow::Result<String> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -415,7 +416,7 @@ impl PluginCoreSender {
 
     pub async fn scrobble(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         details: ScrobbleDetails,
     ) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
@@ -442,7 +443,7 @@ impl PluginPlaylistSender {
 
     pub async fn get_playlist(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
     ) -> anyhow::Result<SpotubeFullPlaylistObject> {
         let (tx, rx) = oneshot::channel();
@@ -459,7 +460,7 @@ impl PluginPlaylistSender {
 
     pub async fn tracks(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -480,7 +481,7 @@ impl PluginPlaylistSender {
 
     pub async fn create_playlist(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         user_id: String,
         name: String,
         description: Option<String>,
@@ -505,7 +506,7 @@ impl PluginPlaylistSender {
 
     pub async fn update_playlist(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         playlist_id: String,
         name: Option<String>,
         description: Option<String>,
@@ -530,7 +531,7 @@ impl PluginPlaylistSender {
 
     pub async fn delete_playlist(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         playlist_id: String,
     ) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
@@ -547,7 +548,7 @@ impl PluginPlaylistSender {
 
     pub async fn add_tracks(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         playlist_id: String,
         track_ids: Vec<String>,
         position: Option<u32>,
@@ -568,7 +569,7 @@ impl PluginPlaylistSender {
 
     pub async fn remove_tracks(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         playlist_id: String,
         track_ids: Vec<String>,
     ) -> anyhow::Result<()> {
@@ -585,7 +586,7 @@ impl PluginPlaylistSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn save(&self, mpsc_tx: OpaqueSender, playlist_id: String) -> anyhow::Result<()> {
+    pub async fn save(&self, mpsc_tx: &OpaqueSender, playlist_id: String) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -598,7 +599,7 @@ impl PluginPlaylistSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn unsave(&self, mpsc_tx: OpaqueSender, playlist_id: String) -> anyhow::Result<()> {
+    pub async fn unsave(&self, mpsc_tx: &OpaqueSender, playlist_id: String) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -621,7 +622,7 @@ impl PluginSearchSender {
         Self {}
     }
 
-    pub async fn chips(&self, mpsc_tx: OpaqueSender) -> anyhow::Result<Vec<String>> {
+    pub async fn chips(&self, mpsc_tx: &OpaqueSender) -> anyhow::Result<Vec<String>> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -635,7 +636,7 @@ impl PluginSearchSender {
 
     pub async fn all(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         query: String,
     ) -> anyhow::Result<SpotubeSearchResponseObject> {
         let (tx, rx) = oneshot::channel();
@@ -652,7 +653,7 @@ impl PluginSearchSender {
 
     pub async fn tracks(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         query: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -673,7 +674,7 @@ impl PluginSearchSender {
 
     pub async fn albums(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         query: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -694,7 +695,7 @@ impl PluginSearchSender {
 
     pub async fn artists(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         query: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -715,7 +716,7 @@ impl PluginSearchSender {
 
     pub async fn playlists(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         query: String,
         offset: Option<u32>,
         limit: Option<u32>,
@@ -746,7 +747,7 @@ impl PluginTrackSender {
 
     pub async fn get_track(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
     ) -> anyhow::Result<SpotubeTrackObject> {
         let (tx, rx) = oneshot::channel();
@@ -761,7 +762,7 @@ impl PluginTrackSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn save(&self, mpsc_tx: OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
+    pub async fn save(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -774,7 +775,7 @@ impl PluginTrackSender {
         rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
     }
 
-    pub async fn unsave(&self, mpsc_tx: OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
+    pub async fn unsave(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -789,7 +790,7 @@ impl PluginTrackSender {
 
     pub async fn radio(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         id: String,
     ) -> anyhow::Result<Vec<SpotubeTrackObject>> {
         let (tx, rx) = oneshot::channel();
@@ -814,7 +815,7 @@ impl PluginUserSender {
         Self {}
     }
 
-    pub async fn me(&self, mpsc_tx: OpaqueSender) -> anyhow::Result<SpotubeUserObject> {
+    pub async fn me(&self, mpsc_tx: &OpaqueSender) -> anyhow::Result<SpotubeUserObject> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -826,7 +827,7 @@ impl PluginUserSender {
 
     pub async fn saved_tracks(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {
@@ -845,7 +846,7 @@ impl PluginUserSender {
 
     pub async fn saved_albums(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {
@@ -864,7 +865,7 @@ impl PluginUserSender {
 
     pub async fn saved_artists(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {
@@ -883,7 +884,7 @@ impl PluginUserSender {
 
     pub async fn saved_playlists(
         &self,
-        mpsc_tx: OpaqueSender,
+        mpsc_tx: &OpaqueSender,
         offset: Option<u32>,
         limit: Option<u32>,
     ) -> anyhow::Result<SpotubePaginationResponseObject> {

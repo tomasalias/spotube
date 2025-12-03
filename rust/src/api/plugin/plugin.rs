@@ -17,17 +17,24 @@ use llrt_modules::module_builder::ModuleBuilder;
 use llrt_modules::{
     abort, buffer, console, crypto, events, exceptions, fetch, navigator, timers, url, util,
 };
-use rquickjs::prelude::Func;
-use rquickjs::{async_with, AsyncContext, AsyncRuntime, Error, Object};
+use rquickjs::prelude::{Async, Func};
+use rquickjs::{async_with, AsyncContext, AsyncRuntime, Class, Error, Object};
 use std::thread;
 use tokio::sync::mpsc;
 use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::task;
 use tokio::task::LocalSet;
+use crate::api::host_api::webview::{HostWebview, Webview};
 
 #[derive(Debug, Clone)]
 pub struct OpaqueSender {
     pub sender: Sender<PluginCommand>,
+}
+
+#[frb(ignore)]
+pub async fn open_webview(uri: String){
+    let webview = HostWebview::create(uri).await.unwrap();
+    webview.open().await.unwrap();
 }
 
 #[frb(ignore)]
@@ -60,6 +67,13 @@ async fn create_context() -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
 
     async_with!(context => |ctx| {
         global_attachment.attach(&ctx)?;
+        let global = ctx.globals();
+        Class::<Webview>::define(&global)?;
+
+
+        let globals = ctx.globals();
+        globals.set("openWebview", Func::new(Async(open_webview)))?;
+
         Ok::<(), Error>(())
     })
     .await
@@ -70,7 +84,7 @@ async fn create_context() -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
 #[frb(ignore)]
 async fn js_executor_thread(
     rx: &mut Receiver<PluginCommand>,
-    ctx: &AsyncContext,
+    context: &AsyncContext,
 ) -> anyhow::Result<()> {
     while let Some(command) = rx.recv().await {
         println!("JS Executor thread received command: {:?}", command);
@@ -79,19 +93,19 @@ async fn js_executor_thread(
             return anyhow::Ok(());
         }
 
-        let ctx = ctx.clone();
+        let context = context.clone();
         task::spawn_local(async move {
             let result = match command {
-                PluginCommand::Artist(commands) => execute_artists(commands, &ctx).await,
-                PluginCommand::Album(commands) => execute_albums(commands, &ctx).await,
-                PluginCommand::AudioSource(commands) => execute_audio_source(commands, &ctx).await,
-                PluginCommand::Auth(commands) => execute_auth(commands, &ctx).await,
-                PluginCommand::Browse(commands) => execute_browse(commands, &ctx).await,
-                PluginCommand::Core(commands) => execute_core(commands, &ctx).await,
-                PluginCommand::Playlist(commands) => execute_playlist(commands, &ctx).await,
-                PluginCommand::Search(commands) => execute_search(commands, &ctx).await,
-                PluginCommand::Track(commands) => execute_track(commands, &ctx).await,
-                PluginCommand::User(commands) => execute_user(commands, &ctx).await,
+                PluginCommand::Artist(commands) => execute_artists(commands, &context).await,
+                PluginCommand::Album(commands) => execute_albums(commands, &context).await,
+                PluginCommand::AudioSource(commands) => execute_audio_source(commands, &context).await,
+                PluginCommand::Auth(commands) => execute_auth(commands, &context).await,
+                PluginCommand::Browse(commands) => execute_browse(commands, &context).await,
+                PluginCommand::Core(commands) => execute_core(commands, &context).await,
+                PluginCommand::Playlist(commands) => execute_playlist(commands, &context).await,
+                PluginCommand::Search(commands) => execute_search(commands, &context).await,
+                PluginCommand::Track(commands) => execute_track(commands, &context).await,
+                PluginCommand::User(commands) => execute_user(commands, &context).await,
                 PluginCommand::Shutdown => unreachable!(),
             };
 
@@ -148,7 +162,7 @@ impl SpotubePlugin {
         Ok(())
     }
 
-    // #[frb(sync)]
+    #[frb(sync)]
     pub fn create_context(
         &self,
         plugin_script: String,

@@ -45,6 +45,7 @@ import 'package:spotube/services/kv_store/encrypted_kv_store.dart';
 import 'package:spotube/services/kv_store/kv_store.dart';
 import 'package:spotube/services/logger/logger.dart';
 import 'package:spotube/services/wm_tools/wm_tools.dart';
+import 'package:spotube/src/plugin_api/webview/webview_binding.dart';
 import 'package:spotube/src/rust/api/plugin/models/core.dart';
 import 'package:spotube/src/rust/api/plugin/plugin.dart';
 import 'package:spotube/src/rust/frb_generated.dart';
@@ -57,28 +58,6 @@ import 'package:window_manager/window_manager.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:yt_dlp_dart/yt_dlp_dart.dart';
 import 'package:flutter_new_pipe_extractor/flutter_new_pipe_extractor.dart';
-
-const pluginJS = """
-function timeout(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-class CoreEndpoint {
-    async checkUpdate() {
-        console.log('Core checkUpdate');
-        await timeout(5000);
-        console.log('Core checkUpdate done. No updates!');
-    }
-    get support() {
-        return 'Metadata';
-    }
-}
-
-class TestingPlugin {
-    constructor() {
-        this.core = new CoreEndpoint();
-    }
-}
-""";
 
 Future<void> main(List<String> rawArgs) async {
   if (rawArgs.contains("web_view_title_bar")) {
@@ -120,25 +99,44 @@ Future<void> main(List<String> rawArgs) async {
     await KVStoreService.initialize();
 
     await RustLib.init();
+    WebViewBinding.register();
 
     final plugin = SpotubePlugin();
-    const config = PluginConfiguration(
-      entryPoint: "TestingPlugin",
-      abilities: [PluginAbility.metadata],
-      apis: [],
-      author: "KRTirtho",
-      description: "Testing Plugin",
-      name: "Testing Plugin",
+    const pluginConfiguration = PluginConfiguration(
+      name: "Spotube Plugin",
+      description: "Spotube Plugin",
+      version: "1.0.0",
+      author: "Spotube",
+      entryPoint: "Plugin",
       pluginApiVersion: "2.0.0",
-      repository: null,
-      version: "0.1.0",
+      apis: [PluginApi.localstorage, PluginApi.webview],
+      abilities: [PluginAbility.metadata],
     );
-    final sender = plugin.createContext(
-      pluginScript: pluginJS,
-      pluginConfig: config,
+    final pluginContext = plugin.createContext(
+      pluginScript: """
+class AuthEndpoint {
+}
+class CoreEndpoint {
+  async checkUpdate() {
+    const webview = await Webview.create("https://spotube.krtirtho.dev");
+    webview.events.on("url_change", (url) => {
+      console.log("url_change: ", url);
+    })
+    await webview.open();
+  }
+}
+class Plugin {
+  constructor() {
+    this.auth = new AuthEndpoint();
+    this.core = new CoreEndpoint();
+  }
+}
+""",
+      pluginConfig: pluginConfiguration,
     );
 
-    await plugin.core.checkUpdate(mpscTx: sender, pluginConfig: config);
+    await plugin.core
+        .checkUpdate(mpscTx: pluginContext, pluginConfig: pluginConfiguration);
 
     if (kIsDesktop) {
       await windowManager.setPreventClose(true);

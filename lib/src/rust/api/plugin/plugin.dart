@@ -12,6 +12,7 @@ import 'senders.dart';
 
 // These functions are ignored because they are not marked as `pub`: `create_context`, `js_executor_thread`
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These functions are ignored (category: IgnoreBecauseExplicitAttribute): `open_webview`
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<OpaqueSender>>
 abstract class OpaqueSender implements RustOpaqueInterface {
@@ -66,7 +67,7 @@ abstract class SpotubePlugin implements RustOpaqueInterface {
 
   Future<void> close({required OpaqueSender tx});
 
-  Future<OpaqueSender> createContext(
+  OpaqueSender createContext(
       {required String pluginScript,
       required PluginConfiguration pluginConfig});
 
