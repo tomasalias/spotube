@@ -11,34 +11,31 @@ use crate::api::plugin::senders::{
     PluginTrackSender, PluginUserSender,
 };
 use crate::frb_generated::StreamSink;
+use crate::internal::apis::webview;
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, Rust2DartSendError};
 use llrt_modules::module_builder::ModuleBuilder;
 use llrt_modules::{
     abort, buffer, console, crypto, events, exceptions, fetch, navigator, timers, url, util,
 };
-use rquickjs::prelude::{Async, Func};
-use rquickjs::{async_with, AsyncContext, AsyncRuntime, Class, Error, Object};
+use rquickjs::prelude::Func;
+use rquickjs::{async_with, AsyncContext, AsyncRuntime, CatchResultExt, Error, Object};
 use std::thread;
 use tokio::sync::mpsc;
 use tokio::sync::mpsc::{Receiver, Sender};
 use tokio::task;
 use tokio::task::LocalSet;
-use crate::api::host_api::webview::{HostWebview, Webview};
 
 #[derive(Debug, Clone)]
 pub struct OpaqueSender {
     pub sender: Sender<PluginCommand>,
 }
 
-#[frb(ignore)]
-pub async fn open_webview(uri: String){
-    let webview = HostWebview::create(uri).await.unwrap();
-    webview.open().await.unwrap();
-}
-
-#[frb(ignore)]
-async fn create_context() -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
+// #[frb(ignore)]
+async fn create_context(
+    server_endpoint_url: String,
+    server_secret: String,
+) -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
     let runtime = AsyncRuntime::new().expect("Unable to create async runtime");
 
     let mut module_builder = ModuleBuilder::new();
@@ -66,15 +63,9 @@ async fn create_context() -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
         .expect("Unable to create async context");
 
     async_with!(context => |ctx| {
-        global_attachment.attach(&ctx)?;
-        let global = ctx.globals();
-        Class::<Webview>::define(&global)?;
-
-
-        let globals = ctx.globals();
-        globals.set("openWebview", Func::new(Async(open_webview)))?;
-
-        Ok::<(), Error>(())
+        global_attachment.attach(&ctx).catch(&ctx).map_err(|e| anyhow!("Failed to attach global modules: {}", e))?;
+        webview::init(&ctx, server_endpoint_url, server_secret).catch(&ctx).map_err(|e| anyhow!("Failed to initialize WebView API: {}", e))?;
+        anyhow::Ok(())
     })
     .await
     .map_err(|e| anyhow!("Failed to register globals: {}", e))?;
@@ -98,7 +89,9 @@ async fn js_executor_thread(
             let result = match command {
                 PluginCommand::Artist(commands) => execute_artists(commands, &context).await,
                 PluginCommand::Album(commands) => execute_albums(commands, &context).await,
-                PluginCommand::AudioSource(commands) => execute_audio_source(commands, &context).await,
+                PluginCommand::AudioSource(commands) => {
+                    execute_audio_source(commands, &context).await
+                }
                 PluginCommand::Auth(commands) => execute_auth(commands, &context).await,
                 PluginCommand::Browse(commands) => execute_browse(commands, &context).await,
                 PluginCommand::Core(commands) => execute_core(commands, &context).await,
@@ -162,11 +155,13 @@ impl SpotubePlugin {
         Ok(())
     }
 
-    #[frb(sync)]
+    // #[frb(sync)]
     pub fn create_context(
         &self,
         plugin_script: String,
         plugin_config: PluginConfiguration,
+        server_endpoint_url: String,
+        server_secret: String,
     ) -> anyhow::Result<OpaqueSender> {
         let (command_tx, mut command_rx) = mpsc::channel(32);
         let sender = self.event_tx.clone();
@@ -177,7 +172,10 @@ impl SpotubePlugin {
                 .unwrap();
             let local = LocalSet::new();
             if let Err(e) = local.block_on(&rt, async {
-                let (ctx, _) = create_context().await?;
+                let (ctx, _) = create_context(
+                    server_endpoint_url,
+                    server_secret,
+                ).await?;
 
                 let injection = format!(
                     "globalThis.pluginInstance = new {}();",
@@ -185,7 +183,10 @@ impl SpotubePlugin {
                 );
                 let script = format!("{}\n{}", plugin_script, injection);
 
-                ctx.with(|cx| cx.eval::<(), _>(script.as_str())).await?;
+                async_with!(ctx => |cx| {
+                    cx.eval::<(), _>(script.as_str())
+                        .catch(&cx).map_err(|e| anyhow!("Failed to evaluate supplied plugin script: {}", e))
+                }).await?;
 
                 async_with!(ctx => |ctx|{
                     let globals = ctx.globals();

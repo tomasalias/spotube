@@ -45,7 +45,6 @@ import 'package:spotube/services/kv_store/encrypted_kv_store.dart';
 import 'package:spotube/services/kv_store/kv_store.dart';
 import 'package:spotube/services/logger/logger.dart';
 import 'package:spotube/services/wm_tools/wm_tools.dart';
-import 'package:spotube/src/plugin_api/webview/webview_binding.dart';
 import 'package:spotube/src/rust/api/plugin/models/core.dart';
 import 'package:spotube/src/rust/api/plugin/plugin.dart';
 import 'package:spotube/src/rust/frb_generated.dart';
@@ -99,44 +98,6 @@ Future<void> main(List<String> rawArgs) async {
     await KVStoreService.initialize();
 
     await RustLib.init();
-    WebViewBinding.register();
-
-    final plugin = SpotubePlugin();
-    const pluginConfiguration = PluginConfiguration(
-      name: "Spotube Plugin",
-      description: "Spotube Plugin",
-      version: "1.0.0",
-      author: "Spotube",
-      entryPoint: "Plugin",
-      pluginApiVersion: "2.0.0",
-      apis: [PluginApi.localstorage, PluginApi.webview],
-      abilities: [PluginAbility.metadata],
-    );
-    final pluginContext = plugin.createContext(
-      pluginScript: """
-class AuthEndpoint {
-}
-class CoreEndpoint {
-  async checkUpdate() {
-    const webview = await Webview.create("https://spotube.krtirtho.dev");
-    webview.events.on("url_change", (url) => {
-      console.log("url_change: ", url);
-    })
-    await webview.open();
-  }
-}
-class Plugin {
-  constructor() {
-    this.auth = new AuthEndpoint();
-    this.core = new CoreEndpoint();
-  }
-}
-""",
-      pluginConfig: pluginConfiguration,
-    );
-
-    await plugin.core
-        .checkUpdate(mpscTx: pluginContext, pluginConfig: pluginConfiguration);
 
     if (kIsDesktop) {
       await windowManager.setPreventClose(true);
@@ -216,6 +177,58 @@ class Spotube extends HookConsumerWidget {
       if (kIsMobile) {
         HomeWidget.registerInteractivityCallback(glanceBackgroundCallback);
       }
+
+      start() async {
+        final server = await ref.read(serverProvider.future);
+
+        final plugin = SpotubePlugin();
+        const pluginConfiguration = PluginConfiguration(
+          name: "Spotube Plugin",
+          description: "Spotube Plugin",
+          version: "1.0.0",
+          author: "Spotube",
+          entryPoint: "Plugin",
+          pluginApiVersion: "2.0.0",
+          apis: [PluginApi.localstorage, PluginApi.webview],
+          abilities: [PluginAbility.metadata],
+        );
+        final pluginContext = plugin.createContext(
+          serverEndpointUrl:
+              "http://${server.server.address.host}:${server.port}",
+          serverSecret: ref.read(serverRandomSecretProvider),
+          pluginScript: """
+class AuthEndpoint {
+}
+class CoreEndpoint {
+  async checkUpdate() {
+    console.log(globalThis);
+    const webview = await WebView.create("https://spotube.krtirtho.dev");
+    webview.onUrlChange((url) => {
+      console.log("url_request: ", url);
+      if (url.includes("/about")) {
+        webview.close();
+      }
+    });
+    await webview.open();
+
+    await new Promise((resolve) => setTimeout(resolve, 5000));
+  }
+}
+class Plugin {
+  constructor() {
+    this.auth = new AuthEndpoint();
+    this.core = new CoreEndpoint();
+  }
+}
+""",
+          pluginConfig: pluginConfiguration,
+        );
+
+        await plugin.core.checkUpdate(
+            mpscTx: pluginContext, pluginConfig: pluginConfiguration);
+      }
+
+      start();
 
       return () {
         /// For enabling hot reload for audio player

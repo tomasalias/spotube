@@ -22,7 +22,6 @@ class Webview {
     required this.uri,
   })  : _onUrlRequestStreamController = StreamController<String>.broadcast(),
         uid = const Uuid().v4();
-
   StreamController<String>? _onUrlRequestStreamController;
   Stream<String> get onUrlRequestStream =>
       _onUrlRequestStreamController!.stream;

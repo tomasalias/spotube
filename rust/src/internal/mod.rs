@@ -1,5 +1,4 @@
 pub mod album;
-pub mod apis;
 pub mod artist;
 pub mod audio_source;
 pub mod browse;
@@ -10,4 +9,5 @@ pub mod track;
 pub mod user;
 pub mod auth;
 pub(crate) mod utils;
+pub(crate) mod apis;
 // Export Context

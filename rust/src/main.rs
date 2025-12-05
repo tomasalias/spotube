@@ -1,6 +1,6 @@
 mod api;
-mod internal;
 mod frb_generated;
+mod internal;
 
 use rquickjs::function::{Async, Func};
 use rquickjs::{async_with, AsyncContext, AsyncRuntime, Function, Object, Promise};
@@ -100,7 +100,7 @@ async fn plugin() -> anyhow::Result<()> {
         repository: None,
         version: "0.1.0".to_string(),
     };
-    let sender = plugin.create_context(PLUGIN_JS.to_string(), config.clone())?;
+    let sender = plugin.create_context(PLUGIN_JS.to_string(), config.clone(), "".to_string(), "".to_string())?;
     let (r1, r2) = tokio::join!(
         plugin.core.check_update(&sender, config.clone()),
         plugin.core.check_update(&sender, config.clone())

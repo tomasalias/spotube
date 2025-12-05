@@ -1,5 +1,4 @@
 pub mod plugin;
-pub mod host_api;
 
 #[flutter_rust_bridge::frb(init)]
 pub fn init_app() {
