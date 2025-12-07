@@ -1,15 +1,37 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'package:spotube/provider/server/server.dart';
 import 'package:spotube/src/plugin_api/webview/webview.dart';
 import 'package:async/async.dart';
+import 'package:encrypt/encrypt.dart' as encrypt;
 
 class ServerWebviewRoutes {
+  final Ref ref;
+  ServerWebviewRoutes({required this.ref});
+
   final Map<String, Webview> _webviews = {};
+
+  String _encryptCookies(dynamic cookies, String secret) {
+    final keyBytes = base64.decode(secret);
+    final key = encrypt.Key(keyBytes);
+    final ivBytes = List<int>.generate(16, (_) => Random.secure().nextInt(256));
+    final iv = encrypt.IV(Uint8List.fromList(ivBytes));
+
+    final encrypter = encrypt.Encrypter(
+      encrypt.AES(key, mode: encrypt.AESMode.cbc, padding: 'PKCS7'),
+    );
+
+    final encrypted = encrypter.encrypt(jsonEncode(cookies), iv: iv);
+    final combined = iv.bytes + encrypted.bytes;
+    return base64.encode(combined);
+  }
 
   Future<Response> postCreateWebview(Request request) async {
     final payload = jsonDecode(await request.readAsString());
@@ -105,6 +127,8 @@ class ServerWebviewRoutes {
   }
 
   Future<Response> postGetWebviewCookies(Request request) async {
+    final secret = ref.read(serverRandomSecretProvider);
+
     final body = jsonDecode(await request.readAsString());
     final uid = body['uid'] as String;
     final url = body['url'] as String;
@@ -114,8 +138,9 @@ class ServerWebviewRoutes {
       return Response.notFound('Webview with uid $uid not found');
     }
     final cookies = await webview.getCookies(url);
+    final encryptedCookies = _encryptCookies(cookies, secret);
     return Response.ok(
-      jsonEncode(cookies),
+      jsonEncode({'data': encryptedCookies}),
       encoding: utf8,
       headers: {
         'Content-Type': 'application/json',
@@ -131,4 +156,5 @@ class ServerWebviewRoutes {
   }
 }
 
-final serverWebviewRoutesProvider = Provider((ref) => ServerWebviewRoutes());
+final serverWebviewRoutesProvider =
+    Provider((ref) => ServerWebviewRoutes(ref: ref));

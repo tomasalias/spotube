@@ -1,6 +1,8 @@
+use base64::{engine::general_purpose::STANDARD, Engine as _};
 use eventsource_client::{Client as EventSourceClient, ClientBuilder};
 use flutter_rust_bridge::for_generated::futures::StreamExt;
-use rquickjs::{class::Trace, Class, Ctx, Function, JsLifetime};
+use openssl::symm::{decrypt, Cipher};
+use rquickjs::{class::Trace, CatchResultExt, Class, Ctx, Function, JsLifetime, Value};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
@@ -78,7 +80,7 @@ impl<'js> WebView<'js> {
         Class::instance(ctx, webview)
     }
 
-    pub async fn open(&self) -> rquickjs::Result<()> {
+    pub async fn open(&self, ctx: Ctx<'js>) -> rquickjs::Result<()> {
         let client = reqwest::Client::new();
         let endpoint = format!("{}/plugin-api/webview/open", self.endpoint_url);
 
@@ -95,12 +97,13 @@ impl<'js> WebView<'js> {
                 rquickjs::Error::new_from_js_message("reqwest", "Error", &e.to_string())
             })?;
 
-        self.url_change_task().await;
+        self.url_change_task(ctx).await;
 
         Ok(())
     }
 
-    pub async fn cookies(&self, ctx: Ctx<'js>) -> rquickjs::Result<rquickjs::Value<'js>> {
+    pub async fn cookies(&self, ctx: Ctx<'js>) -> rquickjs::Result<Value<'js>> {
+        let secret: String = ctx.globals().get("__serverSecret").unwrap_or_default();
         let client = reqwest::Client::new();
         let endpoint = format!("{}/plugin-api/webview/cookies", self.endpoint_url);
 
@@ -122,7 +125,36 @@ impl<'js> WebView<'js> {
             rquickjs::Error::new_from_js_message("reqwest", "Error", &e.to_string())
         })?;
 
-        let value = ctx.json_parse(data.to_string())?;
+        let enc = data.get("data").and_then(|v| v.as_str()).ok_or_else(|| {
+            rquickjs::Error::new_from_js_message("cookies", "Error", "missing encrypted data")
+        })?;
+
+        let combined = STANDARD.decode(enc.trim()).map_err(|e| {
+            rquickjs::Error::new_from_js_message("cookies", "Error", &format!("b64 decode: {}", e))
+        })?;
+
+        if combined.len() < 16 {
+            return Err(rquickjs::Error::new_from_js_message(
+                "cookies",
+                "Error",
+                "invalid payload (too short)",
+            ));
+        }
+
+        let (iv, cipher_bytes) = combined.split_at(16);
+        let key = STANDARD.decode(secret.trim()).map_err(|e| {
+            rquickjs::Error::new_from_js_message("cookies", "Error", &format!("key decode: {}", e))
+        })?;
+
+        let plain = decrypt(Cipher::aes_128_cbc(), &key, Some(iv), cipher_bytes).map_err(|e| {
+            rquickjs::Error::new_from_js_message("cookies", "Error", &format!("decrypt: {}", e))
+        })?;
+
+        let cookies_json: serde_json::Value = serde_json::from_slice(&plain).map_err(|e| {
+            rquickjs::Error::new_from_js_message("cookies", "Error", &format!("json decode: {}", e))
+        })?;
+
+        let value = ctx.json_parse(cookies_json.to_string())?;
         Ok(value)
     }
 
@@ -152,7 +184,7 @@ impl<'js> WebView<'js> {
         Ok(())
     }
 
-    async fn url_change_task(&self) {
+    async fn url_change_task(&self, ctx: Ctx<'js>) {
         let endpoint = format!(
             "{}/plugin-api/webview/{}/on-url-request",
             self.endpoint_url, self.uid
@@ -181,8 +213,17 @@ impl<'js> WebView<'js> {
                         {
                             let url = data.get("url").cloned().unwrap_or_default();
                             for callback in self.callbacks.iter() {
-                                if let Err(e) = callback.call::<_, ()>((url.clone(),)) {
-                                    eprintln!("Error in onUrlChange callback: {}", e);
+                                match callback.call::<_, Value>((url.clone(),)) {
+                                    Ok(res) => {
+                                        if let Some(promise) = res.into_promise() {
+                                            if let Err(e) = promise.into_future::<()>().await.catch(&ctx) {
+                                                eprintln!("Error in onUrlChange promise: {}", e);
+                                            }
+                                        }
+                                    }
+                                    Err(e) => {
+                                        eprintln!("Error in onUrlChange callback: {}", e);
+                                    }
                                 }
                             }
                         } else {
@@ -202,8 +243,6 @@ impl<'js> WebView<'js> {
         }
     }
 }
-
-
 
 pub fn init(ctx: &Ctx) -> rquickjs::Result<()> {
     Class::<WebView>::define(&ctx.globals())?;

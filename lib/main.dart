@@ -197,19 +197,22 @@ class Spotube extends HookConsumerWidget {
               "http://${server.server.address.host}:${server.port}",
           serverSecret: ref.read(serverRandomSecretProvider),
           pluginScript: """
+console.log("Local Timezone", Timezone.getLocalTimezone());
+console.log("Available Timezones", Timezone.getAvailableTimezones());
 class AuthEndpoint {
 }
 class CoreEndpoint {
   async checkUpdate() {
     console.log(globalThis);
-    // const webview = await WebView.create("https://spotube.krtirtho.dev");
-    // webview.onUrlChange((url) => {
-    //   console.log("url_request: ", url);
-    //   if (url.includes("/about")) {
-    //     webview.close();
-    //   }
-    // });
-    // await webview.open();
+    const webview = await WebView.create("https://spotube.krtirtho.dev");
+    webview.onUrlChange(async (url) => {
+      console.log("url_request: ", url);
+      if (url.includes("/about")) {
+        console.log(await webview.cookies())
+        webview.close();
+      }
+    });
+    await webview.open();
     // const res = await SpotubeForm.show("Hello", [
     //   {
     //     objectType: "input",
@@ -222,9 +225,8 @@ class CoreEndpoint {
     //   }
     // ])
     // console.log("Form Result: ", res);
-
-    console.log("LocalStorage Value: ", localStorage.getItem("test_key"));
-    localStorage.setItem("test_key", "test_value");
+    // console.log("LocalStorage Value: ", localStorage.getItem("test_key"));
+    // localStorage.setItem("test_key", "test_value");
   }
 }
 class Plugin {

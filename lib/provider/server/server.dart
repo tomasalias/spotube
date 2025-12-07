@@ -15,7 +15,7 @@ final serverRandomSecretProvider = Provider<String>(
   (ref) {
     final random = Random.secure();
     final values = List<int>.generate(16, (i) => random.nextInt(256));
-    return base64Url.encode(values);
+    return base64.encode(values);
   },
 );
 final serverProvider = FutureProvider(
