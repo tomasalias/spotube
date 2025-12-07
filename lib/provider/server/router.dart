@@ -4,6 +4,7 @@ import 'package:shelf_router/shelf_router.dart';
 import 'package:spotube/provider/server/routes/connect.dart';
 import 'package:spotube/provider/server/routes/playback.dart';
 import 'package:spotube/provider/server/routes/plugin_apis/form.dart';
+import 'package:spotube/provider/server/routes/plugin_apis/path_provider.dart';
 import 'package:spotube/provider/server/routes/plugin_apis/webview.dart';
 
 Handler pluginApiAuthMiddleware(Handler handler) {
@@ -57,6 +58,10 @@ final serverRouterProvider = Provider((ref) {
   router.post(
     "/plugin-api/form/show",
     pluginApiAuthMiddleware(formRoutes.showForm),
+  );
+  router.get(
+    "/plugin/localstorage/directories",
+    pluginApiAuthMiddleware(ServerPathProviderRoutes.getDirectories),
   );
 
   router.all("/ws", connectRoutes.websocket);

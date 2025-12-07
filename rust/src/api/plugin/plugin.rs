@@ -1,4 +1,3 @@
-use std::fmt::format;
 use crate::api::plugin::commands::PluginCommand;
 use crate::api::plugin::executors::{
     execute_albums, execute_artists, execute_audio_source, execute_auth, execute_browse,
@@ -13,7 +12,7 @@ use crate::api::plugin::senders::{
 };
 use crate::frb_generated::StreamSink;
 use crate::internal::apis;
-use crate::internal::apis::{form, webview};
+use crate::internal::apis::{form, get_platform_directories, webview};
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, Rust2DartSendError};
 use llrt_modules::module_builder::ModuleBuilder;
@@ -37,6 +36,7 @@ pub struct OpaqueSender {
 async fn create_context(
     server_endpoint_url: String,
     server_secret: String,
+    plugin_slug: String,
 ) -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
     let runtime = AsyncRuntime::new().expect("Unable to create async runtime");
 
@@ -66,13 +66,19 @@ async fn create_context(
         .await
         .expect("Unable to create async context");
 
+    let directories =
+        get_platform_directories(server_endpoint_url.clone(), server_secret.clone()).await?;
+    let local_storage_dir = directories
+        .application_support
+        .ok_or_else(|| anyhow!("Application support directory not found"))?;
+
     async_with!(context => |ctx| {
-        apis::init(&ctx, server_endpoint_url, server_secret)?;
+        apis::init(&ctx, server_endpoint_url, server_secret).catch(&ctx).map_err(|e| anyhow!("Failed to initialize APIs: {}", e))?;
+        apis::local_storage::init(&ctx, plugin_slug, local_storage_dir).catch(&ctx).map_err(|e| anyhow!("Failed to initialize LocalStorage API: {}", e))?;
         global_attachment.attach(&ctx).catch(&ctx).map_err(|e| anyhow!("Failed to attach global modules: {}", e))?;
         anyhow::Ok(())
     })
-    .await
-    .map_err(|e| anyhow!("Failed to register globals: {}", e))?;
+    .await?;
 
     Ok((context, runtime))
 }
@@ -159,7 +165,7 @@ impl SpotubePlugin {
         Ok(())
     }
 
-    // #[frb(sync)]
+    #[frb(sync)]
     pub fn create_context(
         &self,
         plugin_script: String,
@@ -179,6 +185,7 @@ impl SpotubePlugin {
                 let (ctx, _) = create_context(
                     server_endpoint_url,
                     server_secret,
+                    plugin_config.slug(),
                 ).await?;
 
                 let injection = format!(

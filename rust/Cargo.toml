@@ -21,6 +21,7 @@ heck = "0.5.0"
 llrt_modules = { git = "https://github.com/awslabs/llrt.git", rev = "7d749dd18cf26a2e51119094c3b945975ae57bd4", features = ["abort", "buffer", "console", "crypto", "events", "exceptions", "fetch", "navigator", "url", "timers"] }
 eventsource-client = "0.15.1"
 reqwest = { version = "0.12", features = ["json"] }
+confy = "2.0.0"
 
 [patch."https://github.com/DelSkayn/rquickjs"]
 rquickjs = "0.10.0"

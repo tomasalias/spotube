@@ -210,19 +210,21 @@ class CoreEndpoint {
     //   }
     // });
     // await webview.open();
-    const res = await SpotubeForm.show("Hello", [
-      {
-        objectType: "input",
-        id: "email",
-        variant: "text",
-        placeholder: "Enter your email",
-        defaultValue:  null,
-        required: true,
-        regex: null,
-      }
-    ])
+    // const res = await SpotubeForm.show("Hello", [
+    //   {
+    //     objectType: "input",
+    //     id: "email",
+    //     variant: "text",
+    //     placeholder: "Enter your email",
+    //     defaultValue:  null,
+    //     required: true,
+    //     regex: null,
+    //   }
+    // ])
+    // console.log("Form Result: ", res);
 
-    console.log("Form Result: ", res);
+    console.log("LocalStorage Value: ", localStorage.getItem("test_key"));
+    localStorage.setItem("test_key", "test_value");
   }
 }
 class Plugin {
