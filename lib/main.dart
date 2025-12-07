@@ -45,8 +45,6 @@ import 'package:spotube/services/kv_store/encrypted_kv_store.dart';
 import 'package:spotube/services/kv_store/kv_store.dart';
 import 'package:spotube/services/logger/logger.dart';
 import 'package:spotube/services/wm_tools/wm_tools.dart';
-import 'package:spotube/src/rust/api/plugin/models/core.dart';
-import 'package:spotube/src/rust/api/plugin/plugin.dart';
 import 'package:spotube/src/rust/frb_generated.dart';
 import 'package:spotube/utils/migrations/sandbox.dart';
 import 'package:spotube/utils/platform.dart';
@@ -177,73 +175,6 @@ class Spotube extends HookConsumerWidget {
       if (kIsMobile) {
         HomeWidget.registerInteractivityCallback(glanceBackgroundCallback);
       }
-
-      start() async {
-        final server = await ref.read(serverProvider.future);
-
-        final plugin = SpotubePlugin();
-        const pluginConfiguration = PluginConfiguration(
-          name: "Spotube Plugin",
-          description: "Spotube Plugin",
-          version: "1.0.0",
-          author: "Spotube",
-          entryPoint: "Plugin",
-          pluginApiVersion: "2.0.0",
-          apis: [PluginApi.localstorage, PluginApi.webview],
-          abilities: [PluginAbility.metadata],
-        );
-        final pluginContext = plugin.createContext(
-          serverEndpointUrl:
-              "http://${server.server.address.host}:${server.port}",
-          serverSecret: ref.read(serverRandomSecretProvider),
-          pluginScript: """
-console.log("Local Timezone", Timezone.getLocalTimezone());
-console.log("Available Timezones", Timezone.getAvailableTimezones());
-class AuthEndpoint {
-}
-class CoreEndpoint {
-  async checkUpdate() {
-    console.log(globalThis);
-    const webview = await WebView.create("https://spotube.krtirtho.dev");
-    webview.onUrlChange(async (url) => {
-      console.log("url_request: ", url);
-      if (url.includes("/about")) {
-        console.log(await webview.cookies())
-        webview.close();
-      }
-    });
-    await webview.open();
-    // const res = await SpotubeForm.show("Hello", [
-    //   {
-    //     objectType: "input",
-    //     id: "email",
-    //     variant: "text",
-    //     placeholder: "Enter your email",
-    //     defaultValue:  null,
-    //     required: true,
-    //     regex: null,
-    //   }
-    // ])
-    // console.log("Form Result: ", res);
-    // console.log("LocalStorage Value: ", localStorage.getItem("test_key"));
-    // localStorage.setItem("test_key", "test_value");
-  }
-}
-class Plugin {
-  constructor() {
-    this.auth = new AuthEndpoint();
-    this.core = new CoreEndpoint();
-  }
-}
-""",
-          pluginConfig: pluginConfiguration,
-        );
-
-        await plugin.core.checkUpdate(
-            mpscTx: pluginContext, pluginConfig: pluginConfiguration);
-      }
-
-      start();
 
       return () {
         /// For enabling hot reload for audio player

@@ -6,6 +6,7 @@ import 'package:spotube/provider/server/routes/playback.dart';
 import 'package:spotube/provider/server/routes/plugin_apis/form.dart';
 import 'package:spotube/provider/server/routes/plugin_apis/path_provider.dart';
 import 'package:spotube/provider/server/routes/plugin_apis/webview.dart';
+import 'package:spotube/provider/server/routes/plugin_apis/yt_engine.dart';
 
 Handler pluginApiAuthMiddleware(Handler handler) {
   return (Request request) {
@@ -23,6 +24,7 @@ final serverRouterProvider = Provider((ref) {
   final connectRoutes = ref.watch(serverConnectRoutesProvider);
   final webviewRoutes = ref.watch(serverWebviewRoutesProvider);
   final formRoutes = ref.watch(serverFormRoutesProvider);
+  final ytEngineRoutes = ref.watch(serverYTEngineRoutesProvider);
 
   final router = Router();
 
@@ -62,6 +64,19 @@ final serverRouterProvider = Provider((ref) {
   router.get(
     "/plugin/localstorage/directories",
     pluginApiAuthMiddleware(ServerPathProviderRoutes.getDirectories),
+  );
+
+  router.get(
+    "/plugin-api/yt-engine/search",
+    pluginApiAuthMiddleware(ytEngineRoutes.search),
+  );
+  router.get(
+    "/plugin-api/yt-engine/video",
+    pluginApiAuthMiddleware(ytEngineRoutes.getVideo),
+  );
+  router.get(
+    "/plugin-api/yt-engine/stream-manifest",
+    pluginApiAuthMiddleware(ytEngineRoutes.streamManifest),
   );
 
   router.all("/ws", connectRoutes.websocket);

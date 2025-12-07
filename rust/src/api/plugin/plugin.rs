@@ -12,7 +12,7 @@ use crate::api::plugin::senders::{
 };
 use crate::frb_generated::StreamSink;
 use crate::internal::apis;
-use crate::internal::apis::{form, get_platform_directories, timezone, webview};
+use crate::internal::apis::{form, get_platform_directories, timezone, webview, yt_engine};
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, Rust2DartSendError};
 use llrt_modules::module_builder::ModuleBuilder;
@@ -56,6 +56,7 @@ async fn create_context(
         .with_global(util::init)
         .with_global(form::init)
         .with_global(webview::init)
+        .with_global(yt_engine::init)
         .with_global(timezone::init);
 
     let (module_resolver, module_loader, global_attachment) = module_builder.build();
