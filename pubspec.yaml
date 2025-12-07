@@ -162,6 +162,7 @@ dependencies:
   flutter_rust_bridge: 2.11.1
   json_annotation: ^4.9.0
   random_user_agents: ^1.0.18
+  async: ^2.13.0
 
 dev_dependencies:
   build_runner: ^2.4.13

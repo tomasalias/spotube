@@ -52,8 +52,8 @@ impl<'js> WebView<'js> {
 
     #[qjs(static)]
     pub async fn create(ctx: Ctx<'js>, url: String) -> rquickjs::Result<Class<'js, WebView<'js>>> {
-        let endpoint_url: String = ctx.globals().get("__webviewUrl").unwrap_or_default();
-        let secret: String = ctx.globals().get("__webviewSecret").unwrap_or_default();
+        let endpoint_url: String = ctx.globals().get("__serverUrl").unwrap_or_default();
+        let secret: String = ctx.globals().get("__serverSecret").unwrap_or_default();
 
         let client = reqwest::Client::new();
         let endpoint = format!("{}/plugin-api/webview/create", endpoint_url.clone());
@@ -203,12 +203,9 @@ impl<'js> WebView<'js> {
     }
 }
 
-pub fn init(ctx: &Ctx, endpoint_url: String, secret: String) -> rquickjs::Result<()> {
-    // Store config in globals for access in static methods
-    ctx.globals().set("__webviewUrl", endpoint_url)?;
-    ctx.globals().set("__webviewSecret", secret)?;
 
-    // Register the WebView class
+
+pub fn init(ctx: &Ctx) -> rquickjs::Result<()> {
     Class::<WebView>::define(&ctx.globals())?;
 
     Ok(())

@@ -3,6 +3,7 @@ import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:spotube/provider/server/routes/connect.dart';
 import 'package:spotube/provider/server/routes/playback.dart';
+import 'package:spotube/provider/server/routes/plugin_apis/form.dart';
 import 'package:spotube/provider/server/routes/plugin_apis/webview.dart';
 
 Handler pluginApiAuthMiddleware(Handler handler) {
@@ -20,6 +21,7 @@ final serverRouterProvider = Provider((ref) {
   final playbackRoutes = ref.watch(serverPlaybackRoutesProvider);
   final connectRoutes = ref.watch(serverConnectRoutesProvider);
   final webviewRoutes = ref.watch(serverWebviewRoutesProvider);
+  final formRoutes = ref.watch(serverFormRoutesProvider);
 
   final router = Router();
 
@@ -51,6 +53,10 @@ final serverRouterProvider = Provider((ref) {
   router.post(
     "/plugin-api/webview/cookies",
     pluginApiAuthMiddleware(webviewRoutes.postGetWebviewCookies),
+  );
+  router.post(
+    "/plugin-api/form/show",
+    pluginApiAuthMiddleware(formRoutes.showForm),
   );
 
   router.all("/ws", connectRoutes.websocket);

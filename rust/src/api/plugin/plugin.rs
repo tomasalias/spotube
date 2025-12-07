@@ -1,3 +1,4 @@
+use std::fmt::format;
 use crate::api::plugin::commands::PluginCommand;
 use crate::api::plugin::executors::{
     execute_albums, execute_artists, execute_audio_source, execute_auth, execute_browse,
@@ -11,7 +12,8 @@ use crate::api::plugin::senders::{
     PluginTrackSender, PluginUserSender,
 };
 use crate::frb_generated::StreamSink;
-use crate::internal::apis::webview;
+use crate::internal::apis;
+use crate::internal::apis::{form, webview};
 use anyhow::anyhow;
 use flutter_rust_bridge::{frb, Rust2DartSendError};
 use llrt_modules::module_builder::ModuleBuilder;
@@ -51,7 +53,9 @@ async fn create_context(
         .with_global(navigator::init)
         .with_global(url::init)
         .with_global(timers::init)
-        .with_global(util::init);
+        .with_global(util::init)
+        .with_global(form::init)
+        .with_global(webview::init);
 
     let (module_resolver, module_loader, global_attachment) = module_builder.build();
     runtime
@@ -63,8 +67,8 @@ async fn create_context(
         .expect("Unable to create async context");
 
     async_with!(context => |ctx| {
+        apis::init(&ctx, server_endpoint_url, server_secret)?;
         global_attachment.attach(&ctx).catch(&ctx).map_err(|e| anyhow!("Failed to attach global modules: {}", e))?;
-        webview::init(&ctx, server_endpoint_url, server_secret).catch(&ctx).map_err(|e| anyhow!("Failed to initialize WebView API: {}", e))?;
         anyhow::Ok(())
     })
     .await

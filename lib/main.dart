@@ -202,16 +202,27 @@ class AuthEndpoint {
 class CoreEndpoint {
   async checkUpdate() {
     console.log(globalThis);
-    const webview = await WebView.create("https://spotube.krtirtho.dev");
-    webview.onUrlChange((url) => {
-      console.log("url_request: ", url);
-      if (url.includes("/about")) {
-        webview.close();
+    // const webview = await WebView.create("https://spotube.krtirtho.dev");
+    // webview.onUrlChange((url) => {
+    //   console.log("url_request: ", url);
+    //   if (url.includes("/about")) {
+    //     webview.close();
+    //   }
+    // });
+    // await webview.open();
+    const res = await SpotubeForm.show("Hello", [
+      {
+        objectType: "input",
+        id: "email",
+        variant: "text",
+        placeholder: "Enter your email",
+        defaultValue:  null,
+        required: true,
+        regex: null,
       }
-    });
-    await webview.open();
+    ])
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    console.log("Form Result: ", res);
   }
 }
 class Plugin {
