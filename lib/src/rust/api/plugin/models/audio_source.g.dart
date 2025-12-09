@@ -92,7 +92,7 @@ _$SpotubeAudioSourceMatchObjectImpl
           artists: (json['artists'] as List<dynamic>)
               .map((e) => e as String)
               .toList(),
-          duration: BigInt.parse(json['duration'] as String),
+          duration: (json['duration'] as num).toInt(),
           thumbnail: json['thumbnail'] as String?,
           externalUri: json['externalUri'] as String,
         );
@@ -104,7 +104,7 @@ Map<String, dynamic> _$$SpotubeAudioSourceMatchObjectImplToJson(
       'id': instance.id,
       'title': instance.title,
       'artists': instance.artists,
-      'duration': instance.duration.toString(),
+      'duration': instance.duration,
       'thumbnail': instance.thumbnail,
       'externalUri': instance.externalUri,
     };

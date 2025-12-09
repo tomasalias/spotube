@@ -82,8 +82,8 @@ class SettingsMetadataProviderPage extends HookConsumerWidget {
       return plugins.asData?.value.plugins.where((d) {
         return d.abilities.contains(
           tabState.value == 1
-              ? PluginAbilities.metadata
-              : PluginAbilities.audioSource,
+              ? PluginAbility.metadata
+              : PluginAbility.audioSource,
         );
       }).toList();
     }, [tabState.value, plugins.asData?.value]);

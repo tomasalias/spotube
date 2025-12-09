@@ -26,14 +26,14 @@ class SiblingTracksSheet extends HookConsumerWidget {
     final activeTrack =
         ref.watch(audioPlayerProvider.select((e) => e.activeTrack));
 
-    if (activeTrack == null || activeTrack is! SpotubeFullTrackObject) {
+    if (activeTrack is! SpotubeTrackObject_Full) {
       return const SafeArea(child: NotFound());
     }
 
     return HookBuilder(builder: (context) {
-      final sourcedTrack = ref.watch(sourcedTrackProvider(activeTrack));
+      final sourcedTrack = ref.watch(sourcedTrackProvider(activeTrack.field0));
       final sourcedTrackNotifier =
-          ref.watch(sourcedTrackProvider(activeTrack).notifier);
+          ref.watch(sourcedTrackProvider(activeTrack.field0).notifier);
 
       final siblings = useMemoized<List<SpotubeAudioSourceMatchObject>>(
         () => !sourcedTrack.isLoading
@@ -112,8 +112,10 @@ class SiblingTracksSheet extends HookConsumerWidget {
                                 width: 60,
                               )
                             : null,
-                        trailing:
-                            Text(sourceInfo.duration.toHumanReadableString()),
+                        trailing: Text(
+                          Duration(milliseconds: sourceInfo.duration)
+                              .toHumanReadableString(),
+                        ),
                         subtitle: Text(
                           sourceInfo.artists.join(", "),
                           maxLines: 1,

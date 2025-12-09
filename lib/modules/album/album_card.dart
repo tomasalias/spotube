@@ -88,12 +88,12 @@ class AlbumCard extends HookConsumerWidget {
           final remotePlayback = ref.read(connectProvider.notifier);
           await remotePlayback.load(
             WebSocketLoadEventData.album(
-              tracks: fetchedTracks,
+              tracks: fetchedTracks.union(),
               collection: album,
             ),
           );
         } else {
-          await playlistNotifier.load(fetchedTracks, autoPlay: true);
+          await playlistNotifier.load(fetchedTracks.union(), autoPlay: true);
           playlistNotifier.addCollection(album.id);
           historyNotifier.addAlbums([album]);
         }
@@ -123,7 +123,9 @@ class AlbumCard extends HookConsumerWidget {
         final fetchedTracks = await fetchAllTrack();
 
         if (fetchedTracks.isEmpty) return;
-        playlistNotifier.addTracks(fetchedTracks);
+        playlistNotifier.addTracks(
+          fetchedTracks.union(),
+        );
         playlistNotifier.addCollection(album.id);
         historyNotifier.addAlbums([album]);
         if (context.mounted) {

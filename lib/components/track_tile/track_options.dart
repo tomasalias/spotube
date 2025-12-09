@@ -10,7 +10,7 @@ import 'package:spotube/extensions/context.dart';
 import 'package:spotube/models/metadata/metadata.dart';
 import 'package:spotube/provider/track_options/track_options_provider.dart';
 
-/// [track] must be a [SpotubeFullTrackObject] or [SpotubeLocalTrackObject]
+/// [track] must be a [SpotubeTrackObject] or [SpotubeLocalTrackObject]
 class TrackOptions extends HookConsumerWidget {
   final SpotubeTrackObject track;
   final bool userPlaylist;
@@ -26,8 +26,8 @@ class TrackOptions extends HookConsumerWidget {
     this.icon,
     this.onTapItem,
   }) : assert(
-          track is SpotubeFullTrackObject || track is SpotubeLocalTrackObject,
-          "Track must be a SpotubeFullTrackObject, SpotubeLocalTrackObject",
+          track is SpotubeTrackObject || track is SpotubeLocalTrackObject,
+          "Track must be a SpotubeTrackObject, SpotubeLocalTrackObject",
         );
 
   @override

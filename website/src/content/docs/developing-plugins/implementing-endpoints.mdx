@@ -123,7 +123,7 @@ These methods are pretty self-explanatory. You need to implement them to fetch u
 | Method              | Description                                                              | Returns                                                                                                                          |
 | ------------------- | ------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------------- |
 | `me()`              | Fetches the current user's information.                                  | [`SpotubeUserObject`][SpotubeUserObject]                                                                                         |
-| `savedTracks()`     | Fetches the user's saved tracks with pagination support.                 | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject]       |
+| `savedTracks()`     | Fetches the user's saved tracks with pagination support.                 | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeTrackObject`][SpotubeTrackObject]               |
 | `savedPlaylists()`  | Fetches the user's saved playlists with pagination support.              | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject] |
 | `savedAlbums()`     | Fetches the user's saved albums with pagination support.                 | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]       |
 | `savedArtists()`    | Fetches the user's saved artists with pagination support.                | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullArtistObject`][SpotubeFullArtistObject]     |
@@ -165,12 +165,12 @@ class TrackEndpoint {
 }
 ```
 
-| Method       | Description                                                                          | Returns                                                  |
-| ------------ | ------------------------------------------------------------------------------------ | -------------------------------------------------------- |
-| `getTrack()` | Fetches track information by ID.                                                     | [SpotubeFullTrackObject][SpotubeFullTrackObject]         |
-| `save()`     | Saves the specified tracks. Accepts a list of track IDs.                             | void                                                     |
-| `unsave()`   | Removes the specified tracks from saved tracks. Accepts a list of track IDs.         | void                                                     |
-| `radio()`    | Fetches related tracks based on specified tracks. Try to return a List of 50 tracks. | [List\<SpotubeFullTrackObject\>][SpotubeFullTrackObject] |
+| Method       | Description                                                                          | Returns                                          |
+| ------------ | ------------------------------------------------------------------------------------ | ------------------------------------------------ |
+| `getTrack()` | Fetches track information by ID.                                                     | [SpotubeTrackObject][SpotubeTrackObject]         |
+| `save()`     | Saves the specified tracks. Accepts a list of track IDs.                             | void                                             |
+| `unsave()`   | Removes the specified tracks from saved tracks. Accepts a list of track IDs.         | void                                             |
+| `radio()`    | Fetches related tracks based on specified tracks. Try to return a List of 50 tracks. | [List\<SpotubeTrackObject\>][SpotubeTrackObject] |
 
 {/* Urls */}
 
@@ -208,7 +208,7 @@ class AlbumEndpoint {
 | Method       | Description                                                                              | Returns                                                                                                                    |
 | ------------ | ---------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
 | `getAlbum()` | Fetches album information by ID.                                                         | [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]                                                                         |
-| `tracks()`   | Fetches tracks of the specified album. Accepts an ID and optional pagination parameters. | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject] |
+| `tracks()`   | Fetches tracks of the specified album. Accepts an ID and optional pagination parameters. | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeTrackObject`][SpotubeTrackObject]         |
 | `releases()` | Fetches new album releases user followed artists or globally                             | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject] |
 | `save()`     | Saves the specified albums. Accepts a list of album IDs.                                 | `void`                                                                                                                     |
 | `unsave()`   | Removes the specified albums from saved albums. Accepts a list of album IDs.             | `void`                                                                                                                     |
@@ -254,7 +254,7 @@ class ArtistEndpoint {
 | ------------- | -------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------- |
 | `getArtist()` | Fetches artist information by ID.                                                      | [`SpotubeFullArtistObject`][SpotubeFullArtistObject]                                                                         |
 | `related()`   | Fetches related artists based on the specified artist ID. Accepts optional pagination. | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullArtistObject`][SpotubeFullArtistObject] |
-| `topTracks()` | Fetches top tracks of the specified artist. Accepts optional pagination.               | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject]   |
+| `topTracks()` | Fetches top tracks of the specified artist. Accepts optional pagination.               | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeTrackObject`][SpotubeTrackObject]           |
 | `albums()`    | Fetches albums of the specified artist. Accepts optional pagination.                   | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]   |
 | `save()`      | Saves the specified artists. Accepts a list of artist IDs.                             | `void`                                                                                                                       |
 | `unsave()`    | Removes the specified artists from saved artists. Accepts a list of artist IDs.        | `void`                                                                                                                       |
@@ -319,17 +319,17 @@ class PlaylistEndpoint {
 }
 ```
 
-| Method           | Description                                 | Returns                                                                                                                    |
-| ---------------- | ------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------- |
-| `getPlaylist`    | Fetches a playlist by its ID.               | [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject]                                                                   |
-| `tracks`         | Fetches tracks in a playlist.               | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject] |
-| `create`         | Creates a new playlist and returns          | [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject]                                                                   |
-| `update`         | Updates an existing playlist.               | `void`                                                                                                                     |
-| `deletePlaylist` | Deletes a playlist.                         | `void`                                                                                                                     |
-| `addTracks`      | Adds tracks to a playlist.                  | `void`                                                                                                                     |
-| `removeTracks`   | Removes tracks from a playlist.             | `void`                                                                                                                     |
-| `save`           | Saves a playlist to the user's library.     | `void`                                                                                                                     |
-| `unsave`         | Removes a playlist from the user's library. | `void`                                                                                                                     |
+| Method           | Description                                 | Returns                                                                                                            |
+| ---------------- | ------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `getPlaylist`    | Fetches a playlist by its ID.               | [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject]                                                           |
+| `tracks`         | Fetches tracks in a playlist.               | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeTrackObject`][SpotubeTrackObject] |
+| `create`         | Creates a new playlist and returns          | [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject]                                                           |
+| `update`         | Updates an existing playlist.               | `void`                                                                                                             |
+| `deletePlaylist` | Deletes a playlist.                         | `void`                                                                                                             |
+| `addTracks`      | Adds tracks to a playlist.                  | `void`                                                                                                             |
+| `removeTracks`   | Removes tracks from a playlist.             | `void`                                                                                                             |
+| `save`           | Saves a playlist to the user's library.     | `void`                                                                                                             |
+| `unsave`         | Removes a playlist from the user's library. | `void`                                                                                                             |
 
 ## SearchEndpoint
 
@@ -375,7 +375,7 @@ class SearchEndpoint {
 | `all()`       | Searches for all types of content.  | [`SpotubeSearchResponseObject`][SpotubeSearchResponseObject]                                                                     |
 | `albums()`    | Searches only for albums.           | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullAlbumObject`][SpotubeFullAlbumObject]       |
 | `artists()`   | Searches only for artists.          | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullArtistObject`][SpotubeFullArtistObject]     |
-| `tracks()`    | Searches only for tracks.           | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullTrackObject`][SpotubeFullTrackObject]       |
+| `tracks()`    | Searches only for tracks.           | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeTrackObject`][SpotubeTrackObject]               |
 | `playlists()` | Searches only for playlists.        | [`SpotubePaginationResponseObject`][SpotubePaginationResponseObject] of [`SpotubeFullPlaylistObject`][SpotubeFullPlaylistObject] |
 
 ## BrowseEndpoint
@@ -487,7 +487,7 @@ class CorePlugin {
 [SpotubePaginationResponseObject]: /docs/reference/models#pagination-response
 [SpotubeFullAlbumObject]: /docs/reference/models#spotubefullalbumobject
 [SpotubeFullArtistObject]: /docs/reference/models#spotubefullartistobject
-[SpotubeFullTrackObject]: /docs/reference/models#track
+[SpotubeTrackObject]: /docs/reference/models#track
 [SpotubeFullPlaylistObject]: /docs/reference/models#spotubefullplaylistobject
 [SpotubeSearchResponseObject]: /docs/reference/models#search-response
 [SpotubeBrowseSectionObject]: /docs/reference/models#browse-section

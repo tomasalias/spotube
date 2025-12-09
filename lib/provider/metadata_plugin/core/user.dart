@@ -12,6 +12,6 @@ final metadataPluginUserProvider = FutureProvider<SpotubeUserObject?>(
     if (!authenticated || metadataPlugin == null) {
       return null;
     }
-    return metadataPlugin.user.me();
+    return metadataPlugin.user.me(mpscTx: metadataPlugin.sender);
   },
 );

@@ -5,14 +5,14 @@ import 'package:spotube/provider/metadata_plugin/utils/common.dart';
 import 'package:spotube/provider/metadata_plugin/utils/family_paginated.dart';
 
 class MetadataPluginSearchTracksNotifier
-    extends AutoDisposeFamilyPaginatedAsyncNotifier<SpotubeFullTrackObject,
+    extends AutoDisposeFamilyPaginatedAsyncNotifier<SpotubeTrackObject,
         String> {
   MetadataPluginSearchTracksNotifier() : super();
 
   @override
   fetch(offset, limit) async {
     if (arg.isEmpty) {
-      return SpotubePaginationResponseObject<SpotubeFullTrackObject>(
+      return SpotubeFlattenedPaginationObject<SpotubeTrackObject>(
         limit: limit,
         nextOffset: null,
         total: 0,
@@ -22,12 +22,13 @@ class MetadataPluginSearchTracksNotifier
     }
 
     final tracks = await (await metadataPlugin).search.tracks(
-          arg,
+          query: arg,
           offset: offset,
           limit: limit,
+          mpscTx: await mpscTx,
         );
 
-    return tracks;
+    return tracks.flatten();
   }
 
   @override
@@ -41,6 +42,6 @@ class MetadataPluginSearchTracksNotifier
 
 final metadataPluginSearchTracksProvider =
     AutoDisposeAsyncNotifierProviderFamily<MetadataPluginSearchTracksNotifier,
-        SpotubePaginationResponseObject<SpotubeFullTrackObject>, String>(
+        SpotubeFlattenedPaginationObject<SpotubeTrackObject>, String>(
   () => MetadataPluginSearchTracksNotifier(),
 );

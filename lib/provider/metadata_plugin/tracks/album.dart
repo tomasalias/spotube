@@ -12,12 +12,13 @@ class MetadataPluginAlbumTracksNotifier
   @override
   fetch(offset, limit) async {
     final tracks = await (await metadataPlugin).album.tracks(
-          arg,
+          id: arg,
           offset: offset,
           limit: limit,
+          mpscTx: await mpscTx,
         );
 
-    return tracks;
+    return tracks.flatten();
   }
 
   @override
@@ -31,6 +32,6 @@ class MetadataPluginAlbumTracksNotifier
 
 final metadataPluginAlbumTracksProvider =
     AutoDisposeAsyncNotifierProviderFamily<MetadataPluginAlbumTracksNotifier,
-        SpotubePaginationResponseObject<SpotubeFullTrackObject>, String>(
+        SpotubeFlattenedPaginationObject<SpotubeFullTrackObject>, String>(
   () => MetadataPluginAlbumTracksNotifier(),
 );

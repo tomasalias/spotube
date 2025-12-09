@@ -69,7 +69,7 @@ class HistoryTopAlbumsNotifier extends FamilyPaginatedAsyncNotifier<
 
     final items = getAlbumsWithCount(await albumsQuery.get());
 
-    return SpotubePaginationResponseObject(
+    return SpotubeFlattenedPaginationObject(
       items: items,
       limit: limit,
       hasMore: items.length == limit,
@@ -110,7 +110,7 @@ class HistoryTopAlbumsNotifier extends FamilyPaginatedAsyncNotifier<
 
 final historyTopAlbumsProvider = AsyncNotifierProviderFamily<
     HistoryTopAlbumsNotifier,
-    SpotubePaginationResponseObject<PlaybackHistoryAlbum>,
+    SpotubeFlattenedPaginationObject<PlaybackHistoryAlbum>,
     HistoryDuration>(
   () => HistoryTopAlbumsNotifier(),
 );

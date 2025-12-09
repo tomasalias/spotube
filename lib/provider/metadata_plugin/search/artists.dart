@@ -12,7 +12,7 @@ class MetadataPluginSearchArtistsNotifier
   @override
   fetch(offset, limit) async {
     if (arg.isEmpty) {
-      return SpotubePaginationResponseObject<SpotubeFullArtistObject>(
+      return SpotubeFlattenedPaginationObject<SpotubeFullArtistObject>(
         limit: limit,
         nextOffset: null,
         total: 0,
@@ -22,12 +22,13 @@ class MetadataPluginSearchArtistsNotifier
     }
 
     final res = await (await metadataPlugin).search.artists(
-          arg,
+          query: arg,
           offset: offset,
           limit: limit,
+          mpscTx: await mpscTx,
         );
 
-    return res;
+    return res.flatten();
   }
 
   @override
@@ -41,6 +42,6 @@ class MetadataPluginSearchArtistsNotifier
 
 final metadataPluginSearchArtistsProvider =
     AutoDisposeAsyncNotifierProviderFamily<MetadataPluginSearchArtistsNotifier,
-        SpotubePaginationResponseObject<SpotubeFullArtistObject>, String>(
+        SpotubeFlattenedPaginationObject<SpotubeFullArtistObject>, String>(
   () => MetadataPluginSearchArtistsNotifier(),
 );

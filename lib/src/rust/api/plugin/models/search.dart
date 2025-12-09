@@ -24,7 +24,7 @@ sealed class SpotubeSearchResponseObject with _$SpotubeSearchResponseObject {
     required List<SpotubeSimpleAlbumObject> albums,
     required List<SpotubeFullArtistObject> artists,
     required List<SpotubeSimplePlaylistObject> playlists,
-    required List<SpotubeTrackObject> tracks,
+    required List<SpotubeFullTrackObject> tracks,
   }) = _SpotubeSearchResponseObject;
 
   factory SpotubeSearchResponseObject.fromJson(Map<String, dynamic> json) =>

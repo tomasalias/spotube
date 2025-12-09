@@ -225,7 +225,7 @@ class HomeBrowseSectionItemsRoute
   HomeBrowseSectionItemsRoute({
     _i44.Key? key,
     required String sectionId,
-    required _i43.SpotubeBrowseSectionObject<Object> section,
+    required _i43.SpotubeBrowseSectionObject section,
     List<_i41.PageRouteInfo>? children,
   }) : super(
          HomeBrowseSectionItemsRoute.name,
@@ -264,7 +264,7 @@ class HomeBrowseSectionItemsRouteArgs {
 
   final String sectionId;
 
-  final _i43.SpotubeBrowseSectionObject<Object> section;
+  final _i43.SpotubeBrowseSectionObject section;
 
   @override
   String toString() {
@@ -632,7 +632,7 @@ class SettingsMetadataProviderFormRoute
   SettingsMetadataProviderFormRoute({
     _i44.Key? key,
     required String title,
-    required List<_i43.MetadataFormFieldObject> fields,
+    required List<void> fields,
     List<_i41.PageRouteInfo>? children,
   }) : super(
          SettingsMetadataProviderFormRoute.name,
@@ -670,7 +670,7 @@ class SettingsMetadataProviderFormRouteArgs {
 
   final String title;
 
-  final List<_i43.MetadataFormFieldObject> fields;
+  final List<void> fields;
 
   @override
   String toString() {

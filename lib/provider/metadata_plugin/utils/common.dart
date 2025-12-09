@@ -8,6 +8,7 @@ import 'package:spotube/models/metadata/metadata.dart';
 import 'package:spotube/provider/metadata_plugin/metadata_plugin_provider.dart';
 import 'package:spotube/services/metadata/errors/exceptions.dart';
 import 'package:spotube/services/metadata/metadata.dart';
+import 'package:spotube/src/rust/api/plugin/plugin.dart';
 
 extension PaginationExtension<T> on AsyncValue<T> {
   bool get isLoadingNextPage => this is AsyncData && this is AsyncLoadingNext;
@@ -15,7 +16,7 @@ extension PaginationExtension<T> on AsyncValue<T> {
 
 mixin MetadataPluginMixin<K>
 // ignore: invalid_use_of_internal_member
-    on AsyncNotifierBase<SpotubePaginationResponseObject<K>> {
+    on AsyncNotifierBase<SpotubeFlattenedPaginationObject<K>> {
   Future<MetadataPlugin> get metadataPlugin async {
     final plugin = await ref.read(metadataPluginProvider.future);
 
@@ -24,6 +25,11 @@ mixin MetadataPluginMixin<K>
     }
 
     return plugin;
+  }
+
+  Future<OpaqueSender> get mpscTx async {
+    final plugin = await metadataPlugin;
+    return plugin.sender;
   }
 }
 

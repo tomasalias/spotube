@@ -7,7 +7,7 @@ final metadataPluginSupportTextProvider = FutureProvider<String>((ref) async {
   if (metadataPlugin == null) {
     throw 'No metadata plugin available';
   }
-  return await metadataPlugin.core.support;
+  return await metadataPlugin.core.support(mpscTx: metadataPlugin.sender);
 });
 
 final audioSourcePluginSupportTextProvider =
@@ -17,5 +17,5 @@ final audioSourcePluginSupportTextProvider =
   if (audioSourcePlugin == null) {
     throw 'No metadata plugin available';
   }
-  return await audioSourcePlugin.core.support;
+  return await audioSourcePlugin.core.support(mpscTx: audioSourcePlugin.sender);
 });

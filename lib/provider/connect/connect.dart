@@ -208,7 +208,7 @@ class ConnectNotifier extends AsyncNotifier<ConnectState?> {
     emit(WebSocketLoopEvent(value));
   }
 
-  Future<void> addTrack(SpotubeFullTrackObject data) async {
+  Future<void> addTrack(SpotubeTrackObject data) async {
     emit(WebSocketAddTrackEvent(data));
   }
 

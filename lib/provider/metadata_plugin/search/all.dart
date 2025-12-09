@@ -12,7 +12,8 @@ final metadataPluginSearchAllProvider =
       throw MetadataPluginException.noDefaultMetadataPlugin();
     }
 
-    return metadataPlugin.search.all(query);
+    return metadataPlugin.search
+        .all(query: query, mpscTx: metadataPlugin.sender);
   },
 );
 
@@ -22,5 +23,5 @@ final metadataPluginSearchChipsProvider = FutureProvider((ref) async {
   if (metadataPlugin == null) {
     throw MetadataPluginException.noDefaultMetadataPlugin();
   }
-  return metadataPlugin.search.chips;
+  return metadataPlugin.search.chips(mpscTx: metadataPlugin.sender);
 });

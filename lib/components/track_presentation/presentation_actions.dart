@@ -80,7 +80,7 @@ class TrackPresentationActionsSection extends HookConsumerWidget {
       required String action,
     }) async {
       final fullTrackObjects =
-          tracks.whereType<SpotubeFullTrackObject>().toList();
+          tracks.whereType<SpotubeTrackObject_Full>().toList();
       final confirmed = await showDialog<bool>(
             context: context,
             builder: (context) {
@@ -89,7 +89,7 @@ class TrackPresentationActionsSection extends HookConsumerWidget {
           ) ??
           false;
       if (confirmed != true) return;
-      downloader.addAllToQueue(fullTrackObjects);
+      downloader.addAllToQueue(fullTrackObjects.map((e) => e.field0).toList());
       notifier.deselectAllTracks();
       if (!context.mounted) return;
       showToastForAction(context, action, fullTrackObjects.length);

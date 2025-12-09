@@ -5,19 +5,20 @@ import 'package:spotube/provider/metadata_plugin/utils/family_paginated.dart';
 import 'package:spotube/provider/metadata_plugin/utils/common.dart';
 
 class MetadataPluginArtistTopTracksNotifier
-    extends AutoDisposeFamilyPaginatedAsyncNotifier<SpotubeFullTrackObject,
+    extends AutoDisposeFamilyPaginatedAsyncNotifier<SpotubeTrackObject,
         String> {
   MetadataPluginArtistTopTracksNotifier() : super();
 
   @override
   fetch(offset, limit) async {
     final tracks = await (await metadataPlugin).artist.topTracks(
-          arg,
+          id: arg,
           offset: offset,
           limit: limit,
+          mpscTx: await mpscTx,
         );
 
-    return tracks;
+    return tracks.flatten();
   }
 
   @override
@@ -32,7 +33,7 @@ class MetadataPluginArtistTopTracksNotifier
 final metadataPluginArtistTopTracksProvider =
     AutoDisposeAsyncNotifierProviderFamily<
         MetadataPluginArtistTopTracksNotifier,
-        SpotubePaginationResponseObject<SpotubeFullTrackObject>,
+        SpotubeFlattenedPaginationObject<SpotubeTrackObject>,
         String>(
   () => MetadataPluginArtistTopTracksNotifier(),
 );

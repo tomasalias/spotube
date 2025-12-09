@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart' as material;
 import 'package:collection/collection.dart';
 import 'package:flutter/material.dart' hide Page;
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:spotube/components/dialogs/prompt_dialog.dart';
 import 'package:spotube/components/track_presentation/presentation_props.dart';
@@ -50,6 +51,10 @@ class PlaylistPage extends HookConsumerWidget {
         ref.watch(metadataPluginSavedPlaylistsProvider.notifier);
 
     final isUserPlaylist = useIsUserPlaylist(ref, playlist.id);
+    final tracksMemoized = useMemoized(
+      () => tracks.asData?.value.items.union() ?? [],
+      [tracks.asData?.value],
+    );
 
     return material.RefreshIndicator.adaptive(
       onRefresh: () async {
@@ -71,14 +76,15 @@ class PlaylistPage extends HookConsumerWidget {
               ref.invalidate(metadataPluginPlaylistTracksProvider(playlist.id));
             },
             onFetchAll: () async {
-              return await tracksNotifier.fetchAll();
+              final res = await tracksNotifier.fetchAll();
+              return res.union();
             },
           ),
           title: playlist.name,
           description: playlist.description,
           owner: playlist.owner.name,
           ownerImage: playlist.owner.images.lastOrNull?.url,
-          tracks: tracks.asData?.value.items ?? [],
+          tracks: tracksMemoized,
           error: tracks.error,
           routePath: '/playlist/${playlist.id}',
           isLiked: isFavoritePlaylist.asData?.value ?? false,

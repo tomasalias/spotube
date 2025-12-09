@@ -98,7 +98,8 @@ class TrackOptionsActions {
       throw MetadataPluginException.noDefaultMetadataPlugin();
     }
 
-    final tracks = await metadataPlugin.track.radio(track.id);
+    final tracks = await metadataPlugin.track
+        .radio(id: track.id, mpscTx: metadataPlugin.sender);
 
     bool replaceQueue = false;
 
@@ -123,7 +124,7 @@ class TrackOptionsActions {
     }
 
     await playback.addTracks(
-      tracks.toList()
+      tracks.union()
         ..removeWhere((e) {
           final isDuplicate = playlist.tracks.any((t) => t.id == e.id);
           return e.id == track.id || isDuplicate;
@@ -202,14 +203,17 @@ class TrackOptionsActions {
         }
         break;
       case TrackOptionValue.favorite:
+        if (track is SpotubeTrackObject_Local) break;
         final isLikedTrack = await ref.read(
           metadataPluginIsSavedTrackProvider(track.id).future,
         );
 
         if (isLikedTrack) {
-          await favoriteTracks.removeFavorite([track]);
+          await favoriteTracks
+              .removeFavorite([track.field0 as SpotubeFullTrackObject]);
         } else {
-          await favoriteTracks.addFavorite([track]);
+          await favoriteTracks
+              .addFavorite([track.field0 as SpotubeFullTrackObject]);
         }
         break;
       case TrackOptionValue.addToPlaylist:
@@ -236,18 +240,19 @@ class TrackOptionsActions {
         actionShare(context);
         break;
       case TrackOptionValue.details:
-        if (track is! SpotubeFullTrackObject) break;
+        if (track is! SpotubeTrackObject_Full) break;
         showDialog(
           context: context,
           builder: (context) => ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 400),
-            child: TrackDetailsDialog(track: track as SpotubeFullTrackObject),
+            child: TrackDetailsDialog(
+                track: track.field0 as SpotubeFullTrackObject),
           ),
         );
         break;
       case TrackOptionValue.download:
-        if (track is SpotubeLocalTrackObject) break;
-        downloadManager.addToQueue(track as SpotubeFullTrackObject);
+        if (track is SpotubeTrackObject_Local) break;
+        downloadManager.addToQueue(track.field0 as SpotubeFullTrackObject);
         break;
       case TrackOptionValue.startRadio:
         actionStartRadio(context);

@@ -6,6 +6,7 @@ import 'package:spotube/provider/metadata_plugin/core/user.dart';
 import 'package:spotube/provider/metadata_plugin/utils/common.dart';
 import 'package:spotube/services/metadata/errors/exceptions.dart';
 import 'package:spotube/services/metadata/metadata.dart';
+import 'package:spotube/src/rust/api/plugin/plugin.dart';
 
 class MetadataPluginPlaylistNotifier
     extends AutoDisposeFamilyAsyncNotifier<SpotubeFullPlaylistObject, String> {
@@ -19,11 +20,17 @@ class MetadataPluginPlaylistNotifier
     return metadataPlugin;
   }
 
+  Future<OpaqueSender> get mpscTx async {
+    return (await metadataPlugin).sender;
+  }
+
   @override
   build(playlistId) async {
     ref.cacheFor();
 
-    return (await metadataPlugin).playlist.getPlaylist(playlistId);
+    return (await metadataPlugin)
+        .playlist
+        .getPlaylist(id: playlistId, mpscTx: await mpscTx);
   }
 
   Future<void> create({
@@ -40,12 +47,13 @@ class MetadataPluginPlaylistNotifier
     }
     state = const AsyncValue.loading();
     try {
-      final playlist = await (await metadataPlugin).playlist.create(
-            userId,
+      final playlist = await (await metadataPlugin).playlist.createPlaylist(
+            userId: userId,
             name: name,
             description: description,
             public: public,
             collaborative: collaborative,
+            mpscTx: await mpscTx,
           );
       if (playlist != null) {
         state = AsyncValue.data(playlist);
@@ -71,12 +79,13 @@ class MetadataPluginPlaylistNotifier
           collaborative == null) {
         throw Exception('No modifications provided.');
       }
-      await (await metadataPlugin).playlist.update(
-            arg,
+      await (await metadataPlugin).playlist.updatePlaylist(
+            playlistId: arg,
             name: name,
             description: description,
             public: public,
             collaborative: collaborative,
+            mpscTx: await mpscTx,
           );
       ref.invalidateSelf();
     } on Exception catch (e) {

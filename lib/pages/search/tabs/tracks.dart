@@ -8,6 +8,7 @@ import 'package:spotube/components/fallbacks/error_box.dart';
 import 'package:spotube/components/track_tile/track_tile.dart';
 import 'package:spotube/extensions/context.dart';
 import 'package:spotube/models/connect/connect.dart';
+import 'package:spotube/models/metadata/metadata.dart';
 import 'package:spotube/modules/search/loading.dart';
 import 'package:spotube/pages/search/search.dart';
 import 'package:spotube/provider/audio_player/audio_player.dart';

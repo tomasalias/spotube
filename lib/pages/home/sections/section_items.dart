@@ -28,7 +28,7 @@ class HomeBrowseSectionItemsPage extends HookConsumerWidget {
   static const name = "home_browse_section_items";
 
   final String sectionId;
-  final SpotubeBrowseSectionObject<Object> section;
+  final SpotubeBrowseSectionObject section;
   const HomeBrowseSectionItemsPage({
     super.key,
     @PathParam("sectionId") required this.sectionId,

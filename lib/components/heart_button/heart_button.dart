@@ -65,7 +65,7 @@ class HeartButton extends HookConsumerWidget {
 }
 
 class TrackHeartButton extends HookConsumerWidget {
-  final SpotubeTrackObject track;
+  final SpotubeFullTrackObject track;
   const TrackHeartButton({
     super.key,
     required this.track,

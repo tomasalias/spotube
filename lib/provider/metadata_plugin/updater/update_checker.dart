@@ -12,8 +12,10 @@ final metadataPluginUpdateCheckerProvider =
     return null;
   }
 
-  return metadataPlugin.core
-      .checkUpdate(metadataPluginConfigs.defaultMetadataPluginConfig!);
+  return metadataPlugin.core.checkUpdate(
+    pluginConfig: metadataPluginConfigs.defaultMetadataPluginConfig!,
+    mpscTx: metadataPlugin.sender,
+  );
 });
 
 final audioSourcePluginUpdateCheckerProvider =
@@ -27,6 +29,8 @@ final audioSourcePluginUpdateCheckerProvider =
     return null;
   }
 
-  return audioSourcePlugin.core
-      .checkUpdate(audioSourcePluginConfigs.defaultAudioSourcePluginConfig!);
+  return audioSourcePlugin.core.checkUpdate(
+    pluginConfig: audioSourcePluginConfigs.defaultAudioSourcePluginConfig!,
+    mpscTx: audioSourcePlugin.sender,
+  );
 });

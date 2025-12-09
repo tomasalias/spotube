@@ -13,9 +13,10 @@ class MetadataPluginSavedTracksNotifier
     final tracks = await (await metadataPlugin).user.savedTracks(
           offset: offset,
           limit: limit,
+          mpscTx: await mpscTx,
         );
 
-    return tracks;
+    return tracks.flatten();
   }
 
   @override
@@ -26,7 +27,7 @@ class MetadataPluginSavedTracksNotifier
     return await fetch(0, 20);
   }
 
-  Future<void> addFavorite(List<SpotubeTrackObject> tracks) async {
+  Future<void> addFavorite(List<SpotubeFullTrackObject> tracks) async {
     if (state.value == null) {
       return;
     }
@@ -34,22 +35,21 @@ class MetadataPluginSavedTracksNotifier
     final oldState = state.value;
     state = AsyncData(
       state.value!.copyWith(
-        items: [
-          ...tracks.whereType<SpotubeFullTrackObject>(),
-          ...state.value!.items
-        ],
+        items: [...tracks, ...state.value!.items],
       ),
     );
 
     try {
-      await (await metadataPlugin).track.save(tracks.map((e) => e.id).toList());
+      await (await metadataPlugin)
+          .track
+          .save(ids: tracks.map((e) => e.id).toList(), mpscTx: await mpscTx);
     } catch (e) {
       state = AsyncData(oldState!);
       rethrow;
     }
   }
 
-  Future<void> removeFavorite(List<SpotubeTrackObject> tracks) async {
+  Future<void> removeFavorite(List<SpotubeFullTrackObject> tracks) async {
     if (state.value == null) {
       return;
     }
@@ -68,7 +68,7 @@ class MetadataPluginSavedTracksNotifier
     try {
       await (await metadataPlugin)
           .track
-          .unsave(tracks.map((e) => e.id).toList());
+          .unsave(ids: tracks.map((e) => e.id).toList(), mpscTx: await mpscTx);
     } catch (e) {
       state = AsyncData(oldState!);
       rethrow;
@@ -78,7 +78,7 @@ class MetadataPluginSavedTracksNotifier
 
 final metadataPluginSavedTracksProvider = AutoDisposeAsyncNotifierProvider<
     MetadataPluginSavedTracksNotifier,
-    SpotubePaginationResponseObject<SpotubeFullTrackObject>>(
+    SpotubeFlattenedPaginationObject<SpotubeFullTrackObject>>(
   () => MetadataPluginSavedTracksNotifier(),
 );
 

@@ -1,94 +1,37 @@
 part of 'metadata.dart';
 
-@freezed
-class SpotubeTrackObject with _$SpotubeTrackObject {
-  factory SpotubeTrackObject.local({
-    required String id,
-    required String name,
-    required String externalUri,
-    @Default([]) List<SpotubeSimpleArtistObject> artists,
-    required SpotubeSimpleAlbumObject album,
-    required int durationMs,
-    required String path,
-  }) = SpotubeLocalTrackObject;
-
-  factory SpotubeTrackObject.full({
-    required String id,
-    required String name,
-    required String externalUri,
-    @Default([]) List<SpotubeSimpleArtistObject> artists,
-    required SpotubeSimpleAlbumObject album,
-    required int durationMs,
-    required String isrc,
-    required bool explicit,
-  }) = SpotubeFullTrackObject;
-
-  factory SpotubeTrackObject.localTrackFromFile(
-    File file, {
-    Metadata? metadata,
-    String? art,
-  }) {
-    return SpotubeLocalTrackObject(
-      id: file.absolute.path,
-      name: metadata?.title ?? basenameWithoutExtension(file.path),
-      externalUri: "file://${file.absolute.path}",
-      artists: metadata?.artist?.split(",").map((a) {
-            return SpotubeSimpleArtistObject(
-              id: a.trim(),
-              name: a.trim(),
-              externalUri: "file://${file.absolute.path}",
-            );
-          }).toList() ??
-          [
-            SpotubeSimpleArtistObject(
-              id: "unknown",
-              name: "Unknown Artist",
-              externalUri: "file://${file.absolute.path}",
-            ),
-          ],
-      album: SpotubeSimpleAlbumObject(
-        albumType: SpotubeAlbumType.album,
-        id: metadata?.album ?? "unknown",
-        name: metadata?.album ?? "Unknown Album",
-        externalUri: "file://${file.absolute.path}",
-        artists: [
-          SpotubeSimpleArtistObject(
-            id: metadata?.albumArtist ?? "unknown",
-            name: metadata?.albumArtist ?? "Unknown Artist",
-            externalUri: "file://${file.absolute.path}",
-          ),
-        ],
-        releaseDate:
-            metadata?.year != null ? "${metadata!.year}-01-01" : "1970-01-01",
-        images: [
-          if (art != null)
-            SpotubeImageObject(
-              url: art,
-              width: 300,
-              height: 300,
-            ),
-        ],
-      ),
-      durationMs: metadata?.durationMs?.toInt() ?? 0,
-      path: file.path,
-    );
-  }
-
-  factory SpotubeTrackObject.fromJson(Map<String, dynamic> json) =>
-      _$SpotubeTrackObjectFromJson(
-        json.containsKey("path")
-            ? {...json, "runtimeType": "local"}
-            : {...json, "runtimeType": "full"},
-      );
-}
-
 extension AsMediaListSpotubeTrackObject on Iterable<SpotubeTrackObject> {
   List<SpotubeMedia> asMediaList() {
     return map((track) => SpotubeMedia(track)).toList();
   }
 }
 
-extension ToMetadataSpotubeFullTrackObject on SpotubeFullTrackObject {
+extension FullAsPartialSpotubeTrackObject on Iterable<SpotubeFullTrackObject>? {
+  List<SpotubeTrackObject>? union() {
+    return this?.map((track) => SpotubeTrackObject.full(track)).toList();
+  }
+}
+
+extension FullAsSpotubeTrackObject on Iterable<SpotubeFullTrackObject> {
+  List<SpotubeTrackObject> union() {
+    return map((track) => SpotubeTrackObject.full(track)).toList();
+  }
+}
+
+extension LocalAsPartialSpotubeTrackObject
+    on Iterable<SpotubeLocalTrackObject>? {
+  List<SpotubeTrackObject>? union() {
+    return this?.map((track) => SpotubeTrackObject.local(track)).toList();
+  }
+}
+
+extension LocalAsSpotubeTrackObject on Iterable<SpotubeLocalTrackObject> {
+  List<SpotubeTrackObject> union() {
+    return map((track) => SpotubeTrackObject.local(track)).toList();
+  }
+}
+
+extension ToMetadataSpotubeFullTrackObject on SpotubeTrackObject {
   Metadata toMetadata({
     required int fileLength,
     Uint8List? imageBytes,
@@ -116,4 +59,92 @@ extension ToMetadataSpotubeFullTrackObject on SpotubeFullTrackObject {
           : null,
     );
   }
+}
+
+extension CommonTrackProperties on SpotubeTrackObject {
+  String get id => when(
+        full: (track) => track.id,
+        local: (track) => track.id,
+      );
+
+  String get name => when(
+        full: (track) => track.name,
+        local: (track) => track.name,
+      );
+
+  String get externalUri => when(
+        full: (track) => track.externalUri,
+        local: (track) => track.externalUri,
+      );
+
+  int get durationMs => when(
+        full: (track) => track.durationMs,
+        local: (track) => track.durationMs,
+      );
+
+  SpotubeSimpleAlbumObject get album => when(
+        full: (track) => track.album,
+        local: (track) => track.album,
+      );
+  List<SpotubeSimpleArtistObject> get artists => when(
+        full: (track) => track.artists,
+        local: (track) => track.artists,
+      );
+}
+
+SpotubeLocalTrackObject localTrackFromFile(
+  File file, {
+  Metadata? metadata,
+  String? art,
+}) {
+  return SpotubeLocalTrackObject(
+    typeName: "track_local",
+    id: file.absolute.path,
+    name: metadata?.title ?? basenameWithoutExtension(file.path),
+    externalUri: "file://${file.absolute.path}",
+    artists: metadata?.artist?.split(",").map((a) {
+          return SpotubeSimpleArtistObject(
+            typeName: "artist_simple",
+            id: a.trim(),
+            name: a.trim(),
+            externalUri: "file://${file.absolute.path}",
+          );
+        }).toList() ??
+        [
+          SpotubeSimpleArtistObject(
+            typeName: "artist_simple",
+            id: "unknown",
+            name: "Unknown Artist",
+            externalUri: "file://${file.absolute.path}",
+          ),
+        ],
+    album: SpotubeSimpleAlbumObject(
+      typeName: "album_simple",
+      albumType: SpotubeAlbumType.album,
+      id: metadata?.album ?? "unknown",
+      name: metadata?.album ?? "Unknown Album",
+      externalUri: "file://${file.absolute.path}",
+      artists: [
+        SpotubeSimpleArtistObject(
+          typeName: "artist_simple",
+          id: metadata?.albumArtist ?? "unknown",
+          name: metadata?.albumArtist ?? "Unknown Artist",
+          externalUri: "file://${file.absolute.path}",
+        ),
+      ],
+      releaseDate:
+          metadata?.year != null ? "${metadata!.year}-01-01" : "1970-01-01",
+      images: [
+        if (art != null)
+          SpotubeImageObject(
+            typeName: "image",
+            url: art,
+            width: 300,
+            height: 300,
+          ),
+      ],
+    ),
+    durationMs: metadata?.durationMs?.toInt() ?? 0,
+    path: file.path,
+  );
 }

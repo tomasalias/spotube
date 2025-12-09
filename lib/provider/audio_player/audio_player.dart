@@ -22,16 +22,16 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
     assert(
       tracks.every(
         (track) =>
-            track is SpotubeFullTrackObject || track is SpotubeLocalTrackObject,
+            track is SpotubeTrackObject || track is SpotubeLocalTrackObject,
       ),
-      'All tracks must be either SpotubeFullTrackObject or SpotubeLocalTrackObject',
+      'All tracks must be either SpotubeTrackObject or SpotubeLocalTrackObject',
     );
   }
 
   void _assertAllowedTrack(SpotubeTrackObject tracks) {
     assert(
-      tracks is SpotubeFullTrackObject || tracks is SpotubeLocalTrackObject,
-      'Track must be either SpotubeFullTrackObject or SpotubeLocalTrackObject',
+      tracks is SpotubeTrackObject || tracks is SpotubeLocalTrackObject,
+      'Track must be either SpotubeTrackObject or SpotubeLocalTrackObject',
     );
   }
 
@@ -345,9 +345,12 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
       return false;
     }
 
-    return a is SpotubeLocalTrackObject && b is SpotubeLocalTrackObject
-        ? a.path == b.path
-        : a.id == b.id;
+    return switch ((a.field0, b.field0)) {
+      (SpotubeLocalTrackObject(), SpotubeLocalTrackObject()) =>
+        (a.field0 as SpotubeLocalTrackObject).path ==
+            (b.field0 as SpotubeLocalTrackObject).path,
+      _ => a.id == b.id,
+    };
   }
 
   Future<void> load(
@@ -366,12 +369,10 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
     // Giving the initial track a boost so MediaKit won't skip
     // because of timeout
     final intendedActiveTrack = medias.elementAt(initialIndex);
-    if (intendedActiveTrack.track is! SpotubeLocalTrackObject) {
-      ref.read(
-        sourcedTrackProvider(
-          intendedActiveTrack.track as SpotubeFullTrackObject,
-        ).future,
-      );
+    if (intendedActiveTrack.track is SpotubeTrackObject_Full) {
+      ref.read(sourcedTrackProvider(
+              intendedActiveTrack.track.field0 as SpotubeFullTrackObject)
+          .future);
     }
 
     if (medias.isEmpty) return;
@@ -398,7 +399,7 @@ class AudioPlayerNotifier extends Notifier<AudioPlayerState> {
   }
 
   Future<void> swapActiveSource() async {
-    if (state.tracks.isEmpty || state.activeTrack is! SpotubeFullTrackObject) {
+    if (state.tracks.isEmpty || state.activeTrack is! SpotubeTrackObject) {
       return;
     }
 

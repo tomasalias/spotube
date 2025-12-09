@@ -37,7 +37,8 @@ class TrackDetailsDialog extends HookConsumerWidget {
       //   style: const TextStyle(color: Colors.blue),
       // ),
       context.l10n.duration: sourcedTrack.asData != null
-          ? sourcedTrack.asData!.value.info.duration.toHumanReadableString()
+          ? Duration(milliseconds: sourcedTrack.asData!.value.info.duration)
+              .toHumanReadableString()
           : Duration(milliseconds: track.durationMs).toHumanReadableString(),
       if (track.album.releaseDate != null)
         context.l10n.released: track.album.releaseDate,

@@ -80,7 +80,7 @@ sealed class SpotubeAudioSourceMatchObject
     required String id,
     required String title,
     required List<String> artists,
-    required BigInt duration,
+    required int duration,
     String? thumbnail,
     required String externalUri,
   }) = _SpotubeAudioSourceMatchObject;

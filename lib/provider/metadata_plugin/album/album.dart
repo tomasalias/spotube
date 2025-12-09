@@ -15,6 +15,6 @@ final metadataPluginAlbumProvider =
       throw MetadataPluginException.noDefaultMetadataPlugin();
     }
 
-    return metadataPlugin.album.getAlbum(id);
+    return metadataPlugin.album.getAlbum(id: id, mpscTx: metadataPlugin.sender);
   },
 );

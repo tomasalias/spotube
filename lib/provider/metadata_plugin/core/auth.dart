@@ -9,7 +9,7 @@ class MetadataPluginAuthenticatedNotifier extends AsyncNotifier<bool> {
   FutureOr<bool> build() async {
     final defaultPluginConfig = ref.watch(metadataPluginsProvider);
     if (defaultPluginConfig.asData?.value.defaultMetadataPluginConfig?.abilities
-            .contains(PluginAbilities.authentication) !=
+            .contains(PluginAbility.authentication) !=
         true) {
       return false;
     }
@@ -19,15 +19,16 @@ class MetadataPluginAuthenticatedNotifier extends AsyncNotifier<bool> {
       return false;
     }
 
-    final sub = defaultPlugin.auth.authStateStream.listen((event) {
-      state = AsyncData(defaultPlugin.auth.isAuthenticated());
+    final sub = defaultPlugin.authState().listen((event) async {
+      state = AsyncData(await defaultPlugin.auth
+          .isAuthenticated(mpscTx: defaultPlugin.sender));
     });
 
     ref.onDispose(() {
       sub.cancel();
     });
 
-    return defaultPlugin.auth.isAuthenticated();
+    return defaultPlugin.auth.isAuthenticated(mpscTx: defaultPlugin.sender);
   }
 }
 
@@ -42,7 +43,7 @@ class AudioSourcePluginAuthenticatedNotifier extends AsyncNotifier<bool> {
     final defaultPluginConfig = ref.watch(metadataPluginsProvider);
     if (defaultPluginConfig
             .asData?.value.defaultAudioSourcePluginConfig?.abilities
-            .contains(PluginAbilities.authentication) !=
+            .contains(PluginAbility.authentication) !=
         true) {
       return false;
     }
@@ -52,15 +53,16 @@ class AudioSourcePluginAuthenticatedNotifier extends AsyncNotifier<bool> {
       return false;
     }
 
-    final sub = defaultPlugin.auth.authStateStream.listen((event) {
-      state = AsyncData(defaultPlugin.auth.isAuthenticated());
+    final sub = defaultPlugin.authState().listen((event) async {
+      state = AsyncData(await defaultPlugin.auth
+          .isAuthenticated(mpscTx: defaultPlugin.sender));
     });
 
     ref.onDispose(() {
       sub.cancel();
     });
 
-    return defaultPlugin.auth.isAuthenticated();
+    return defaultPlugin.auth.isAuthenticated(mpscTx: defaultPlugin.sender);
   }
 }
 

@@ -12,21 +12,53 @@ import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'track.freezed.dart';
 part 'track.g.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `fmt`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `clone`, `clone`, `clone`, `fmt`, `fmt`, `fmt`
 
 @freezed
-sealed class SpotubeTrackObject with _$SpotubeTrackObject {
-  const factory SpotubeTrackObject({
+sealed class SpotubeFullTrackObject with _$SpotubeFullTrackObject {
+  const factory SpotubeFullTrackObject({
     required String typeName,
     required String id,
     required String name,
     required String externalUri,
     required List<SpotubeSimpleArtistObject> artists,
     required SpotubeSimpleAlbumObject album,
-    required BigInt durationMs,
+    required int durationMs,
     required String isrc,
     required bool explicit,
-  }) = _SpotubeTrackObject;
+  }) = _SpotubeFullTrackObject;
+
+  factory SpotubeFullTrackObject.fromJson(Map<String, dynamic> json) =>
+      _$SpotubeFullTrackObjectFromJson(json);
+}
+
+@freezed
+sealed class SpotubeLocalTrackObject with _$SpotubeLocalTrackObject {
+  const factory SpotubeLocalTrackObject({
+    required String typeName,
+    required String id,
+    required String name,
+    required String externalUri,
+    required List<SpotubeSimpleArtistObject> artists,
+    required SpotubeSimpleAlbumObject album,
+    required int durationMs,
+    required String path,
+  }) = _SpotubeLocalTrackObject;
+
+  factory SpotubeLocalTrackObject.fromJson(Map<String, dynamic> json) =>
+      _$SpotubeLocalTrackObjectFromJson(json);
+}
+
+@freezed
+sealed class SpotubeTrackObject with _$SpotubeTrackObject {
+  const SpotubeTrackObject._();
+
+  const factory SpotubeTrackObject.full(
+    SpotubeFullTrackObject field0,
+  ) = SpotubeTrackObject_Full;
+  const factory SpotubeTrackObject.local(
+    SpotubeLocalTrackObject field0,
+  ) = SpotubeTrackObject_Local;
 
   factory SpotubeTrackObject.fromJson(Map<String, dynamic> json) =>
       _$SpotubeTrackObjectFromJson(json);

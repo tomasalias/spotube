@@ -62,7 +62,7 @@ class MetadataPluginRepositoriesNotifier
       return _hasMore[response.requestOptions.uri.host] ?? false;
     });
 
-    return SpotubePaginationResponseObject(
+    return SpotubeFlattenedPaginationObject(
       items: repos,
       total: responses.fold<int>(
         0,
@@ -85,6 +85,6 @@ class MetadataPluginRepositoriesNotifier
 
 final metadataPluginRepositoriesProvider = AsyncNotifierProvider<
     MetadataPluginRepositoriesNotifier,
-    SpotubePaginationResponseObject<MetadataPluginRepository>>(
+    SpotubeFlattenedPaginationObject<MetadataPluginRepository>>(
   () => MetadataPluginRepositoriesNotifier(),
 );

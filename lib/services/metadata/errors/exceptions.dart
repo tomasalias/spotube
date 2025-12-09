@@ -64,9 +64,9 @@ class MetadataPluginException implements Exception {
           'Same plugin already exists with the same name and version.',
           errorCode: MetadataPluginErrorCode.duplicatePlugin,
         );
-  MetadataPluginException.pluginByteCodeFileNotFound()
+  MetadataPluginException.pluginSourceCodeFileNotFound()
       : this._(
-          'Plugin byte code file, plugin.out not found. Please ensure the plugin is correctly packaged.',
+          'Plugin byte code file, plugin.js not found. Please ensure the plugin is correctly packaged.',
           errorCode: MetadataPluginErrorCode.pluginByteCodeFileNotFound,
         );
   MetadataPluginException.noDefaultMetadataPlugin()

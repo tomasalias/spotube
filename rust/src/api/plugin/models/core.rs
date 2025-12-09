@@ -1,3 +1,4 @@
+use flutter_rust_bridge::frb;
 use heck::ToKebabCase;
 use serde::{Deserialize, Serialize};
 
@@ -23,6 +24,7 @@ pub enum PluginAbility {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct PluginConfiguration {
     pub name: String,
     pub description: String,
@@ -41,6 +43,7 @@ pub struct PluginConfiguration {
 }
 
 impl PluginConfiguration {
+    #[frb(sync)]
     pub fn slug(&self) -> String {
         self.name.to_kebab_case()
     }
@@ -48,6 +51,7 @@ impl PluginConfiguration {
 
 #[derive(Debug, Clone, PartialEq, Eq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
+#[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct PluginUpdateAvailable {
     pub download_url: String,
     pub version: String,
@@ -55,24 +59,27 @@ pub struct PluginUpdateAvailable {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct ScrobbleArtist {
     pub id: String,
     pub name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct ScrobbleAlbum {
     pub id: String,
     pub name: String,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct ScrobbleDetails {
     pub id: String,
     pub title: String,
     pub artists: Vec<ScrobbleArtist>,
     pub album: ScrobbleAlbum,
-    pub timestamp: Option<i64>,
+    pub timestamp: Option<i32>,
     pub duration_ms: Option<u32>,
     pub isrc: Option<String>,
 }

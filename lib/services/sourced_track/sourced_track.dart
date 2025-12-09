@@ -49,7 +49,7 @@ class SourcedTrack extends BasicSourcedTrack {
     final cachedSource = await (database.select(database.sourceMatchTable)
           ..where((s) =>
               s.trackId.equals(query.id) &
-              s.sourceType.equals(audioSourceConfig.slug))
+              s.sourceType.equals(audioSourceConfig.slug()))
           ..limit(1)
           ..orderBy([
             (s) =>
@@ -68,17 +68,18 @@ class SourcedTrack extends BasicSourcedTrack {
             SourceMatchTableCompanion.insert(
               trackId: query.id,
               sourceInfo: Value(jsonEncode(siblings.first)),
-              sourceType: audioSourceConfig.slug,
+              sourceType: audioSourceConfig.slug(),
             ),
           );
 
-      final manifest = await audioSource.audioSource.streams(siblings.first);
+      final manifest = await audioSource.audioSource
+          .streams(matched: siblings.first, mpscTx: audioSource.sender);
 
       return SourcedTrack(
         ref: ref,
         siblings: siblings.skip(1).toList(),
         info: siblings.first,
-        source: audioSourceConfig.slug,
+        source: audioSourceConfig.slug(),
         sources: manifest,
         query: query,
       );
@@ -86,7 +87,8 @@ class SourcedTrack extends BasicSourcedTrack {
     final item = SpotubeAudioSourceMatchObject.fromJson(
       jsonDecode(cachedSource.sourceInfo),
     );
-    final manifest = await audioSource.audioSource.streams(item);
+    final manifest = await audioSource.audioSource
+        .streams(matched: item, mpscTx: audioSource.sender);
 
     final sourcedTrack = SourcedTrack(
       ref: ref,
@@ -94,7 +96,7 @@ class SourcedTrack extends BasicSourcedTrack {
       sources: manifest,
       info: item,
       query: query,
-      source: audioSourceConfig.slug,
+      source: audioSourceConfig.slug(),
     );
 
     AppLogger.log.i("${query.name}: ${sourcedTrack.url}");
@@ -163,7 +165,8 @@ class SourcedTrack extends BasicSourcedTrack {
 
     final videoResults = <SpotubeAudioSourceMatchObject>[];
 
-    final searchResults = await audioSource.audioSource.matches(query);
+    final searchResults = await audioSource.audioSource
+        .matches(track: query, mpscTx: audioSource.sender);
 
     if (ServiceUtils.onlyContainsEnglish(query.name)) {
       videoResults.addAll(searchResults);
@@ -214,7 +217,10 @@ class SourcedTrack extends BasicSourcedTrack {
     final newSiblings = siblings.where((s) => s.id != sibling.id).toList()
       ..insert(0, info);
 
-    final manifest = await audioSource.audioSource.streams(newSourceInfo);
+    final manifest = await audioSource.audioSource.streams(
+      matched: newSourceInfo,
+      mpscTx: audioSource.sender,
+    );
 
     final database = ref.read(databaseProvider);
 
@@ -223,7 +229,7 @@ class SourcedTrack extends BasicSourcedTrack {
           ..where(
             (table) =>
                 table.trackId.equals(query.id) &
-                table.sourceType.equals(audioSourceConfig.slug),
+                table.sourceType.equals(audioSourceConfig.slug()),
           ))
         .go();
 
@@ -231,7 +237,7 @@ class SourcedTrack extends BasicSourcedTrack {
           SourceMatchTableCompanion.insert(
             trackId: query.id,
             sourceInfo: Value(jsonEncode(sibling)),
-            sourceType: audioSourceConfig.slug,
+            sourceType: audioSourceConfig.slug(),
             createdAt: Value(DateTime.now()),
           ),
           mode: InsertMode.replace,
@@ -281,7 +287,10 @@ class SourcedTrack extends BasicSourcedTrack {
     AppLogger.log.d(stringBuffer.toString());
 
     if (validStreams.isEmpty) {
-      validStreams = await audioSource.audioSource.streams(info);
+      validStreams = await audioSource.audioSource.streams(
+        matched: info,
+        mpscTx: audioSource.sender,
+      );
     }
 
     final sourcedTrack = SourcedTrack(

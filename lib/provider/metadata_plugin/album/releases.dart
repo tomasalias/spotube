@@ -6,13 +6,14 @@ import 'package:spotube/provider/metadata_plugin/utils/paginated.dart';
 class MetadataPluginAlbumReleasesNotifier
     extends PaginatedAsyncNotifier<SpotubeSimpleAlbumObject> {
   @override
-  Future<SpotubePaginationResponseObject<SpotubeSimpleAlbumObject>> fetch(
+  Future<SpotubeFlattenedPaginationObject<SpotubeSimpleAlbumObject>> fetch(
     int offset,
     int limit,
   ) async {
     return await (await metadataPlugin)
         .album
-        .releases(limit: limit, offset: offset);
+        .releases(mpscTx: await mpscTx, limit: limit, offset: offset)
+        .then((a) => a.flatten());
   }
 
   @override
@@ -24,6 +25,6 @@ class MetadataPluginAlbumReleasesNotifier
 
 final metadataPluginAlbumReleasesProvider = AsyncNotifierProvider<
     MetadataPluginAlbumReleasesNotifier,
-    SpotubePaginationResponseObject<SpotubeSimpleAlbumObject>>(
+    SpotubeFlattenedPaginationObject<SpotubeSimpleAlbumObject>>(
   () => MetadataPluginAlbumReleasesNotifier(),
 );

@@ -35,7 +35,7 @@ sealed class SpotubePaginationResponseObjectItem
   const SpotubePaginationResponseObjectItem._();
 
   const factory SpotubePaginationResponseObjectItem.track(
-    SpotubeTrackObject field0,
+    SpotubeFullTrackObject field0,
   ) = SpotubePaginationResponseObjectItem_Track;
   const factory SpotubePaginationResponseObjectItem.playlistFull(
     SpotubeFullPlaylistObject field0,

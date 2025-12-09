@@ -7,10 +7,12 @@ import 'package:spotube/components/dialogs/select_device_dialog.dart';
 import 'package:spotube/components/track_tile/track_tile.dart';
 import 'package:spotube/extensions/context.dart';
 import 'package:spotube/models/connect/connect.dart';
+import 'package:spotube/models/metadata/metadata.dart';
 import 'package:spotube/pages/search/search.dart';
 import 'package:spotube/provider/connect/connect.dart';
 import 'package:spotube/provider/audio_player/audio_player.dart';
 import 'package:spotube/provider/metadata_plugin/search/all.dart';
+import 'package:spotube/src/rust/api/plugin/models/track.dart';
 
 class SearchTracksSection extends HookConsumerWidget {
   const SearchTracksSection({
@@ -41,7 +43,8 @@ class SearchTracksSection extends HookConsumerWidget {
         if (search.isLoading)
           const CircularProgressIndicator()
         else
-          ...tracks.mapIndexed((i, track) {
+          ...tracks.mapIndexed((i, mehTrack) {
+            final track = SpotubeTrackObject.full(mehTrack);
             return TrackTile(
               index: i,
               track: track,

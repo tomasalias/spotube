@@ -138,9 +138,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int dco_decode_box_autoadd_i_32(dynamic raw);
 
   @protected
-  PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw);
-
-  @protected
   PluginAlbumSender dco_decode_box_autoadd_plugin_album_sender(dynamic raw);
 
   @protected
@@ -216,6 +213,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dynamic raw);
 
   @protected
+  SpotubeFullTrackObject dco_decode_box_autoadd_spotube_full_track_object(
+      dynamic raw);
+
+  @protected
+  SpotubeLocalTrackObject dco_decode_box_autoadd_spotube_local_track_object(
+      dynamic raw);
+
+  @protected
   SpotubeSimpleAlbumObject dco_decode_box_autoadd_spotube_simple_album_object(
       dynamic raw);
 
@@ -228,9 +233,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dco_decode_box_autoadd_spotube_simple_playlist_object(dynamic raw);
 
   @protected
-  SpotubeTrackObject dco_decode_box_autoadd_spotube_track_object(dynamic raw);
-
-  @protected
   int dco_decode_box_autoadd_u_32(dynamic raw);
 
   @protected
@@ -238,9 +240,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int dco_decode_i_32(dynamic raw);
-
-  @protected
-  PlatformInt64 dco_decode_i_64(dynamic raw);
 
   @protected
   List<String> dco_decode_list_String(dynamic raw);
@@ -266,6 +265,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dco_decode_list_spotube_audio_lossy_container_quality(dynamic raw);
 
   @protected
+  List<SpotubeAudioSourceContainerPreset>
+      dco_decode_list_spotube_audio_source_container_preset(dynamic raw);
+
+  @protected
   List<SpotubeAudioSourceMatchObject>
       dco_decode_list_spotube_audio_source_match_object(dynamic raw);
 
@@ -279,6 +282,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<SpotubeFullArtistObject> dco_decode_list_spotube_full_artist_object(
+      dynamic raw);
+
+  @protected
+  List<SpotubeFullTrackObject> dco_decode_list_spotube_full_track_object(
       dynamic raw);
 
   @protected
@@ -301,9 +308,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dco_decode_list_spotube_simple_playlist_object(dynamic raw);
 
   @protected
-  List<SpotubeTrackObject> dco_decode_list_spotube_track_object(dynamic raw);
-
-  @protected
   List<SpotubeUserObject> dco_decode_list_spotube_user_object(dynamic raw);
 
   @protected
@@ -317,9 +321,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int? dco_decode_opt_box_autoadd_i_32(dynamic raw);
-
-  @protected
-  PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw);
 
   @protected
   PluginUpdateAvailable? dco_decode_opt_box_autoadd_plugin_update_available(
@@ -432,7 +433,13 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       dynamic raw);
 
   @protected
+  SpotubeFullTrackObject dco_decode_spotube_full_track_object(dynamic raw);
+
+  @protected
   SpotubeImageObject dco_decode_spotube_image_object(dynamic raw);
+
+  @protected
+  SpotubeLocalTrackObject dco_decode_spotube_local_track_object(dynamic raw);
 
   @protected
   SpotubeMediaCompressionType dco_decode_spotube_media_compression_type(
@@ -469,9 +476,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int dco_decode_u_32(dynamic raw);
-
-  @protected
-  BigInt dco_decode_u_64(dynamic raw);
 
   @protected
   int dco_decode_u_8(dynamic raw);
@@ -571,9 +575,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   int sse_decode_box_autoadd_i_32(SseDeserializer deserializer);
 
   @protected
-  PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer);
-
-  @protected
   PluginAlbumSender sse_decode_box_autoadd_plugin_album_sender(
       SseDeserializer deserializer);
 
@@ -663,6 +664,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  SpotubeFullTrackObject sse_decode_box_autoadd_spotube_full_track_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeLocalTrackObject sse_decode_box_autoadd_spotube_local_track_object(
+      SseDeserializer deserializer);
+
+  @protected
   SpotubeSimpleAlbumObject sse_decode_box_autoadd_spotube_simple_album_object(
       SseDeserializer deserializer);
 
@@ -676,10 +685,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  SpotubeTrackObject sse_decode_box_autoadd_spotube_track_object(
-      SseDeserializer deserializer);
-
-  @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer);
 
   @protected
@@ -687,9 +692,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int sse_decode_i_32(SseDeserializer deserializer);
-
-  @protected
-  PlatformInt64 sse_decode_i_64(SseDeserializer deserializer);
 
   @protected
   List<String> sse_decode_list_String(SseDeserializer deserializer);
@@ -719,6 +721,11 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
+  List<SpotubeAudioSourceContainerPreset>
+      sse_decode_list_spotube_audio_source_container_preset(
+          SseDeserializer deserializer);
+
+  @protected
   List<SpotubeAudioSourceMatchObject>
       sse_decode_list_spotube_audio_source_match_object(
           SseDeserializer deserializer);
@@ -735,6 +742,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   List<SpotubeFullArtistObject> sse_decode_list_spotube_full_artist_object(
+      SseDeserializer deserializer);
+
+  @protected
+  List<SpotubeFullTrackObject> sse_decode_list_spotube_full_track_object(
       SseDeserializer deserializer);
 
   @protected
@@ -760,10 +771,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
           SseDeserializer deserializer);
 
   @protected
-  List<SpotubeTrackObject> sse_decode_list_spotube_track_object(
-      SseDeserializer deserializer);
-
-  @protected
   List<SpotubeUserObject> sse_decode_list_spotube_user_object(
       SseDeserializer deserializer);
 
@@ -778,9 +785,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int? sse_decode_opt_box_autoadd_i_32(SseDeserializer deserializer);
-
-  @protected
-  PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer);
 
   @protected
   PluginUpdateAvailable? sse_decode_opt_box_autoadd_plugin_update_available(
@@ -909,7 +913,15 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SseDeserializer deserializer);
 
   @protected
+  SpotubeFullTrackObject sse_decode_spotube_full_track_object(
+      SseDeserializer deserializer);
+
+  @protected
   SpotubeImageObject sse_decode_spotube_image_object(
+      SseDeserializer deserializer);
+
+  @protected
+  SpotubeLocalTrackObject sse_decode_spotube_local_track_object(
       SseDeserializer deserializer);
 
   @protected
@@ -951,9 +963,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   int sse_decode_u_32(SseDeserializer deserializer);
-
-  @protected
-  BigInt sse_decode_u_64(SseDeserializer deserializer);
 
   @protected
   int sse_decode_u_8(SseDeserializer deserializer);
@@ -1055,10 +1064,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   void sse_encode_box_autoadd_i_32(int self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_i_64(
-      PlatformInt64 self, SseSerializer serializer);
-
-  @protected
   void sse_encode_box_autoadd_plugin_album_sender(
       PluginAlbumSender self, SseSerializer serializer);
 
@@ -1143,6 +1148,14 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SpotubeFullPlaylistObject self, SseSerializer serializer);
 
   @protected
+  void sse_encode_box_autoadd_spotube_full_track_object(
+      SpotubeFullTrackObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_box_autoadd_spotube_local_track_object(
+      SpotubeLocalTrackObject self, SseSerializer serializer);
+
+  @protected
   void sse_encode_box_autoadd_spotube_simple_album_object(
       SpotubeSimpleAlbumObject self, SseSerializer serializer);
 
@@ -1155,10 +1168,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SpotubeSimplePlaylistObject self, SseSerializer serializer);
 
   @protected
-  void sse_encode_box_autoadd_spotube_track_object(
-      SpotubeTrackObject self, SseSerializer serializer);
-
-  @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer);
 
   @protected
@@ -1166,9 +1175,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_i_32(int self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_String(List<String> self, SseSerializer serializer);
@@ -1199,6 +1205,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<SpotubeAudioLossyContainerQuality> self, SseSerializer serializer);
 
   @protected
+  void sse_encode_list_spotube_audio_source_container_preset(
+      List<SpotubeAudioSourceContainerPreset> self, SseSerializer serializer);
+
+  @protected
   void sse_encode_list_spotube_audio_source_match_object(
       List<SpotubeAudioSourceMatchObject> self, SseSerializer serializer);
 
@@ -1214,6 +1224,10 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
   @protected
   void sse_encode_list_spotube_full_artist_object(
       List<SpotubeFullArtistObject> self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_list_spotube_full_track_object(
+      List<SpotubeFullTrackObject> self, SseSerializer serializer);
 
   @protected
   void sse_encode_list_spotube_image_object(
@@ -1236,10 +1250,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       List<SpotubeSimplePlaylistObject> self, SseSerializer serializer);
 
   @protected
-  void sse_encode_list_spotube_track_object(
-      List<SpotubeTrackObject> self, SseSerializer serializer);
-
-  @protected
   void sse_encode_list_spotube_user_object(
       List<SpotubeUserObject> self, SseSerializer serializer);
 
@@ -1254,10 +1264,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_opt_box_autoadd_i_32(int? self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_opt_box_autoadd_i_64(
-      PlatformInt64? self, SseSerializer serializer);
 
   @protected
   void sse_encode_opt_box_autoadd_plugin_update_available(
@@ -1387,8 +1393,16 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
       SpotubeFullPlaylistObject self, SseSerializer serializer);
 
   @protected
+  void sse_encode_spotube_full_track_object(
+      SpotubeFullTrackObject self, SseSerializer serializer);
+
+  @protected
   void sse_encode_spotube_image_object(
       SpotubeImageObject self, SseSerializer serializer);
+
+  @protected
+  void sse_encode_spotube_local_track_object(
+      SpotubeLocalTrackObject self, SseSerializer serializer);
 
   @protected
   void sse_encode_spotube_media_compression_type(
@@ -1428,9 +1442,6 @@ abstract class RustLibApiImplPlatform extends BaseApiImpl<RustLibWire> {
 
   @protected
   void sse_encode_u_32(int self, SseSerializer serializer);
-
-  @protected
-  void sse_encode_u_64(BigInt self, SseSerializer serializer);
 
   @protected
   void sse_encode_u_8(int self, SseSerializer serializer);

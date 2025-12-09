@@ -12,7 +12,7 @@ class MetadataPluginSearchPlaylistsNotifier
   @override
   fetch(offset, limit) async {
     if (arg.isEmpty) {
-      return SpotubePaginationResponseObject<SpotubeSimplePlaylistObject>(
+      return SpotubeFlattenedPaginationObject<SpotubeSimplePlaylistObject>(
         limit: limit,
         nextOffset: null,
         total: 0,
@@ -22,12 +22,13 @@ class MetadataPluginSearchPlaylistsNotifier
     }
 
     final res = await (await metadataPlugin).search.playlists(
-          arg,
+          query: arg,
           offset: offset,
           limit: limit,
+          mpscTx: await mpscTx,
         );
 
-    return res;
+    return res.flatten();
   }
 
   @override
@@ -42,7 +43,7 @@ class MetadataPluginSearchPlaylistsNotifier
 final metadataPluginSearchPlaylistsProvider =
     AutoDisposeAsyncNotifierProviderFamily<
         MetadataPluginSearchPlaylistsNotifier,
-        SpotubePaginationResponseObject<SpotubeSimplePlaylistObject>,
+        SpotubeFlattenedPaginationObject<SpotubeSimplePlaylistObject>,
         String>(
   () => MetadataPluginSearchPlaylistsNotifier(),
 );

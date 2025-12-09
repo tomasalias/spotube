@@ -8,7 +8,7 @@ use crate::api::plugin::models::core::{
 use crate::api::plugin::models::pagination::SpotubePaginationResponseObject;
 use crate::api::plugin::models::playlist::SpotubeFullPlaylistObject;
 use crate::api::plugin::models::search::SpotubeSearchResponseObject;
-use crate::api::plugin::models::track::SpotubeTrackObject;
+use crate::api::plugin::models::track::SpotubeFullTrackObject;
 use crate::api::plugin::models::user::SpotubeUserObject;
 use tokio::sync::oneshot;
 
@@ -79,7 +79,7 @@ pub enum AudioSourceCommands {
         response_tx: oneshot::Sender<anyhow::Result<Vec<SpotubeAudioSourceContainerPreset>>>,
     },
     Matches {
-        track: SpotubeTrackObject,
+        track: SpotubeFullTrackObject,
         response_tx: oneshot::Sender<anyhow::Result<Vec<SpotubeAudioSourceMatchObject>>>,
     },
     Streams {
@@ -223,7 +223,7 @@ pub enum SearchCommands {
 pub enum TrackCommands {
     GetTrack {
         id: String,
-        response_tx: oneshot::Sender<anyhow::Result<SpotubeTrackObject>>,
+        response_tx: oneshot::Sender<anyhow::Result<SpotubeFullTrackObject>>,
     },
     Save {
         ids: Vec<String>,
@@ -235,7 +235,7 @@ pub enum TrackCommands {
     },
     Radio {
         id: String,
-        response_tx: oneshot::Sender<anyhow::Result<Vec<SpotubeTrackObject>>>,
+        response_tx: oneshot::Sender<anyhow::Result<Vec<SpotubeFullTrackObject>>>,
     },
 }
 

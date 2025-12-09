@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart' as material;
 import 'package:auto_route/auto_route.dart';
+import 'package:flutter_hooks/flutter_hooks.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:spotube/components/track_presentation/presentation_props.dart';
@@ -31,6 +32,10 @@ class AlbumPage extends HookConsumerWidget {
         ref.watch(metadataPluginSavedAlbumsProvider.notifier);
     final isSavedAlbum =
         ref.watch(metadataPluginIsSavedAlbumProvider(album.id));
+    final tracksUnion = useMemoized(
+      () => tracks.asData?.value.items.union() ?? [],
+      [tracks.asData?.value.items],
+    );
 
     return material.RefreshIndicator.adaptive(
       onRefresh: () async {
@@ -47,7 +52,7 @@ class AlbumPage extends HookConsumerWidget {
           title: album.name,
           description:
               "${context.l10n.released} • ${album.releaseDate} • ${album.artists.first.name}",
-          tracks: tracks.asData?.value.items ?? [],
+          tracks: tracksUnion,
           error: tracks.error,
           pagination: PaginationProps(
             hasNextPage: tracks.asData?.value.hasMore ?? false,
@@ -56,7 +61,9 @@ class AlbumPage extends HookConsumerWidget {
               await tracksNotifier.fetchMore();
             },
             onFetchAll: () async {
-              return tracksNotifier.fetchAll();
+              final res = await tracksNotifier.fetchAll();
+
+              return res.union();
             },
             onRefresh: () async {
               ref.invalidate(metadataPluginAlbumTracksProvider(album.id));

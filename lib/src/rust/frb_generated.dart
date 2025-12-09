@@ -85,7 +85,7 @@ class RustLib extends BaseEntrypoint<RustLibApi, RustLibApiImpl, RustLibWire> {
   String get codegenVersion => '2.11.1';
 
   @override
-  int get rustContentHash => 1716120288;
+  int get rustContentHash => -1924875688;
 
   static const kDefaultExternalLibraryLoaderConfig =
       ExternalLibraryLoaderConfig(
@@ -255,13 +255,18 @@ abstract class RustLibApi extends BaseApi {
       crateApiPluginSendersPluginAudioSourceSenderMatches(
           {required PluginAudioSourceSender that,
           required OpaqueSender mpscTx,
-          required SpotubeTrackObject track});
+          required SpotubeFullTrackObject track});
 
   Future<List<SpotubeAudioSourceStreamObject>>
       crateApiPluginSendersPluginAudioSourceSenderStreams(
           {required PluginAudioSourceSender that,
           required OpaqueSender mpscTx,
           required SpotubeAudioSourceMatchObject matched});
+
+  Future<List<SpotubeAudioSourceContainerPreset>>
+      crateApiPluginSendersPluginAudioSourceSenderSupportedPresets(
+          {required PluginAudioSourceSender that,
+          required OpaqueSender mpscTx});
 
   Future<void> crateApiPluginSendersPluginAuthSenderAuthenticate(
       {required PluginAuthSender that, required OpaqueSender mpscTx});
@@ -287,7 +292,7 @@ abstract class RustLibApi extends BaseApi {
           int? offset,
           int? limit});
 
-  Future<String> crateApiPluginModelsCorePluginConfigurationSlug(
+  String crateApiPluginModelsCorePluginConfigurationSlug(
       {required PluginConfiguration that});
 
   Future<PluginUpdateAvailable?>
@@ -406,15 +411,16 @@ abstract class RustLibApi extends BaseApi {
           int? offset,
           int? limit});
 
-  Future<SpotubeTrackObject> crateApiPluginSendersPluginTrackSenderGetTrack(
+  Future<SpotubeFullTrackObject> crateApiPluginSendersPluginTrackSenderGetTrack(
       {required PluginTrackSender that,
       required OpaqueSender mpscTx,
       required String id});
 
-  Future<List<SpotubeTrackObject>> crateApiPluginSendersPluginTrackSenderRadio(
-      {required PluginTrackSender that,
-      required OpaqueSender mpscTx,
-      required String id});
+  Future<List<SpotubeFullTrackObject>>
+      crateApiPluginSendersPluginTrackSenderRadio(
+          {required PluginTrackSender that,
+          required OpaqueSender mpscTx,
+          required String id});
 
   Future<void> crateApiPluginSendersPluginTrackSenderSave(
       {required PluginTrackSender that,
@@ -1663,14 +1669,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       crateApiPluginSendersPluginAudioSourceSenderMatches(
           {required PluginAudioSourceSender that,
           required OpaqueSender mpscTx,
-          required SpotubeTrackObject track}) {
+          required SpotubeFullTrackObject track}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_plugin_audio_source_sender(that, serializer);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
-        sse_encode_box_autoadd_spotube_track_object(track, serializer);
+        sse_encode_box_autoadd_spotube_full_track_object(track, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
             funcId: 39, port: port_);
       },
@@ -1726,6 +1732,39 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           );
 
   @override
+  Future<List<SpotubeAudioSourceContainerPreset>>
+      crateApiPluginSendersPluginAudioSourceSenderSupportedPresets(
+          {required PluginAudioSourceSender that,
+          required OpaqueSender mpscTx}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
+        final serializer = SseSerializer(generalizedFrbRustBinding);
+        sse_encode_box_autoadd_plugin_audio_source_sender(that, serializer);
+        sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
+            mpscTx, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 41, port: port_);
+      },
+      codec: SseCodec(
+        decodeSuccessData:
+            sse_decode_list_spotube_audio_source_container_preset,
+        decodeErrorData: sse_decode_AnyhowException,
+      ),
+      constMeta:
+          kCrateApiPluginSendersPluginAudioSourceSenderSupportedPresetsConstMeta,
+      argValues: [that, mpscTx],
+      apiImpl: this,
+    ));
+  }
+
+  TaskConstMeta
+      get kCrateApiPluginSendersPluginAudioSourceSenderSupportedPresetsConstMeta =>
+          const TaskConstMeta(
+            debugName: "plugin_audio_source_sender_supported_presets",
+            argNames: ["that", "mpscTx"],
+          );
+
+  @override
   Future<void> crateApiPluginSendersPluginAuthSenderAuthenticate(
       {required PluginAuthSender that, required OpaqueSender mpscTx}) {
     return handler.executeNormal(NormalTask(
@@ -1735,7 +1774,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 41, port: port_);
+            funcId: 42, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1764,7 +1803,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 42, port: port_);
+            funcId: 43, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_bool,
@@ -1793,7 +1832,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 43, port: port_);
+            funcId: 44, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1829,7 +1868,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 44, port: port_);
+            funcId: 45, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1864,7 +1903,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 45, port: port_);
+            funcId: 46, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -1883,14 +1922,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<String> crateApiPluginModelsCorePluginConfigurationSlug(
+  String crateApiPluginModelsCorePluginConfigurationSlug(
       {required PluginConfiguration that}) {
-    return handler.executeNormal(NormalTask(
-      callFfi: (port_) {
+    return handler.executeSync(SyncTask(
+      callFfi: () {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_plugin_configuration(that, serializer);
-        pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 46, port: port_);
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 47)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -1922,7 +1960,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_box_autoadd_plugin_configuration(pluginConfig, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 47, port: port_);
+            funcId: 48, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_opt_box_autoadd_plugin_update_available,
@@ -1954,7 +1992,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_box_autoadd_scrobble_details(details, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 48, port: port_);
+            funcId: 49, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -1982,7 +2020,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 49, port: port_);
+            funcId: 50, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -2017,7 +2055,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_list_String(trackIds, serializer);
         sse_encode_opt_box_autoadd_u_32(position, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 50, port: port_);
+            funcId: 51, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2058,7 +2096,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_bool(public, serializer);
         sse_encode_opt_box_autoadd_bool(collaborative, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 51, port: port_);
+            funcId: 52, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -2108,7 +2146,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(playlistId, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 52, port: port_);
+            funcId: 53, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2142,7 +2180,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(id, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 53, port: port_);
+            funcId: 54, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_full_playlist_object,
@@ -2176,7 +2214,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_String(playlistId, serializer);
         sse_encode_list_String(trackIds, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 54, port: port_);
+            funcId: 55, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2209,7 +2247,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(playlistId, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 55, port: port_);
+            funcId: 56, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2245,7 +2283,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 56, port: port_);
+            funcId: 57, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2276,7 +2314,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(playlistId, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 57, port: port_);
+            funcId: 58, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2315,7 +2353,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_bool(public, serializer);
         sse_encode_opt_box_autoadd_bool(collaborative, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 58, port: port_);
+            funcId: 59, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2369,7 +2407,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 59, port: port_);
+            funcId: 60, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2401,7 +2439,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(query, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 60, port: port_);
+            funcId: 61, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_search_response_object,
@@ -2437,7 +2475,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 61, port: port_);
+            funcId: 62, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2465,7 +2503,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 62, port: port_);
+            funcId: 63, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_list_String,
@@ -2501,7 +2539,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 63, port: port_);
+            funcId: 64, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2538,7 +2576,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 64, port: port_);
+            funcId: 65, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2557,7 +2595,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<SpotubeTrackObject> crateApiPluginSendersPluginTrackSenderGetTrack(
+  Future<SpotubeFullTrackObject> crateApiPluginSendersPluginTrackSenderGetTrack(
       {required PluginTrackSender that,
       required OpaqueSender mpscTx,
       required String id}) {
@@ -2569,10 +2607,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(id, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 65, port: port_);
+            funcId: 66, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_spotube_track_object,
+        decodeSuccessData: sse_decode_spotube_full_track_object,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiPluginSendersPluginTrackSenderGetTrackConstMeta,
@@ -2588,10 +2626,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  Future<List<SpotubeTrackObject>> crateApiPluginSendersPluginTrackSenderRadio(
-      {required PluginTrackSender that,
-      required OpaqueSender mpscTx,
-      required String id}) {
+  Future<List<SpotubeFullTrackObject>>
+      crateApiPluginSendersPluginTrackSenderRadio(
+          {required PluginTrackSender that,
+          required OpaqueSender mpscTx,
+          required String id}) {
     return handler.executeNormal(NormalTask(
       callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
@@ -2600,10 +2639,10 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_String(id, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 66, port: port_);
+            funcId: 67, port: port_);
       },
       codec: SseCodec(
-        decodeSuccessData: sse_decode_list_spotube_track_object,
+        decodeSuccessData: sse_decode_list_spotube_full_track_object,
         decodeErrorData: sse_decode_AnyhowException,
       ),
       constMeta: kCrateApiPluginSendersPluginTrackSenderRadioConstMeta,
@@ -2631,7 +2670,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_list_String(ids, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 67, port: port_);
+            funcId: 68, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2662,7 +2701,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
             mpscTx, serializer);
         sse_encode_list_String(ids, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 68, port: port_);
+            funcId: 69, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_unit,
@@ -2690,7 +2729,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerOpaqueSender(
             mpscTx, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 69, port: port_);
+            funcId: 70, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_user_object,
@@ -2724,7 +2763,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 70, port: port_);
+            funcId: 71, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2759,7 +2798,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 71, port: port_);
+            funcId: 72, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2794,7 +2833,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 72, port: port_);
+            funcId: 73, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2829,7 +2868,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_opt_box_autoadd_u_32(offset, serializer);
         sse_encode_opt_box_autoadd_u_32(limit, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 73, port: port_);
+            funcId: 74, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_spotube_pagination_response_object,
@@ -2857,7 +2896,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_spotube_audio_lossless_container_quality(
             that, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 74)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 75)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -2887,7 +2926,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_spotube_audio_lossy_container_quality(
             that, serializer);
         pdeCallFfi(generalizedFrbRustBinding, serializer,
-            funcId: 75, port: port_);
+            funcId: 76, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -2916,7 +2955,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_box_autoadd_spotube_audio_source_container_preset(
             that, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 76)!;
+        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 77)!;
       },
       codec: SseCodec(
         decodeSuccessData: sse_decode_String,
@@ -3125,12 +3164,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  PlatformInt64 dco_decode_box_autoadd_i_64(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_i_64(raw);
-  }
-
-  @protected
   PluginAlbumSender dco_decode_box_autoadd_plugin_album_sender(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return dco_decode_plugin_album_sender(raw);
@@ -3271,6 +3304,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubeFullTrackObject dco_decode_box_autoadd_spotube_full_track_object(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_spotube_full_track_object(raw);
+  }
+
+  @protected
+  SpotubeLocalTrackObject dco_decode_box_autoadd_spotube_local_track_object(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return dco_decode_spotube_local_track_object(raw);
+  }
+
+  @protected
   SpotubeSimpleAlbumObject dco_decode_box_autoadd_spotube_simple_album_object(
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -3292,12 +3339,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  SpotubeTrackObject dco_decode_box_autoadd_spotube_track_object(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dco_decode_spotube_track_object(raw);
-  }
-
-  @protected
   int dco_decode_box_autoadd_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
@@ -3313,12 +3354,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int dco_decode_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
-  }
-
-  @protected
-  PlatformInt64 dco_decode_i_64(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dcoDecodeI64(raw);
   }
 
   @protected
@@ -3370,6 +3405,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<SpotubeAudioSourceContainerPreset>
+      dco_decode_list_spotube_audio_source_container_preset(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_spotube_audio_source_container_preset)
+        .toList();
+  }
+
+  @protected
   List<SpotubeAudioSourceMatchObject>
       dco_decode_list_spotube_audio_source_match_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
@@ -3402,6 +3446,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>)
         .map(dco_decode_spotube_full_artist_object)
+        .toList();
+  }
+
+  @protected
+  List<SpotubeFullTrackObject> dco_decode_list_spotube_full_track_object(
+      dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    return (raw as List<dynamic>)
+        .map(dco_decode_spotube_full_track_object)
         .toList();
   }
 
@@ -3448,12 +3501,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<SpotubeTrackObject> dco_decode_list_spotube_track_object(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return (raw as List<dynamic>).map(dco_decode_spotube_track_object).toList();
-  }
-
-  @protected
   List<SpotubeUserObject> dco_decode_list_spotube_user_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return (raw as List<dynamic>).map(dco_decode_spotube_user_object).toList();
@@ -3481,12 +3528,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int? dco_decode_opt_box_autoadd_i_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw == null ? null : dco_decode_box_autoadd_i_32(raw);
-  }
-
-  @protected
-  PlatformInt64? dco_decode_opt_box_autoadd_i_64(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return raw == null ? null : dco_decode_box_autoadd_i_64(raw);
   }
 
   @protected
@@ -3695,7 +3736,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       title: dco_decode_String(arr[1]),
       artists: dco_decode_list_scrobble_artist(arr[2]),
       album: dco_decode_scrobble_album(arr[3]),
-      timestamp: dco_decode_opt_box_autoadd_i_64(arr[4]),
+      timestamp: dco_decode_opt_box_autoadd_i_32(arr[4]),
       durationMs: dco_decode_opt_box_autoadd_u_32(arr[5]),
       isrc: dco_decode_opt_String(arr[6]),
     );
@@ -3768,7 +3809,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       id: dco_decode_String(arr[1]),
       title: dco_decode_String(arr[2]),
       artists: dco_decode_list_String(arr[3]),
-      duration: dco_decode_u_64(arr[4]),
+      duration: dco_decode_u_32(arr[4]),
       thumbnail: dco_decode_opt_String(arr[5]),
       externalUri: dco_decode_String(arr[6]),
     );
@@ -3818,7 +3859,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (raw[0]) {
       case 0:
         return SpotubeBrowseSectionResponseObjectItem_Track(
-          dco_decode_box_autoadd_spotube_track_object(raw[1]),
+          dco_decode_box_autoadd_spotube_full_track_object(raw[1]),
         );
       case 1:
         return SpotubeBrowseSectionResponseObjectItem_PlaylistFull(
@@ -3909,6 +3950,25 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubeFullTrackObject dco_decode_spotube_full_track_object(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    return SpotubeFullTrackObject(
+      typeName: dco_decode_String(arr[0]),
+      id: dco_decode_String(arr[1]),
+      name: dco_decode_String(arr[2]),
+      externalUri: dco_decode_String(arr[3]),
+      artists: dco_decode_list_spotube_simple_artist_object(arr[4]),
+      album: dco_decode_spotube_simple_album_object(arr[5]),
+      durationMs: dco_decode_u_32(arr[6]),
+      isrc: dco_decode_String(arr[7]),
+      explicit: dco_decode_bool(arr[8]),
+    );
+  }
+
+  @protected
   SpotubeImageObject dco_decode_spotube_image_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
@@ -3919,6 +3979,24 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       url: dco_decode_String(arr[1]),
       width: dco_decode_opt_box_autoadd_i_32(arr[2]),
       height: dco_decode_opt_box_autoadd_i_32(arr[3]),
+    );
+  }
+
+  @protected
+  SpotubeLocalTrackObject dco_decode_spotube_local_track_object(dynamic raw) {
+    // Codec=Dco (DartCObject based), see doc to use other codecs
+    final arr = raw as List<dynamic>;
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    return SpotubeLocalTrackObject(
+      typeName: dco_decode_String(arr[0]),
+      id: dco_decode_String(arr[1]),
+      name: dco_decode_String(arr[2]),
+      externalUri: dco_decode_String(arr[3]),
+      artists: dco_decode_list_spotube_simple_artist_object(arr[4]),
+      album: dco_decode_spotube_simple_album_object(arr[5]),
+      durationMs: dco_decode_u_32(arr[6]),
+      path: dco_decode_String(arr[7]),
     );
   }
 
@@ -3952,7 +4030,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (raw[0]) {
       case 0:
         return SpotubePaginationResponseObjectItem_Track(
-          dco_decode_box_autoadd_spotube_track_object(raw[1]),
+          dco_decode_box_autoadd_spotube_full_track_object(raw[1]),
         );
       case 1:
         return SpotubePaginationResponseObjectItem_PlaylistFull(
@@ -3999,7 +4077,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       albums: dco_decode_list_spotube_simple_album_object(arr[1]),
       artists: dco_decode_list_spotube_full_artist_object(arr[2]),
       playlists: dco_decode_list_spotube_simple_playlist_object(arr[3]),
-      tracks: dco_decode_list_spotube_track_object(arr[4]),
+      tracks: dco_decode_list_spotube_full_track_object(arr[4]),
     );
   }
 
@@ -4058,20 +4136,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   @protected
   SpotubeTrackObject dco_decode_spotube_track_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
-    final arr = raw as List<dynamic>;
-    if (arr.length != 9)
-      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
-    return SpotubeTrackObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      externalUri: dco_decode_String(arr[3]),
-      artists: dco_decode_list_spotube_simple_artist_object(arr[4]),
-      album: dco_decode_spotube_simple_album_object(arr[5]),
-      durationMs: dco_decode_u_64(arr[6]),
-      isrc: dco_decode_String(arr[7]),
-      explicit: dco_decode_bool(arr[8]),
-    );
+    switch (raw[0]) {
+      case 0:
+        return SpotubeTrackObject_Full(
+          dco_decode_box_autoadd_spotube_full_track_object(raw[1]),
+        );
+      case 1:
+        return SpotubeTrackObject_Local(
+          dco_decode_box_autoadd_spotube_local_track_object(raw[1]),
+        );
+      default:
+        throw Exception("unreachable");
+    }
   }
 
   @protected
@@ -4093,12 +4169,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int dco_decode_u_32(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     return raw as int;
-  }
-
-  @protected
-  BigInt dco_decode_u_64(dynamic raw) {
-    // Codec=Dco (DartCObject based), see doc to use other codecs
-    return dcoDecodeU64(raw);
   }
 
   @protected
@@ -4287,12 +4357,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  PlatformInt64 sse_decode_box_autoadd_i_64(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_i_64(deserializer));
-  }
-
-  @protected
   PluginAlbumSender sse_decode_box_autoadd_plugin_album_sender(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4445,6 +4509,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubeFullTrackObject sse_decode_box_autoadd_spotube_full_track_object(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_spotube_full_track_object(deserializer));
+  }
+
+  @protected
+  SpotubeLocalTrackObject sse_decode_box_autoadd_spotube_local_track_object(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    return (sse_decode_spotube_local_track_object(deserializer));
+  }
+
+  @protected
   SpotubeSimpleAlbumObject sse_decode_box_autoadd_spotube_simple_album_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4467,13 +4545,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  SpotubeTrackObject sse_decode_box_autoadd_spotube_track_object(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return (sse_decode_spotube_track_object(deserializer));
-  }
-
-  @protected
   int sse_decode_box_autoadd_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return (sse_decode_u_32(deserializer));
@@ -4489,12 +4560,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int sse_decode_i_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getInt32();
-  }
-
-  @protected
-  PlatformInt64 sse_decode_i_64(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getPlatformInt64();
   }
 
   @protected
@@ -4584,6 +4649,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  List<SpotubeAudioSourceContainerPreset>
+      sse_decode_list_spotube_audio_source_container_preset(
+          SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <SpotubeAudioSourceContainerPreset>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_spotube_audio_source_container_preset(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
   List<SpotubeAudioSourceMatchObject>
       sse_decode_list_spotube_audio_source_match_object(
           SseDeserializer deserializer) {
@@ -4635,6 +4714,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var ans_ = <SpotubeFullArtistObject>[];
     for (var idx_ = 0; idx_ < len_; ++idx_) {
       ans_.add(sse_decode_spotube_full_artist_object(deserializer));
+    }
+    return ans_;
+  }
+
+  @protected
+  List<SpotubeFullTrackObject> sse_decode_list_spotube_full_track_object(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+
+    var len_ = sse_decode_i_32(deserializer);
+    var ans_ = <SpotubeFullTrackObject>[];
+    for (var idx_ = 0; idx_ < len_; ++idx_) {
+      ans_.add(sse_decode_spotube_full_track_object(deserializer));
     }
     return ans_;
   }
@@ -4708,19 +4800,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  List<SpotubeTrackObject> sse_decode_list_spotube_track_object(
-      SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    var len_ = sse_decode_i_32(deserializer);
-    var ans_ = <SpotubeTrackObject>[];
-    for (var idx_ = 0; idx_ < len_; ++idx_) {
-      ans_.add(sse_decode_spotube_track_object(deserializer));
-    }
-    return ans_;
-  }
-
-  @protected
   List<SpotubeUserObject> sse_decode_list_spotube_user_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -4772,17 +4851,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
 
     if (sse_decode_bool(deserializer)) {
       return (sse_decode_box_autoadd_i_32(deserializer));
-    } else {
-      return null;
-    }
-  }
-
-  @protected
-  PlatformInt64? sse_decode_opt_box_autoadd_i_64(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    if (sse_decode_bool(deserializer)) {
-      return (sse_decode_box_autoadd_i_64(deserializer));
     } else {
       return null;
     }
@@ -4990,7 +5058,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_title = sse_decode_String(deserializer);
     var var_artists = sse_decode_list_scrobble_artist(deserializer);
     var var_album = sse_decode_scrobble_album(deserializer);
-    var var_timestamp = sse_decode_opt_box_autoadd_i_64(deserializer);
+    var var_timestamp = sse_decode_opt_box_autoadd_i_32(deserializer);
     var var_durationMs = sse_decode_opt_box_autoadd_u_32(deserializer);
     var var_isrc = sse_decode_opt_String(deserializer);
     return ScrobbleDetails(
@@ -5072,7 +5140,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_id = sse_decode_String(deserializer);
     var var_title = sse_decode_String(deserializer);
     var var_artists = sse_decode_list_String(deserializer);
-    var var_duration = sse_decode_u_64(deserializer);
+    var var_duration = sse_decode_u_32(deserializer);
     var var_thumbnail = sse_decode_opt_String(deserializer);
     var var_externalUri = sse_decode_String(deserializer);
     return SpotubeAudioSourceMatchObject(
@@ -5139,7 +5207,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (tag_) {
       case 0:
         var var_field0 =
-            sse_decode_box_autoadd_spotube_track_object(deserializer);
+            sse_decode_box_autoadd_spotube_full_track_object(deserializer);
         return SpotubeBrowseSectionResponseObjectItem_Track(var_field0);
       case 1:
         var var_field0 =
@@ -5250,6 +5318,32 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  SpotubeFullTrackObject sse_decode_spotube_full_track_object(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_typeName = sse_decode_String(deserializer);
+    var var_id = sse_decode_String(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_externalUri = sse_decode_String(deserializer);
+    var var_artists =
+        sse_decode_list_spotube_simple_artist_object(deserializer);
+    var var_album = sse_decode_spotube_simple_album_object(deserializer);
+    var var_durationMs = sse_decode_u_32(deserializer);
+    var var_isrc = sse_decode_String(deserializer);
+    var var_explicit = sse_decode_bool(deserializer);
+    return SpotubeFullTrackObject(
+        typeName: var_typeName,
+        id: var_id,
+        name: var_name,
+        externalUri: var_externalUri,
+        artists: var_artists,
+        album: var_album,
+        durationMs: var_durationMs,
+        isrc: var_isrc,
+        explicit: var_explicit);
+  }
+
+  @protected
   SpotubeImageObject sse_decode_spotube_image_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5262,6 +5356,30 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         url: var_url,
         width: var_width,
         height: var_height);
+  }
+
+  @protected
+  SpotubeLocalTrackObject sse_decode_spotube_local_track_object(
+      SseDeserializer deserializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    var var_typeName = sse_decode_String(deserializer);
+    var var_id = sse_decode_String(deserializer);
+    var var_name = sse_decode_String(deserializer);
+    var var_externalUri = sse_decode_String(deserializer);
+    var var_artists =
+        sse_decode_list_spotube_simple_artist_object(deserializer);
+    var var_album = sse_decode_spotube_simple_album_object(deserializer);
+    var var_durationMs = sse_decode_u_32(deserializer);
+    var var_path = sse_decode_String(deserializer);
+    return SpotubeLocalTrackObject(
+        typeName: var_typeName,
+        id: var_id,
+        name: var_name,
+        externalUri: var_externalUri,
+        artists: var_artists,
+        album: var_album,
+        durationMs: var_durationMs,
+        path: var_path);
   }
 
   @protected
@@ -5300,7 +5418,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (tag_) {
       case 0:
         var var_field0 =
-            sse_decode_box_autoadd_spotube_track_object(deserializer);
+            sse_decode_box_autoadd_spotube_full_track_object(deserializer);
         return SpotubePaginationResponseObjectItem_Track(var_field0);
       case 1:
         var var_field0 =
@@ -5344,7 +5462,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_artists = sse_decode_list_spotube_full_artist_object(deserializer);
     var var_playlists =
         sse_decode_list_spotube_simple_playlist_object(deserializer);
-    var var_tracks = sse_decode_list_spotube_track_object(deserializer);
+    var var_tracks = sse_decode_list_spotube_full_track_object(deserializer);
     return SpotubeSearchResponseObject(
         typeName: var_typeName,
         albums: var_albums,
@@ -5419,26 +5537,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeTrackObject sse_decode_spotube_track_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
-    var var_id = sse_decode_String(deserializer);
-    var var_name = sse_decode_String(deserializer);
-    var var_externalUri = sse_decode_String(deserializer);
-    var var_artists =
-        sse_decode_list_spotube_simple_artist_object(deserializer);
-    var var_album = sse_decode_spotube_simple_album_object(deserializer);
-    var var_durationMs = sse_decode_u_64(deserializer);
-    var var_isrc = sse_decode_String(deserializer);
-    var var_explicit = sse_decode_bool(deserializer);
-    return SpotubeTrackObject(
-        typeName: var_typeName,
-        id: var_id,
-        name: var_name,
-        externalUri: var_externalUri,
-        artists: var_artists,
-        album: var_album,
-        durationMs: var_durationMs,
-        isrc: var_isrc,
-        explicit: var_explicit);
+
+    var tag_ = sse_decode_i_32(deserializer);
+    switch (tag_) {
+      case 0:
+        var var_field0 =
+            sse_decode_box_autoadd_spotube_full_track_object(deserializer);
+        return SpotubeTrackObject_Full(var_field0);
+      case 1:
+        var var_field0 =
+            sse_decode_box_autoadd_spotube_local_track_object(deserializer);
+        return SpotubeTrackObject_Local(var_field0);
+      default:
+        throw UnimplementedError('');
+    }
   }
 
   @protected
@@ -5462,12 +5574,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   int sse_decode_u_32(SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     return deserializer.buffer.getUint32();
-  }
-
-  @protected
-  BigInt sse_decode_u_64(SseDeserializer deserializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    return deserializer.buffer.getBigUint64();
   }
 
   @protected
@@ -5672,13 +5778,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_i_64(
-      PlatformInt64 self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_64(self, serializer);
-  }
-
-  @protected
   void sse_encode_box_autoadd_plugin_album_sender(
       PluginAlbumSender self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5826,6 +5925,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_box_autoadd_spotube_full_track_object(
+      SpotubeFullTrackObject self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_spotube_full_track_object(self, serializer);
+  }
+
+  @protected
+  void sse_encode_box_autoadd_spotube_local_track_object(
+      SpotubeLocalTrackObject self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_spotube_local_track_object(self, serializer);
+  }
+
+  @protected
   void sse_encode_box_autoadd_spotube_simple_album_object(
       SpotubeSimpleAlbumObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5847,13 +5960,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_box_autoadd_spotube_track_object(
-      SpotubeTrackObject self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_spotube_track_object(self, serializer);
-  }
-
-  @protected
   void sse_encode_box_autoadd_u_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     sse_encode_u_32(self, serializer);
@@ -5869,12 +5975,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_i_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putInt32(self);
-  }
-
-  @protected
-  void sse_encode_i_64(PlatformInt64 self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putPlatformInt64(self);
   }
 
   @protected
@@ -5946,6 +6046,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_list_spotube_audio_source_container_preset(
+      List<SpotubeAudioSourceContainerPreset> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_spotube_audio_source_container_preset(item, serializer);
+    }
+  }
+
+  @protected
   void sse_encode_list_spotube_audio_source_match_object(
       List<SpotubeAudioSourceMatchObject> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -5983,6 +6093,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_i_32(self.length, serializer);
     for (final item in self) {
       sse_encode_spotube_full_artist_object(item, serializer);
+    }
+  }
+
+  @protected
+  void sse_encode_list_spotube_full_track_object(
+      List<SpotubeFullTrackObject> self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_i_32(self.length, serializer);
+    for (final item in self) {
+      sse_encode_spotube_full_track_object(item, serializer);
     }
   }
 
@@ -6038,16 +6158,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
-  void sse_encode_list_spotube_track_object(
-      List<SpotubeTrackObject> self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_i_32(self.length, serializer);
-    for (final item in self) {
-      sse_encode_spotube_track_object(item, serializer);
-    }
-  }
-
-  @protected
   void sse_encode_list_spotube_user_object(
       List<SpotubeUserObject> self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6094,17 +6204,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_bool(self != null, serializer);
     if (self != null) {
       sse_encode_box_autoadd_i_32(self, serializer);
-    }
-  }
-
-  @protected
-  void sse_encode_opt_box_autoadd_i_64(
-      PlatformInt64? self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-
-    sse_encode_bool(self != null, serializer);
-    if (self != null) {
-      sse_encode_box_autoadd_i_64(self, serializer);
     }
   }
 
@@ -6281,7 +6380,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.title, serializer);
     sse_encode_list_scrobble_artist(self.artists, serializer);
     sse_encode_scrobble_album(self.album, serializer);
-    sse_encode_opt_box_autoadd_i_64(self.timestamp, serializer);
+    sse_encode_opt_box_autoadd_i_32(self.timestamp, serializer);
     sse_encode_opt_box_autoadd_u_32(self.durationMs, serializer);
     sse_encode_opt_String(self.isrc, serializer);
   }
@@ -6344,7 +6443,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.title, serializer);
     sse_encode_list_String(self.artists, serializer);
-    sse_encode_u_64(self.duration, serializer);
+    sse_encode_u_32(self.duration, serializer);
     sse_encode_opt_String(self.thumbnail, serializer);
     sse_encode_String(self.externalUri, serializer);
   }
@@ -6383,7 +6482,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (self) {
       case SpotubeBrowseSectionResponseObjectItem_Track(field0: final field0):
         sse_encode_i_32(0, serializer);
-        sse_encode_box_autoadd_spotube_track_object(field0, serializer);
+        sse_encode_box_autoadd_spotube_full_track_object(field0, serializer);
       case SpotubeBrowseSectionResponseObjectItem_PlaylistFull(
           field0: final field0
         ):
@@ -6465,6 +6564,21 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   }
 
   @protected
+  void sse_encode_spotube_full_track_object(
+      SpotubeFullTrackObject self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.typeName, serializer);
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_String(self.externalUri, serializer);
+    sse_encode_list_spotube_simple_artist_object(self.artists, serializer);
+    sse_encode_spotube_simple_album_object(self.album, serializer);
+    sse_encode_u_32(self.durationMs, serializer);
+    sse_encode_String(self.isrc, serializer);
+    sse_encode_bool(self.explicit, serializer);
+  }
+
+  @protected
   void sse_encode_spotube_image_object(
       SpotubeImageObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
@@ -6472,6 +6586,20 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_String(self.url, serializer);
     sse_encode_opt_box_autoadd_i_32(self.width, serializer);
     sse_encode_opt_box_autoadd_i_32(self.height, serializer);
+  }
+
+  @protected
+  void sse_encode_spotube_local_track_object(
+      SpotubeLocalTrackObject self, SseSerializer serializer) {
+    // Codec=Sse (Serialization based), see doc to use other codecs
+    sse_encode_String(self.typeName, serializer);
+    sse_encode_String(self.id, serializer);
+    sse_encode_String(self.name, serializer);
+    sse_encode_String(self.externalUri, serializer);
+    sse_encode_list_spotube_simple_artist_object(self.artists, serializer);
+    sse_encode_spotube_simple_album_object(self.album, serializer);
+    sse_encode_u_32(self.durationMs, serializer);
+    sse_encode_String(self.path, serializer);
   }
 
   @protected
@@ -6500,7 +6628,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     switch (self) {
       case SpotubePaginationResponseObjectItem_Track(field0: final field0):
         sse_encode_i_32(0, serializer);
-        sse_encode_box_autoadd_spotube_track_object(field0, serializer);
+        sse_encode_box_autoadd_spotube_full_track_object(field0, serializer);
       case SpotubePaginationResponseObjectItem_PlaylistFull(
           field0: final field0
         ):
@@ -6545,7 +6673,7 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     sse_encode_list_spotube_simple_album_object(self.albums, serializer);
     sse_encode_list_spotube_full_artist_object(self.artists, serializer);
     sse_encode_list_spotube_simple_playlist_object(self.playlists, serializer);
-    sse_encode_list_spotube_track_object(self.tracks, serializer);
+    sse_encode_list_spotube_full_track_object(self.tracks, serializer);
   }
 
   @protected
@@ -6590,15 +6718,14 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_track_object(
       SpotubeTrackObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
-    sse_encode_String(self.id, serializer);
-    sse_encode_String(self.name, serializer);
-    sse_encode_String(self.externalUri, serializer);
-    sse_encode_list_spotube_simple_artist_object(self.artists, serializer);
-    sse_encode_spotube_simple_album_object(self.album, serializer);
-    sse_encode_u_64(self.durationMs, serializer);
-    sse_encode_String(self.isrc, serializer);
-    sse_encode_bool(self.explicit, serializer);
+    switch (self) {
+      case SpotubeTrackObject_Full(field0: final field0):
+        sse_encode_i_32(0, serializer);
+        sse_encode_box_autoadd_spotube_full_track_object(field0, serializer);
+      case SpotubeTrackObject_Local(field0: final field0):
+        sse_encode_i_32(1, serializer);
+        sse_encode_box_autoadd_spotube_local_track_object(field0, serializer);
+    }
   }
 
   @protected
@@ -6616,12 +6743,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_u_32(int self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
     serializer.buffer.putUint32(self);
-  }
-
-  @protected
-  void sse_encode_u_64(BigInt self, SseSerializer serializer) {
-    // Codec=Sse (Serialization based), see doc to use other codecs
-    serializer.buffer.putBigUint64(self);
   }
 
   @protected

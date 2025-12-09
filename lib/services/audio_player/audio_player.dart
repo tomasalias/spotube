@@ -24,13 +24,14 @@ class SpotubeMedia extends mk.Media {
   final SpotubeTrackObject track;
   SpotubeMedia(this.track)
       : assert(
-          track is SpotubeLocalTrackObject || track is SpotubeFullTrackObject,
+          track is SpotubeTrackObject_Local ||
+              ((track.field0 as SpotubeFullTrackObject).isrc.isNotEmpty),
           "Track must be a either a local track or a full track object with ISRC",
         ),
         // If the track is a local track, use its path, otherwise use the server URL
         super(
-          track is SpotubeLocalTrackObject
-              ? track.path
+          track is SpotubeTrackObject_Local
+              ? track.field0.path
               : "http://$_host:$serverPort/stream/${track.id}",
           extras: track.toJson(),
         );

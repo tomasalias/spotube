@@ -1,3 +1,4 @@
+import 'package:spotube/models/metadata/metadata.dart';
 import 'package:spotube/provider/metadata_plugin/metadata_plugin_provider.dart';
 import 'package:spotube/services/logger/logger.dart';
 import 'package:flutter_hooks/flutter_hooks.dart';
@@ -24,12 +25,15 @@ void useEndlessPlayback(WidgetRef ref) {
 
           final track = playlist.tracks.last;
 
-          final tracks = await (await metadataPlugin)?.track.radio(track.id);
+          final tracks = await metadataPlugin.then(
+            (plugin) async =>
+                plugin?.track.radio(id: track.id, mpscTx: plugin.sender),
+          );
 
           if (tracks == null || tracks.isEmpty) return;
 
           await playback.addTracks(
-            tracks.toList()
+            tracks.union()
               ..removeWhere((e) {
                 final playlist = ref.read(audioPlayerProvider);
                 final isDuplicate = playlist.tracks.any((t) => t.id == e.id);

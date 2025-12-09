@@ -41,10 +41,10 @@ class AudioSourceAvailableQualityPresetsNotifier
     listenSelf((previous, next) {
       final isNewLossless =
           next.presets.elementAtOrNull(next.selectedStreamingContainerIndex)
-              is SpotubeAudioSourceContainerPresetLossless;
+              is SpotubeAudioSourceContainerPreset_Lossless;
       final isOldLossless = previous?.presets
               .elementAtOrNull(previous.selectedStreamingContainerIndex)
-          is SpotubeAudioSourceContainerPresetLossless;
+          is SpotubeAudioSourceContainerPreset_Lossless;
       if (!isOldLossless && isNewLossless) {
         audioPlayer.setDemuxerBufferSize(6 * 1024 * 1024); // 6MB
       } else if (isOldLossless && !isNewLossless) {
@@ -72,11 +72,13 @@ class AudioSourceAvailableQualityPresetsNotifier
           state =
               AudioSourcePresetsState.fromJson(jsonDecode(persistedStateStr))
                   .copyWith(
-            presets: audioSource.audioSource.supportedPresets,
+            presets: await audioSource.audioSource
+                .supportedPresets(mpscTx: audioSource.sender),
           );
         } else {
           state = AudioSourcePresetsState(
-            presets: audioSource.audioSource.supportedPresets,
+            presets: await audioSource.audioSource
+                .supportedPresets(mpscTx: audioSource.sender),
           );
         }
       });

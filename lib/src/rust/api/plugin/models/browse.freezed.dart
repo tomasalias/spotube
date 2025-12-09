@@ -270,7 +270,7 @@ mixin _$SpotubeBrowseSectionResponseObjectItem {
   Object get field0 => throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SpotubeTrackObject field0) track,
+    required TResult Function(SpotubeFullTrackObject field0) track,
     required TResult Function(SpotubeFullPlaylistObject field0) playlistFull,
     required TResult Function(SpotubeSimplePlaylistObject field0)
         playlistSimple,
@@ -282,7 +282,7 @@ mixin _$SpotubeBrowseSectionResponseObjectItem {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SpotubeTrackObject field0)? track,
+    TResult? Function(SpotubeFullTrackObject field0)? track,
     TResult? Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult? Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult? Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -293,7 +293,7 @@ mixin _$SpotubeBrowseSectionResponseObjectItem {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SpotubeTrackObject field0)? track,
+    TResult Function(SpotubeFullTrackObject field0)? track,
     TResult Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -403,9 +403,9 @@ abstract class _$$SpotubeBrowseSectionResponseObjectItem_TrackImplCopyWith<
               then) =
       __$$SpotubeBrowseSectionResponseObjectItem_TrackImplCopyWithImpl<$Res>;
   @useResult
-  $Res call({SpotubeTrackObject field0});
+  $Res call({SpotubeFullTrackObject field0});
 
-  $SpotubeTrackObjectCopyWith<$Res> get field0;
+  $SpotubeFullTrackObjectCopyWith<$Res> get field0;
 }
 
 /// @nodoc
@@ -430,7 +430,7 @@ class __$$SpotubeBrowseSectionResponseObjectItem_TrackImplCopyWithImpl<$Res>
       null == field0
           ? _value.field0
           : field0 // ignore: cast_nullable_to_non_nullable
-              as SpotubeTrackObject,
+              as SpotubeFullTrackObject,
     ));
   }
 
@@ -438,8 +438,8 @@ class __$$SpotubeBrowseSectionResponseObjectItem_TrackImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $SpotubeTrackObjectCopyWith<$Res> get field0 {
-    return $SpotubeTrackObjectCopyWith<$Res>(_value.field0, (value) {
+  $SpotubeFullTrackObjectCopyWith<$Res> get field0 {
+    return $SpotubeFullTrackObjectCopyWith<$Res>(_value.field0, (value) {
       return _then(_value.copyWith(field0: value));
     });
   }
@@ -453,7 +453,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_TrackImpl
       : super._();
 
   @override
-  final SpotubeTrackObject field0;
+  final SpotubeFullTrackObject field0;
 
   @override
   String toString() {
@@ -486,7 +486,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_TrackImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SpotubeTrackObject field0) track,
+    required TResult Function(SpotubeFullTrackObject field0) track,
     required TResult Function(SpotubeFullPlaylistObject field0) playlistFull,
     required TResult Function(SpotubeSimplePlaylistObject field0)
         playlistSimple,
@@ -501,7 +501,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_TrackImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SpotubeTrackObject field0)? track,
+    TResult? Function(SpotubeFullTrackObject field0)? track,
     TResult? Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult? Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult? Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -515,7 +515,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_TrackImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SpotubeTrackObject field0)? track,
+    TResult Function(SpotubeFullTrackObject field0)? track,
     TResult Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -611,12 +611,12 @@ class _$SpotubeBrowseSectionResponseObjectItem_TrackImpl
 abstract class SpotubeBrowseSectionResponseObjectItem_Track
     extends SpotubeBrowseSectionResponseObjectItem {
   const factory SpotubeBrowseSectionResponseObjectItem_Track(
-          final SpotubeTrackObject field0) =
+          final SpotubeFullTrackObject field0) =
       _$SpotubeBrowseSectionResponseObjectItem_TrackImpl;
   const SpotubeBrowseSectionResponseObjectItem_Track._() : super._();
 
   @override
-  SpotubeTrackObject get field0;
+  SpotubeFullTrackObject get field0;
 
   /// Create a copy of SpotubeBrowseSectionResponseObjectItem
   /// with the given fields replaced by the non-null parameter values.
@@ -724,7 +724,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_PlaylistFullImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SpotubeTrackObject field0) track,
+    required TResult Function(SpotubeFullTrackObject field0) track,
     required TResult Function(SpotubeFullPlaylistObject field0) playlistFull,
     required TResult Function(SpotubeSimplePlaylistObject field0)
         playlistSimple,
@@ -739,7 +739,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_PlaylistFullImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SpotubeTrackObject field0)? track,
+    TResult? Function(SpotubeFullTrackObject field0)? track,
     TResult? Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult? Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult? Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -753,7 +753,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_PlaylistFullImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SpotubeTrackObject field0)? track,
+    TResult Function(SpotubeFullTrackObject field0)? track,
     TResult Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -962,7 +962,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_PlaylistSimpleImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SpotubeTrackObject field0) track,
+    required TResult Function(SpotubeFullTrackObject field0) track,
     required TResult Function(SpotubeFullPlaylistObject field0) playlistFull,
     required TResult Function(SpotubeSimplePlaylistObject field0)
         playlistSimple,
@@ -977,7 +977,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_PlaylistSimpleImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SpotubeTrackObject field0)? track,
+    TResult? Function(SpotubeFullTrackObject field0)? track,
     TResult? Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult? Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult? Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -991,7 +991,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_PlaylistSimpleImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SpotubeTrackObject field0)? track,
+    TResult Function(SpotubeFullTrackObject field0)? track,
     TResult Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -1199,7 +1199,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_AlbumSimpleImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SpotubeTrackObject field0) track,
+    required TResult Function(SpotubeFullTrackObject field0) track,
     required TResult Function(SpotubeFullPlaylistObject field0) playlistFull,
     required TResult Function(SpotubeSimplePlaylistObject field0)
         playlistSimple,
@@ -1214,7 +1214,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_AlbumSimpleImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SpotubeTrackObject field0)? track,
+    TResult? Function(SpotubeFullTrackObject field0)? track,
     TResult? Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult? Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult? Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -1228,7 +1228,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_AlbumSimpleImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SpotubeTrackObject field0)? track,
+    TResult Function(SpotubeFullTrackObject field0)? track,
     TResult Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -1433,7 +1433,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_AlbumFullImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SpotubeTrackObject field0) track,
+    required TResult Function(SpotubeFullTrackObject field0) track,
     required TResult Function(SpotubeFullPlaylistObject field0) playlistFull,
     required TResult Function(SpotubeSimplePlaylistObject field0)
         playlistSimple,
@@ -1448,7 +1448,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_AlbumFullImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SpotubeTrackObject field0)? track,
+    TResult? Function(SpotubeFullTrackObject field0)? track,
     TResult? Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult? Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult? Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -1462,7 +1462,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_AlbumFullImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SpotubeTrackObject field0)? track,
+    TResult Function(SpotubeFullTrackObject field0)? track,
     TResult Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -1668,7 +1668,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_ArtistFullImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SpotubeTrackObject field0) track,
+    required TResult Function(SpotubeFullTrackObject field0) track,
     required TResult Function(SpotubeFullPlaylistObject field0) playlistFull,
     required TResult Function(SpotubeSimplePlaylistObject field0)
         playlistSimple,
@@ -1683,7 +1683,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_ArtistFullImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SpotubeTrackObject field0)? track,
+    TResult? Function(SpotubeFullTrackObject field0)? track,
     TResult? Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult? Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult? Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -1697,7 +1697,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_ArtistFullImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SpotubeTrackObject field0)? track,
+    TResult Function(SpotubeFullTrackObject field0)? track,
     TResult Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -1906,7 +1906,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_ArtistSimpleImpl
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
-    required TResult Function(SpotubeTrackObject field0) track,
+    required TResult Function(SpotubeFullTrackObject field0) track,
     required TResult Function(SpotubeFullPlaylistObject field0) playlistFull,
     required TResult Function(SpotubeSimplePlaylistObject field0)
         playlistSimple,
@@ -1921,7 +1921,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_ArtistSimpleImpl
   @override
   @optionalTypeArgs
   TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(SpotubeTrackObject field0)? track,
+    TResult? Function(SpotubeFullTrackObject field0)? track,
     TResult? Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult? Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult? Function(SpotubeSimpleAlbumObject field0)? albumSimple,
@@ -1935,7 +1935,7 @@ class _$SpotubeBrowseSectionResponseObjectItem_ArtistSimpleImpl
   @override
   @optionalTypeArgs
   TResult maybeWhen<TResult extends Object?>({
-    TResult Function(SpotubeTrackObject field0)? track,
+    TResult Function(SpotubeFullTrackObject field0)? track,
     TResult Function(SpotubeFullPlaylistObject field0)? playlistFull,
     TResult Function(SpotubeSimplePlaylistObject field0)? playlistSimple,
     TResult Function(SpotubeSimpleAlbumObject field0)? albumSimple,

@@ -973,7 +973,7 @@ mixin _$SpotubeAudioSourceMatchObject {
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   List<String> get artists => throw _privateConstructorUsedError;
-  BigInt get duration => throw _privateConstructorUsedError;
+  int get duration => throw _privateConstructorUsedError;
   String? get thumbnail => throw _privateConstructorUsedError;
   String get externalUri => throw _privateConstructorUsedError;
 
@@ -1000,7 +1000,7 @@ abstract class $SpotubeAudioSourceMatchObjectCopyWith<$Res> {
       String id,
       String title,
       List<String> artists,
-      BigInt duration,
+      int duration,
       String? thumbnail,
       String externalUri});
 }
@@ -1049,7 +1049,7 @@ class _$SpotubeAudioSourceMatchObjectCopyWithImpl<$Res,
       duration: null == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
-              as BigInt,
+              as int,
       thumbnail: freezed == thumbnail
           ? _value.thumbnail
           : thumbnail // ignore: cast_nullable_to_non_nullable
@@ -1076,7 +1076,7 @@ abstract class _$$SpotubeAudioSourceMatchObjectImplCopyWith<$Res>
       String id,
       String title,
       List<String> artists,
-      BigInt duration,
+      int duration,
       String? thumbnail,
       String externalUri});
 }
@@ -1124,7 +1124,7 @@ class __$$SpotubeAudioSourceMatchObjectImplCopyWithImpl<$Res>
       duration: null == duration
           ? _value.duration
           : duration // ignore: cast_nullable_to_non_nullable
-              as BigInt,
+              as int,
       thumbnail: freezed == thumbnail
           ? _value.thumbnail
           : thumbnail // ignore: cast_nullable_to_non_nullable
@@ -1170,7 +1170,7 @@ class _$SpotubeAudioSourceMatchObjectImpl
   }
 
   @override
-  final BigInt duration;
+  final int duration;
   @override
   final String? thumbnail;
   @override
@@ -1236,7 +1236,7 @@ abstract class _SpotubeAudioSourceMatchObject
       required final String id,
       required final String title,
       required final List<String> artists,
-      required final BigInt duration,
+      required final int duration,
       final String? thumbnail,
       required final String externalUri}) = _$SpotubeAudioSourceMatchObjectImpl;
 
@@ -1252,7 +1252,7 @@ abstract class _SpotubeAudioSourceMatchObject
   @override
   List<String> get artists;
   @override
-  BigInt get duration;
+  int get duration;
   @override
   String? get thumbnail;
   @override

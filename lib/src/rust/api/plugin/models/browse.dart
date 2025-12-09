@@ -34,7 +34,7 @@ sealed class SpotubeBrowseSectionResponseObjectItem
   const SpotubeBrowseSectionResponseObjectItem._();
 
   const factory SpotubeBrowseSectionResponseObjectItem.track(
-    SpotubeTrackObject field0,
+    SpotubeFullTrackObject field0,
   ) = SpotubeBrowseSectionResponseObjectItem_Track;
   const factory SpotubeBrowseSectionResponseObjectItem.playlistFull(
     SpotubeFullPlaylistObject field0,

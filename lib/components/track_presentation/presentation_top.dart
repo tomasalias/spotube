@@ -11,6 +11,7 @@ import 'package:spotube/components/track_presentation/use_action_callbacks.dart'
 import 'package:spotube/components/track_presentation/use_is_user_playlist.dart';
 import 'package:spotube/extensions/constrains.dart';
 import 'package:spotube/extensions/context.dart';
+import 'package:spotube/models/metadata/metadata.dart';
 import 'package:spotube/modules/playlist/playlist_create_dialog.dart';
 
 class TrackPresentationTopSection extends HookConsumerWidget {

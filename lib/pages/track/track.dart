@@ -44,7 +44,8 @@ class TrackPage extends HookConsumerWidget {
 
     final trackQuery = ref.watch(metadataPluginTrackProvider(trackId));
 
-    final track = trackQuery.asData?.value ?? FakeData.track;
+    final track = SpotubeTrackObject.full(trackQuery.asData?.value ??
+        FakeData.track.field0 as SpotubeFullTrackObject);
 
     void onPlay() async {
       if (isActive) {
@@ -230,7 +231,10 @@ class TrackPage extends HookConsumerWidget {
                                         const Spacer()
                                       else
                                         const Gap(20),
-                                      TrackHeartButton(track: track),
+                                      TrackHeartButton(
+                                        track: track.field0
+                                            as SpotubeFullTrackObject,
+                                      ),
                                       TrackOptionsButton(
                                         track: track,
                                         userPlaylist: false,

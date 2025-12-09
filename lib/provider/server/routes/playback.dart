@@ -70,8 +70,9 @@ class ServerPlaybackRoutes {
     final sourcedTrack = activeSourcedTrack?.track.id == track.id
         ? activeSourcedTrack?.source
         : await ref.read(
-            sourcedTrackProvider(spotubeMedia.track as SpotubeFullTrackObject)
-                .future,
+            sourcedTrackProvider(
+              spotubeMedia.track.field0 as SpotubeFullTrackObject,
+            ).future,
           );
 
     return sourcedTrack;
@@ -258,7 +259,7 @@ class ServerPlaybackRoutes {
 
         await MetadataGod.writeMetadata(
           file: trackCacheFile.path,
-          metadata: track.query.toMetadata(
+          metadata: SpotubeTrackObject.full(track.query).toMetadata(
             imageBytes: imageBytes,
             fileLength: fileLength,
           ),

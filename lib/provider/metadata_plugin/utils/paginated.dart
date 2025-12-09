@@ -10,8 +10,8 @@ import 'package:spotube/services/logger/logger.dart';
 
 mixin PaginatedAsyncNotifierMixin<K>
     // ignore: invalid_use_of_internal_member
-    on AsyncNotifierBase<SpotubePaginationResponseObject<K>> {
-  Future<SpotubePaginationResponseObject<K>> fetch(int offset, int limit);
+    on AsyncNotifierBase<SpotubeFlattenedPaginationObject<K>> {
+  Future<SpotubeFlattenedPaginationObject<K>> fetch(int offset, int limit);
 
   Future<void> fetchMore() async {
     if (state.value == null || !state.value!.hasMore) return;
@@ -75,9 +75,9 @@ mixin PaginatedAsyncNotifierMixin<K>
 }
 
 abstract class PaginatedAsyncNotifier<K>
-    extends AsyncNotifier<SpotubePaginationResponseObject<K>>
+    extends AsyncNotifier<SpotubeFlattenedPaginationObject<K>>
     with PaginatedAsyncNotifierMixin<K>, MetadataPluginMixin<K> {}
 
 abstract class AutoDisposePaginatedAsyncNotifier<K>
-    extends AutoDisposeAsyncNotifier<SpotubePaginationResponseObject<K>>
+    extends AutoDisposeAsyncNotifier<SpotubeFlattenedPaginationObject<K>>
     with PaginatedAsyncNotifierMixin<K>, MetadataPluginMixin<K> {}

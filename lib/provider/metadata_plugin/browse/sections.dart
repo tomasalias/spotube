@@ -4,17 +4,20 @@ import 'package:spotube/provider/metadata_plugin/core/auth.dart';
 import 'package:spotube/provider/metadata_plugin/utils/paginated.dart';
 
 class MetadataPluginBrowseSectionsNotifier
-    extends PaginatedAsyncNotifier<SpotubeBrowseSectionObject<Object>> {
+    extends PaginatedAsyncNotifier<SpotubeBrowseSectionObject> {
   @override
-  Future<SpotubePaginationResponseObject<SpotubeBrowseSectionObject<Object>>>
-      fetch(
+  Future<SpotubeFlattenedPaginationObject<SpotubeBrowseSectionObject>> fetch(
     int offset,
     int limit,
   ) async {
-    return await (await metadataPlugin).browse.sections(
+    return await (await metadataPlugin)
+        .browse
+        .sections(
           limit: limit,
           offset: offset,
-        );
+          mpscTx: await mpscTx,
+        )
+        .then((value) => value.flatten());
   }
 
   @override
@@ -26,6 +29,6 @@ class MetadataPluginBrowseSectionsNotifier
 
 final metadataPluginBrowseSectionsProvider = AsyncNotifierProvider<
     MetadataPluginBrowseSectionsNotifier,
-    SpotubePaginationResponseObject<SpotubeBrowseSectionObject<Object>>>(
+    SpotubeFlattenedPaginationObject<SpotubeBrowseSectionObject>>(
   () => MetadataPluginBrowseSectionsNotifier(),
 );

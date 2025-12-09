@@ -81,9 +81,12 @@ class HistoryTopTracksNotifier extends FamilyPaginatedAsyncNotifier<
           .nonNulls
           .toList();
 
-      track = track.copyWith(artists: includedArtists);
+      final updatedTrack = track.when(
+        full: (field0) => field0.copyWith(artists: includedArtists).toJson(),
+        local: (field0) => field0.copyWith(artists: includedArtists).toJson(),
+      );
 
-      return e.copyWith(data: track.toJson());
+      return e.copyWith(data: updatedTrack);
     });
 
     assert(
@@ -109,7 +112,7 @@ class HistoryTopTracksNotifier extends FamilyPaginatedAsyncNotifier<
 
     final items = getTracksWithCount(entries);
 
-    return SpotubePaginationResponseObject<PlaybackHistoryTrack>(
+    return SpotubeFlattenedPaginationObject<PlaybackHistoryTrack>(
       items: items,
       nextOffset: offset + limit,
       total: items.length,
@@ -190,7 +193,7 @@ class HistoryTopTracksNotifier extends FamilyPaginatedAsyncNotifier<
 
 final historyTopTracksProvider = AsyncNotifierProviderFamily<
     HistoryTopTracksNotifier,
-    SpotubePaginationResponseObject<PlaybackHistoryTrack>,
+    SpotubeFlattenedPaginationObject<PlaybackHistoryTrack>,
     HistoryDuration>(
   () => HistoryTopTracksNotifier(),
 );

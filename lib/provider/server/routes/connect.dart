@@ -161,7 +161,7 @@ class ServerConnectRoutes {
 
                 event.onLoad((event) async {
                   await audioPlayerNotifier.load(
-                    event.data.tracks.cast<SpotubeFullTrackObject>().toList(),
+                    event.data.tracks.cast<SpotubeTrackObject>().toList(),
                     autoPlay: true,
                     initialIndex: event.data.initialIndex ?? 0,
                   );

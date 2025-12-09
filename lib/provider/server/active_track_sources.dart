@@ -16,7 +16,7 @@ final activeTrackSourcesProvider = FutureProvider<
     return null;
   }
 
-  if (audioPlayerState.activeTrack is SpotubeLocalTrackObject) {
+  if (audioPlayerState.activeTrack is SpotubeTrackObject_Local) {
     return (
       source: null,
       notifier: null,
@@ -26,12 +26,12 @@ final activeTrackSourcesProvider = FutureProvider<
 
   final sourcedTrack = await ref.watch(
     sourcedTrackProvider(
-      audioPlayerState.activeTrack! as SpotubeFullTrackObject,
+      audioPlayerState.activeTrack?.field0 as SpotubeFullTrackObject,
     ).future,
   );
   final sourcedTrackNotifier = ref.watch(
     sourcedTrackProvider(
-      audioPlayerState.activeTrack! as SpotubeFullTrackObject,
+      audioPlayerState.activeTrack?.field0 as SpotubeFullTrackObject,
     ).notifier,
   );
 

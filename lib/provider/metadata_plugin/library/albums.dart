@@ -6,14 +6,18 @@ import 'package:spotube/provider/metadata_plugin/utils/paginated.dart';
 class MetadataPluginSavedAlbumNotifier
     extends PaginatedAsyncNotifier<SpotubeSimpleAlbumObject> {
   @override
-  Future<SpotubePaginationResponseObject<SpotubeSimpleAlbumObject>> fetch(
+  Future<SpotubeFlattenedPaginationObject<SpotubeSimpleAlbumObject>> fetch(
     int offset,
     int limit,
   ) async {
-    return await (await metadataPlugin).user.savedAlbums(
+    return await (await metadataPlugin)
+        .user
+        .savedAlbums(
           limit: limit,
           offset: offset,
-        );
+          mpscTx: await mpscTx,
+        )
+        .then((a) => a.flatten());
   }
 
   @override
@@ -35,7 +39,10 @@ class MetadataPluginSavedAlbumNotifier
       ),
     );
     try {
-      await (await metadataPlugin).album.save(albums.map((e) => e.id).toList());
+      await (await metadataPlugin).album.save(
+            ids: albums.map((e) => e.id).toList(),
+            mpscTx: await mpscTx,
+          );
     } catch (e) {
       state = AsyncData(oldState!);
       rethrow;
@@ -58,7 +65,9 @@ class MetadataPluginSavedAlbumNotifier
       ),
     );
     try {
-      await (await metadataPlugin).album.unsave(albumIds);
+      await (await metadataPlugin)
+          .album
+          .unsave(ids: albumIds, mpscTx: await mpscTx);
     } catch (e) {
       state = AsyncData(oldState!);
       rethrow;
@@ -68,7 +77,7 @@ class MetadataPluginSavedAlbumNotifier
 
 final metadataPluginSavedAlbumsProvider = AsyncNotifierProvider<
     MetadataPluginSavedAlbumNotifier,
-    SpotubePaginationResponseObject<SpotubeSimpleAlbumObject>>(
+    SpotubeFlattenedPaginationObject<SpotubeSimpleAlbumObject>>(
   () => MetadataPluginSavedAlbumNotifier(),
 );
 

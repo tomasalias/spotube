@@ -27,9 +27,8 @@ class AudioPlayerState with _$AudioPlayerState {
     List<SpotubeTrackObject> tracks = const [],
   }) {
     assert(
-      tracks.every((track) =>
-          track is SpotubeFullTrackObject || track is SpotubeLocalTrackObject),
-      'All tracks must be either SpotubeFullTrackObject or SpotubeLocalTrackObject',
+      tracks.every((track) => track is SpotubeTrackObject_Local),
+      'All tracks must be either SpotubeTrackObject or SpotubeLocalTrackObject',
     );
 
     return AudioPlayerState._inner(
@@ -53,10 +52,12 @@ class AudioPlayerState with _$AudioPlayerState {
   bool containsTrack(SpotubeTrackObject track) {
     return tracks.isNotEmpty &&
         tracks.any(
-          (t) =>
-              t is SpotubeLocalTrackObject && track is SpotubeLocalTrackObject
-                  ? t.path == track.path
-                  : t.id == track.id,
+          (t) => switch ((t.field0, track.field0)) {
+            (SpotubeLocalTrackObject(), SpotubeLocalTrackObject()) =>
+              (t.field0 as SpotubeLocalTrackObject).path ==
+                  (track.field0 as SpotubeLocalTrackObject).path,
+            _ => t.id == track.id,
+          },
         );
   }
 

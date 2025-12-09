@@ -11,5 +11,7 @@ final metadataPluginTrackProvider =
     throw MetadataPluginException.noDefaultMetadataPlugin();
   }
 
-  return metadataPlugin.track.getTrack(trackId);
+  return await metadataPlugin.track
+      .getTrack(id: trackId, mpscTx: metadataPlugin.sender);
 });
+  

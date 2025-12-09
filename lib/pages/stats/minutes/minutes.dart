@@ -3,6 +3,7 @@ import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:spotube/collections/formatters.dart';
 import 'package:spotube/components/titlebar/titlebar.dart';
+import 'package:spotube/models/metadata/metadata.dart';
 import 'package:spotube/modules/stats/common/track_item.dart';
 import 'package:spotube/extensions/context.dart';
 

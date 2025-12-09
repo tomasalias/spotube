@@ -116,7 +116,8 @@ class PluginAudioSourceSender {
   const PluginAudioSourceSender();
 
   Future<List<SpotubeAudioSourceMatchObject>> matches(
-          {required OpaqueSender mpscTx, required SpotubeTrackObject track}) =>
+          {required OpaqueSender mpscTx,
+          required SpotubeFullTrackObject track}) =>
       RustLib.instance.api.crateApiPluginSendersPluginAudioSourceSenderMatches(
           that: this, mpscTx: mpscTx, track: track);
 
@@ -125,6 +126,12 @@ class PluginAudioSourceSender {
           required SpotubeAudioSourceMatchObject matched}) =>
       RustLib.instance.api.crateApiPluginSendersPluginAudioSourceSenderStreams(
           that: this, mpscTx: mpscTx, matched: matched);
+
+  Future<List<SpotubeAudioSourceContainerPreset>> supportedPresets(
+          {required OpaqueSender mpscTx}) =>
+      RustLib.instance.api
+          .crateApiPluginSendersPluginAudioSourceSenderSupportedPresets(
+              that: this, mpscTx: mpscTx);
 
   @override
   int get hashCode => 0;
@@ -379,12 +386,12 @@ class PluginSearchSender {
 class PluginTrackSender {
   const PluginTrackSender();
 
-  Future<SpotubeTrackObject> getTrack(
+  Future<SpotubeFullTrackObject> getTrack(
           {required OpaqueSender mpscTx, required String id}) =>
       RustLib.instance.api.crateApiPluginSendersPluginTrackSenderGetTrack(
           that: this, mpscTx: mpscTx, id: id);
 
-  Future<List<SpotubeTrackObject>> radio(
+  Future<List<SpotubeFullTrackObject>> radio(
           {required OpaqueSender mpscTx, required String id}) =>
       RustLib.instance.api.crateApiPluginSendersPluginTrackSenderRadio(
           that: this, mpscTx: mpscTx, id: id);

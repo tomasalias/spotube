@@ -6,15 +6,19 @@ import 'package:spotube/provider/metadata_plugin/utils/family_paginated.dart';
 class MetadataPluginBrowseSectionItemsNotifier
     extends FamilyPaginatedAsyncNotifier<Object, String> {
   @override
-  Future<SpotubePaginationResponseObject<Object>> fetch(
+  Future<SpotubeFlattenedPaginationObject<Object>> fetch(
     int offset,
     int limit,
   ) async {
-    return await (await metadataPlugin).browse.sectionItems(
-          arg,
+    return await (await metadataPlugin)
+        .browse
+        .sectionItems(
+          id: arg,
           limit: limit,
           offset: offset,
-        );
+          mpscTx: await mpscTx,
+        )
+        .then((value) => value.flatten());
   }
 
   @override
@@ -26,7 +30,7 @@ class MetadataPluginBrowseSectionItemsNotifier
 
 final metadataPluginBrowseSectionItemsProvider = AsyncNotifierProviderFamily<
     MetadataPluginBrowseSectionItemsNotifier,
-    SpotubePaginationResponseObject<Object>,
+    SpotubeFlattenedPaginationObject<Object>,
     String>(
   () => MetadataPluginBrowseSectionItemsNotifier(),
 );

@@ -89,7 +89,7 @@ pub struct SpotubeAudioSourceMatchObject {
     pub id: String,
     pub title: String,
     pub artists: Vec<String>,
-    pub duration: u64, // Duration in ms
+    pub duration: u32, // Duration in ms
 
     pub thumbnail: Option<String>,
     pub external_uri: String,

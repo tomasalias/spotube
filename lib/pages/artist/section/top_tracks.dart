@@ -44,7 +44,7 @@ class ArtistPageTopTracks extends HookConsumerWidget {
         List.generate(10, (index) => FakeData.track);
 
     void playPlaylist(
-      List<SpotubeFullTrackObject> tracks, {
+      List<SpotubeTrackObject> tracks, {
       SpotubeTrackObject? currentTrack,
     }) async {
       isLoading.value = true;

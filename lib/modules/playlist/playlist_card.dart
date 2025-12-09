@@ -98,19 +98,23 @@ class PlaylistCard extends HookConsumerWidget {
           final allTracks = await fetchAllTracks();
           await remotePlayback.load(
             WebSocketLoadEventData.playlist(
-              tracks: allTracks,
+              tracks: allTracks.union(),
               collection: playlist,
             ),
           );
         } else {
-          await playlistNotifier.load(fetchedInitialTracks, autoPlay: true);
+          await playlistNotifier.load(
+            fetchedInitialTracks.union(),
+            autoPlay: true,
+          );
           playlistNotifier.addCollection(playlist.id);
           historyNotifier.addPlaylists([playlist]);
 
           final allTracks = await fetchAllTracks();
 
-          await playlistNotifier
-              .addTracks(allTracks.sublist(fetchedInitialTracks.length));
+          await playlistNotifier.addTracks(
+            allTracks.sublist(fetchedInitialTracks.length).union(),
+          );
         }
       } finally {
         if (context.mounted) {
@@ -142,7 +146,9 @@ class PlaylistCard extends HookConsumerWidget {
 
         if (fetchedInitialTracks.isEmpty) return;
 
-        playlistNotifier.addTracks(fetchedInitialTracks);
+        playlistNotifier.addTracks(
+          fetchedInitialTracks.union(),
+        );
         playlistNotifier.addCollection(playlist.id);
         historyNotifier.addPlaylists([playlist]);
         if (context.mounted) {

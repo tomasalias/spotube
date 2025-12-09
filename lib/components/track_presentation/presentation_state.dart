@@ -44,7 +44,7 @@ class PresentationStateNotifier
             next.whenData((value) {
               state = state.copyWith(
                 presentationTracks: ServiceUtils.sortTracks(
-                  value.items,
+                  value.items.union(),
                   state.sortBy,
                 ),
               );
@@ -62,7 +62,7 @@ class PresentationStateNotifier
             next.whenData((value) {
               state = state.copyWith(
                 presentationTracks: ServiceUtils.sortTracks(
-                  value.items,
+                  value.items.union(),
                   state.sortBy,
                 ),
               );
@@ -109,7 +109,7 @@ class PresentationStateNotifier
         } ??
         <SpotubeFullTrackObject>[];
 
-    return tracks;
+    return tracks.union();
   }
 
   void selectTrack(SpotubeTrackObject track) {

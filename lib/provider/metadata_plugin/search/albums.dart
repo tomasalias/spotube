@@ -12,7 +12,7 @@ class MetadataPluginSearchAlbumsNotifier
   @override
   fetch(offset, limit) async {
     if (arg.isEmpty) {
-      return SpotubePaginationResponseObject<SpotubeSimpleAlbumObject>(
+      return SpotubeFlattenedPaginationObject<SpotubeSimpleAlbumObject>(
         limit: limit,
         nextOffset: null,
         total: 0,
@@ -22,12 +22,13 @@ class MetadataPluginSearchAlbumsNotifier
     }
 
     final res = await (await metadataPlugin).search.albums(
-          arg,
+          query: arg,
           offset: offset,
           limit: limit,
+          mpscTx: await mpscTx,
         );
 
-    return res;
+    return res.flatten();
   }
 
   @override
@@ -41,6 +42,6 @@ class MetadataPluginSearchAlbumsNotifier
 
 final metadataPluginSearchAlbumsProvider =
     AutoDisposeAsyncNotifierProviderFamily<MetadataPluginSearchAlbumsNotifier,
-        SpotubePaginationResponseObject<SpotubeSimpleAlbumObject>, String>(
+        SpotubeFlattenedPaginationObject<SpotubeSimpleAlbumObject>, String>(
   () => MetadataPluginSearchAlbumsNotifier(),
 );

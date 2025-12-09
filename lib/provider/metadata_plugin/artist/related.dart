@@ -6,15 +6,19 @@ import 'package:spotube/provider/metadata_plugin/utils/family_paginated.dart';
 class MetadataPluginArtistRelatedArtistsNotifier
     extends FamilyPaginatedAsyncNotifier<SpotubeFullArtistObject, String> {
   @override
-  Future<SpotubePaginationResponseObject<SpotubeFullArtistObject>> fetch(
+  Future<SpotubeFlattenedPaginationObject<SpotubeFullArtistObject>> fetch(
     int offset,
     int limit,
   ) async {
-    return await (await metadataPlugin).artist.related(
-          arg,
+    return await (await metadataPlugin)
+        .artist
+        .related(
+          id: arg,
           limit: limit,
           offset: offset,
-        );
+          mpscTx: await mpscTx,
+        )
+        .then((a) => a.flatten());
   }
 
   @override
@@ -26,7 +30,7 @@ class MetadataPluginArtistRelatedArtistsNotifier
 
 final metadataPluginArtistRelatedArtistsProvider = AsyncNotifierProviderFamily<
     MetadataPluginArtistRelatedArtistsNotifier,
-    SpotubePaginationResponseObject<SpotubeFullArtistObject>,
+    SpotubeFlattenedPaginationObject<SpotubeFullArtistObject>,
     String>(
   () => MetadataPluginArtistRelatedArtistsNotifier(),
 );

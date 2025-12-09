@@ -5,10 +5,11 @@ import 'package:spotube/provider/metadata_plugin/library/tracks.dart';
 typedef UseTrackToggleLike = ({
   bool isLiked,
   bool isLoading,
-  Future<void> Function(SpotubeTrackObject track) toggleTrackLike,
+  Future<void> Function(SpotubeFullTrackObject track) toggleTrackLike,
 });
 
-UseTrackToggleLike useTrackToggleLike(SpotubeTrackObject track, WidgetRef ref) {
+UseTrackToggleLike useTrackToggleLike(
+    SpotubeFullTrackObject track, WidgetRef ref) {
   final savedTracksNotifier =
       ref.watch(metadataPluginSavedTracksProvider.notifier);
 

@@ -3,13 +3,15 @@ import 'package:spotube/models/metadata/metadata.dart';
 import 'package:spotube/provider/history/summary.dart';
 
 abstract class FakeData {
-  static final SpotubeImageObject image = SpotubeImageObject(
+  static const SpotubeImageObject image = SpotubeImageObject(
+    typeName: "image",
     height: 100,
     width: 100,
     url: "https://dummyimage.com/100x100/cfcfcf/cfcfcf.jpg",
   );
 
-  static final SpotubeFullArtistObject artist = SpotubeFullArtistObject(
+  static const SpotubeFullArtistObject artist = SpotubeFullArtistObject(
+    typeName: "artist_full",
     id: "1",
     name: "What an artist",
     externalUri: "https://example.com",
@@ -17,6 +19,7 @@ abstract class FakeData {
     genres: ["genre"],
     images: [
       SpotubeImageObject(
+        typeName: "image",
         height: 100,
         width: 100,
         url: "https://dummyimage.com/100x100/cfcfcf/cfcfcf.jpg",
@@ -24,7 +27,8 @@ abstract class FakeData {
     ],
   );
 
-  static final SpotubeFullAlbumObject album = SpotubeFullAlbumObject(
+  static const SpotubeFullAlbumObject album = SpotubeFullAlbumObject(
+    typeName: "album_full",
     id: "1",
     name: "A good album",
     externalUri: "https://example.com",
@@ -37,15 +41,17 @@ abstract class FakeData {
     recordLabel: "Record Label",
   );
 
-  static final SpotubeSimpleArtistObject artistSimple =
+  static const SpotubeSimpleArtistObject artistSimple =
       SpotubeSimpleArtistObject(
+    typeName: "artist_simple",
     id: "1",
     name: "What an artist",
     externalUri: "https://example.com",
     images: null,
   );
 
-  static final SpotubeSimpleAlbumObject albumSimple = SpotubeSimpleAlbumObject(
+  static const SpotubeSimpleAlbumObject albumSimple = SpotubeSimpleAlbumObject(
+    typeName: "album_simple",
     albumType: SpotubeAlbumType.album,
     artists: [],
     externalUri: "https://example.com",
@@ -54,6 +60,7 @@ abstract class FakeData {
     releaseDate: "2021-01-01",
     images: [
       SpotubeImageObject(
+        typeName: "image",
         height: 1,
         width: 1,
         url: "https://dummyimage.com/100x100/cfcfcf/cfcfcf.jpg",
@@ -61,24 +68,30 @@ abstract class FakeData {
     ],
   );
 
-  static final SpotubeFullTrackObject track = SpotubeTrackObject.full(
-    id: "1",
-    name: "A good track",
-    externalUri: "https://example.com",
-    album: albumSimple,
-    durationMs: 3 * 60 * 1000, // 3 minutes
-    isrc: "USUM72112345",
-    explicit: false,
-  ) as SpotubeFullTrackObject;
+  static const SpotubeTrackObject track = SpotubeTrackObject.full(
+    SpotubeFullTrackObject(
+      typeName: "track",
+      id: "1",
+      name: "A good track",
+      externalUri: "https://example.com",
+      album: albumSimple,
+      durationMs: 3 * 60 * 1000, // 3 minutes
+      isrc: "USUM72112345",
+      explicit: false,
+      artists: [artistSimple],
+    ),
+  );
 
-  static final SpotubeUserObject user = SpotubeUserObject(
+  static const SpotubeUserObject user = SpotubeUserObject(
+    typeName: "user",
     id: "1",
     name: "User Name",
     externalUri: "https://example.com",
     images: [image],
   );
 
-  static final SpotubeFullPlaylistObject playlist = SpotubeFullPlaylistObject(
+  static const SpotubeFullPlaylistObject playlist = SpotubeFullPlaylistObject(
+      typeName: "playlist_full",
       id: "1",
       name: "A good playlist",
       description: "A very good playlist description",
@@ -89,8 +102,9 @@ abstract class FakeData {
       images: [image],
       collaborators: [user]);
 
-  static final SpotubeSimplePlaylistObject playlistSimple =
+  static const SpotubeSimplePlaylistObject playlistSimple =
       SpotubeSimplePlaylistObject(
+    typeName: "playlist_simple",
     id: "1",
     name: "A good playlist",
     description: "A very good playlist description",
@@ -99,13 +113,18 @@ abstract class FakeData {
     images: [image],
   );
 
-  static final SpotubeBrowseSectionObject browseSection =
+  static const SpotubeBrowseSectionObject browseSection =
       SpotubeBrowseSectionObject(
+          typeName: "browse_section",
           id: "section-id",
           title: "Browse Section",
           browseMore: true,
           externalUri: "https://example.com/browse/section",
-          items: [playlistSimple, playlistSimple, playlistSimple]);
+          items: [
+        SpotubeBrowseSectionResponseObjectItem.playlistSimple(playlistSimple),
+        SpotubeBrowseSectionResponseObjectItem.playlistSimple(playlistSimple),
+        SpotubeBrowseSectionResponseObjectItem.playlistSimple(playlistSimple),
+      ]);
 
   static const historySummary = PlaybackHistorySummary(
     albums: 1,

@@ -4,7 +4,7 @@ use crate::api::plugin::models::album::{SpotubeFullAlbumObject, SpotubeSimpleAlb
 use crate::api::plugin::models::artist::{SpotubeFullArtistObject, SpotubeSimpleArtistObject};
 use crate::api::plugin::models::browse::SpotubeBrowseSectionObject;
 use crate::api::plugin::models::playlist::{SpotubeFullPlaylistObject, SpotubeSimplePlaylistObject};
-use crate::api::plugin::models::track::SpotubeTrackObject;
+use crate::api::plugin::models::track::SpotubeFullTrackObject;
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
 #[serde(rename_all = "camelCase")]
@@ -21,7 +21,7 @@ pub struct SpotubePaginationResponseObject {
 #[serde(rename_all = "camelCase", tag = "type_name")]
 pub enum SpotubePaginationResponseObjectItem {
     #[serde(rename = "track")]
-    Track(SpotubeTrackObject),
+    Track(SpotubeFullTrackObject),
     #[serde(rename = "playlist_full")]
     PlaylistFull(SpotubeFullPlaylistObject),
     #[serde(rename = "playlist_simple")]

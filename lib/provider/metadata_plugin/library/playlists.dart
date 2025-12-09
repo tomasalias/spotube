@@ -15,9 +15,9 @@ class MetadataPluginSavedPlaylistsNotifier
   fetch(int offset, int limit) async {
     final playlists = await (await metadataPlugin)
         .user
-        .savedPlaylists(limit: limit, offset: offset);
+        .savedPlaylists(limit: limit, offset: offset, mpscTx: await mpscTx);
 
-    return playlists;
+    return playlists.flatten();
   }
 
   @override
@@ -58,7 +58,9 @@ class MetadataPluginSavedPlaylistsNotifier
     );
 
     try {
-      await (await metadataPlugin).playlist.save(playlist.id);
+      await (await metadataPlugin)
+          .playlist
+          .save(playlistId: playlist.id, mpscTx: await mpscTx);
     } catch (e) {
       state = AsyncData(oldState!);
       rethrow;
@@ -76,7 +78,9 @@ class MetadataPluginSavedPlaylistsNotifier
     );
 
     try {
-      await (await metadataPlugin).playlist.unsave(playlist.id);
+      await (await metadataPlugin)
+          .playlist
+          .unsave(playlistId: playlist.id, mpscTx: await mpscTx);
     } catch (e) {
       state = AsyncData(oldState!);
       rethrow;
@@ -88,7 +92,9 @@ class MetadataPluginSavedPlaylistsNotifier
     final oldState = state;
     try {
       state = const AsyncLoading();
-      await (await metadataPlugin).playlist.deletePlaylist(playlistId);
+      await (await metadataPlugin)
+          .playlist
+          .deletePlaylist(playlistId: playlistId, mpscTx: await mpscTx);
       ref.invalidateSelf();
       ref.invalidate(metadataPluginIsSavedPlaylistProvider(playlistId));
       ref.invalidate(metadataPluginPlaylistTracksProvider(playlistId));
@@ -101,9 +107,8 @@ class MetadataPluginSavedPlaylistsNotifier
   Future<void> addTracks(String playlistId, List<String> trackIds) async {
     if (state.value == null) return;
 
-    await (await metadataPlugin)
-        .playlist
-        .addTracks(playlistId, trackIds: trackIds);
+    await (await metadataPlugin).playlist.addTracks(
+        playlistId: playlistId, trackIds: trackIds, mpscTx: await mpscTx);
 
     ref.invalidate(metadataPluginPlaylistTracksProvider(playlistId));
   }
@@ -111,9 +116,8 @@ class MetadataPluginSavedPlaylistsNotifier
   Future<void> removeTracks(String playlistId, List<String> trackIds) async {
     if (state.value == null) return;
 
-    await (await metadataPlugin)
-        .playlist
-        .removeTracks(playlistId, trackIds: trackIds);
+    await (await metadataPlugin).playlist.removeTracks(
+        playlistId: playlistId, trackIds: trackIds, mpscTx: await mpscTx);
 
     ref.invalidate(metadataPluginPlaylistTracksProvider(playlistId));
   }
@@ -121,7 +125,7 @@ class MetadataPluginSavedPlaylistsNotifier
 
 final metadataPluginSavedPlaylistsProvider = AsyncNotifierProvider<
     MetadataPluginSavedPlaylistsNotifier,
-    SpotubePaginationResponseObject<SpotubeSimplePlaylistObject>>(
+    SpotubeFlattenedPaginationObject<SpotubeSimplePlaylistObject>>(
   () => MetadataPluginSavedPlaylistsNotifier(),
 );
 

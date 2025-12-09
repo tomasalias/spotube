@@ -8,7 +8,7 @@ class PaginationProps {
   final bool isLoading;
   final VoidCallback onFetchMore;
   final Future<void> Function() onRefresh;
-  final Future<List<SpotubeFullTrackObject>> Function() onFetchAll;
+  final Future<List<SpotubeTrackObject>> Function() onFetchAll;
 
   const PaginationProps({
     required this.hasNextPage,
@@ -46,7 +46,7 @@ class TrackPresentationOptions {
   final String? ownerImage;
   final String image;
   final String routePath;
-  final List<SpotubeFullTrackObject> tracks;
+  final List<SpotubeTrackObject> tracks;
   final PaginationProps pagination;
   final bool isLiked;
   final String? shareUrl;

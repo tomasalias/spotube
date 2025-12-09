@@ -55,17 +55,17 @@ class LocalLibraryPage extends HookConsumerWidget {
     final playlist = ref.read(audioPlayerProvider);
     final playback = ref.read(audioPlayerProvider.notifier);
     currentTrack ??= tracks.first;
-    final isPlaylistPlaying = playlist.containsTracks(tracks);
+    final isPlaylistPlaying = playlist.containsTracks(tracks.union());
     if (!isPlaylistPlaying) {
       var indexWhere = tracks.indexWhere((s) => s.id == currentTrack?.id);
       await playback.load(
-        tracks,
+        tracks.union(),
         initialIndex: indexWhere,
         autoPlay: true,
       );
     } else if (isPlaylistPlaying &&
         currentTrack.id != playlist.activeTrack?.id) {
-      await playback.jumpToTrack(currentTrack);
+      await playback.jumpToTrack(SpotubeTrackObject.local(currentTrack));
     }
   }
 
@@ -75,12 +75,12 @@ class LocalLibraryPage extends HookConsumerWidget {
   ) async {
     final playlist = ref.read(audioPlayerProvider);
     final playback = ref.read(audioPlayerProvider.notifier);
-    final isPlaylistPlaying = playlist.containsTracks(tracks);
+    final isPlaylistPlaying = playlist.containsTracks(tracks.union());
     final shuffledTracks = tracks.shuffled();
     if (isPlaylistPlaying) return;
 
     await playback.load(
-      shuffledTracks,
+      shuffledTracks.union(),
       initialIndex: 0,
       autoPlay: true,
     );
@@ -93,9 +93,9 @@ class LocalLibraryPage extends HookConsumerWidget {
   ) async {
     final playlist = ref.read(audioPlayerProvider);
     final playback = ref.read(audioPlayerProvider.notifier);
-    final isPlaylistPlaying = playlist.containsTracks(tracks);
+    final isPlaylistPlaying = playlist.containsTracks(tracks.union());
     if (isPlaylistPlaying) return;
-    await playback.addTracks(tracks);
+    await playback.addTracks(tracks.union());
     if (!context.mounted) return;
     showToastForAction(context, "add-to-queue", tracks.length);
   }
@@ -109,7 +109,7 @@ class LocalLibraryPage extends HookConsumerWidget {
     final trackSnapshot = ref.watch(localTracksProvider);
     final isPlaylistPlaying = useMemoized(
       () => playlist.containsTracks(
-        trackSnapshot.asData?.value[location] ?? [],
+        trackSnapshot.asData?.value[location]?.union() ?? [],
       ),
       [playlist, trackSnapshot, location],
     );
@@ -382,7 +382,7 @@ class LocalLibraryPage extends HookConsumerWidget {
                   data: (tracks) {
                     final sortedTracks = useMemoized(() {
                       return ServiceUtils.sortTracks(
-                          tracks[location] ?? <SpotubeLocalTrackObject>[],
+                          tracks[location]?.union() ?? <SpotubeTrackObject>[],
                           sortBy.value);
                     }, [sortBy.value, tracks]);
 
@@ -463,8 +463,12 @@ class LocalLibraryPage extends HookConsumerWidget {
                                       onTap: () async {
                                         await playLocalTracks(
                                           ref,
-                                          sortedTracks,
-                                          currentTrack: track,
+                                          sortedTracks
+                                              .map((e) => e.field0
+                                                  as SpotubeLocalTrackObject)
+                                              .toList(),
+                                          currentTrack: track.field0
+                                              as SpotubeLocalTrackObject,
                                         );
                                       },
                                     );

@@ -43,6 +43,7 @@ class UserPlaylistsPage extends HookConsumerWidget {
       () => me.asData?.value == null
           ? null
           : SpotubeSimplePlaylistObject(
+              typeName: "playlist_simple",
               id: "user-liked-tracks",
               name: context.l10n.liked_tracks,
               description: context.l10n.liked_tracks_description,
@@ -50,6 +51,7 @@ class UserPlaylistsPage extends HookConsumerWidget {
               owner: me.asData!.value!,
               images: [
                   SpotubeImageObject(
+                    typeName: "image",
                     url: Assets.images.likedTracks.path,
                     width: 300,
                     height: 300,

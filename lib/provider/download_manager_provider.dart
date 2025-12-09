@@ -249,7 +249,7 @@ class DownloadManagerNotifier extends Notifier<List<DownloadTask>> {
       );
       await MetadataGod.writeMetadata(
         file: savePath,
-        metadata: task.track.toMetadata(
+        metadata: SpotubeTrackObject.full(task.track).toMetadata(
           fileLength: await savePathFile.length(),
           imageBytes: imageBytes,
         ),

@@ -5,6 +5,9 @@
 
 import '../../../frb_generated.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
+import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
+part 'core.freezed.dart';
+part 'core.g.dart';
 
 // These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `clone`, `cmp`, `cmp`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `partial_cmp`, `partial_cmp`
 
@@ -23,168 +26,75 @@ enum PluginApi {
   ;
 }
 
-class PluginConfiguration {
-  final String name;
-  final String description;
-  final String version;
-  final String author;
-  final String entryPoint;
-  final String pluginApiVersion;
-  final List<PluginApi> apis;
-  final List<PluginAbility> abilities;
-  final String? repository;
-
-  const PluginConfiguration({
-    required this.name,
-    required this.description,
-    required this.version,
-    required this.author,
-    required this.entryPoint,
-    required this.pluginApiVersion,
-    required this.apis,
-    required this.abilities,
-    this.repository,
-  });
-
-  Future<String> slug() =>
+@freezed
+sealed class PluginConfiguration with _$PluginConfiguration {
+  const PluginConfiguration._();
+  const factory PluginConfiguration({
+    required String name,
+    required String description,
+    required String version,
+    required String author,
+    required String entryPoint,
+    required String pluginApiVersion,
+    required List<PluginApi> apis,
+    required List<PluginAbility> abilities,
+    String? repository,
+  }) = _PluginConfiguration;
+  String slug() =>
       RustLib.instance.api.crateApiPluginModelsCorePluginConfigurationSlug(
         that: this,
       );
 
-  @override
-  int get hashCode =>
-      name.hashCode ^
-      description.hashCode ^
-      version.hashCode ^
-      author.hashCode ^
-      entryPoint.hashCode ^
-      pluginApiVersion.hashCode ^
-      apis.hashCode ^
-      abilities.hashCode ^
-      repository.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PluginConfiguration &&
-          runtimeType == other.runtimeType &&
-          name == other.name &&
-          description == other.description &&
-          version == other.version &&
-          author == other.author &&
-          entryPoint == other.entryPoint &&
-          pluginApiVersion == other.pluginApiVersion &&
-          apis == other.apis &&
-          abilities == other.abilities &&
-          repository == other.repository;
+  factory PluginConfiguration.fromJson(Map<String, dynamic> json) =>
+      _$PluginConfigurationFromJson(json);
 }
 
-class PluginUpdateAvailable {
-  final String downloadUrl;
-  final String version;
-  final String? changelog;
+@freezed
+sealed class PluginUpdateAvailable with _$PluginUpdateAvailable {
+  const factory PluginUpdateAvailable({
+    required String downloadUrl,
+    required String version,
+    String? changelog,
+  }) = _PluginUpdateAvailable;
 
-  const PluginUpdateAvailable({
-    required this.downloadUrl,
-    required this.version,
-    this.changelog,
-  });
-
-  @override
-  int get hashCode =>
-      downloadUrl.hashCode ^ version.hashCode ^ changelog.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is PluginUpdateAvailable &&
-          runtimeType == other.runtimeType &&
-          downloadUrl == other.downloadUrl &&
-          version == other.version &&
-          changelog == other.changelog;
+  factory PluginUpdateAvailable.fromJson(Map<String, dynamic> json) =>
+      _$PluginUpdateAvailableFromJson(json);
 }
 
-class ScrobbleAlbum {
-  final String id;
-  final String name;
+@freezed
+sealed class ScrobbleAlbum with _$ScrobbleAlbum {
+  const factory ScrobbleAlbum({
+    required String id,
+    required String name,
+  }) = _ScrobbleAlbum;
 
-  const ScrobbleAlbum({
-    required this.id,
-    required this.name,
-  });
-
-  @override
-  int get hashCode => id.hashCode ^ name.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ScrobbleAlbum &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name;
+  factory ScrobbleAlbum.fromJson(Map<String, dynamic> json) =>
+      _$ScrobbleAlbumFromJson(json);
 }
 
-class ScrobbleArtist {
-  final String id;
-  final String name;
+@freezed
+sealed class ScrobbleArtist with _$ScrobbleArtist {
+  const factory ScrobbleArtist({
+    required String id,
+    required String name,
+  }) = _ScrobbleArtist;
 
-  const ScrobbleArtist({
-    required this.id,
-    required this.name,
-  });
-
-  @override
-  int get hashCode => id.hashCode ^ name.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ScrobbleArtist &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          name == other.name;
+  factory ScrobbleArtist.fromJson(Map<String, dynamic> json) =>
+      _$ScrobbleArtistFromJson(json);
 }
 
-class ScrobbleDetails {
-  final String id;
-  final String title;
-  final List<ScrobbleArtist> artists;
-  final ScrobbleAlbum album;
-  final PlatformInt64? timestamp;
-  final int? durationMs;
-  final String? isrc;
+@freezed
+sealed class ScrobbleDetails with _$ScrobbleDetails {
+  const factory ScrobbleDetails({
+    required String id,
+    required String title,
+    required List<ScrobbleArtist> artists,
+    required ScrobbleAlbum album,
+    int? timestamp,
+    int? durationMs,
+    String? isrc,
+  }) = _ScrobbleDetails;
 
-  const ScrobbleDetails({
-    required this.id,
-    required this.title,
-    required this.artists,
-    required this.album,
-    this.timestamp,
-    this.durationMs,
-    this.isrc,
-  });
-
-  @override
-  int get hashCode =>
-      id.hashCode ^
-      title.hashCode ^
-      artists.hashCode ^
-      album.hashCode ^
-      timestamp.hashCode ^
-      durationMs.hashCode ^
-      isrc.hashCode;
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is ScrobbleDetails &&
-          runtimeType == other.runtimeType &&
-          id == other.id &&
-          title == other.title &&
-          artists == other.artists &&
-          album == other.album &&
-          timestamp == other.timestamp &&
-          durationMs == other.durationMs &&
-          isrc == other.isrc;
+  factory ScrobbleDetails.fromJson(Map<String, dynamic> json) =>
+      _$ScrobbleDetailsFromJson(json);
 }

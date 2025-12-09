@@ -14,8 +14,8 @@ import 'package:spotube/provider/metadata_plugin/updater/update_checker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 final validAbilities = {
-  PluginAbilities.metadata: ("Metadata", SpotubeIcons.album),
-  PluginAbilities.audioSource: ("Audio Source", SpotubeIcons.music),
+  PluginAbility.metadata: ("Metadata", SpotubeIcons.album),
+  PluginAbility.audioSource: ("Audio Source", SpotubeIcons.music),
 };
 
 class MetadataInstalledPluginItem extends HookConsumerWidget {
@@ -44,9 +44,9 @@ class MetadataInstalledPluginItem extends HookConsumerWidget {
     final pluginsNotifier = ref.watch(metadataPluginsProvider.notifier);
 
     final requiresAuth = (isDefaultMetadata || isDefaultAudioSource) &&
-        plugin.abilities.contains(PluginAbilities.authentication);
+        plugin.abilities.contains(PluginAbility.authentication);
     final supportsScrobbling = isDefaultMetadata &&
-        plugin.abilities.contains(PluginAbilities.scrobbling);
+        plugin.abilities.contains(PluginAbility.scrobbling);
 
     final isMetadataAuthenticatedSnapshot =
         ref.watch(metadataPluginAuthenticatedProvider);
@@ -253,7 +253,7 @@ class MetadataInstalledPluginItem extends HookConsumerWidget {
                 spacing: 8,
                 runSpacing: 8,
                 children: [
-                  if (plugin.abilities.contains(PluginAbilities.metadata))
+                  if (plugin.abilities.contains(PluginAbility.metadata))
                     Button.secondary(
                       enabled: !isDefaultMetadata,
                       onPressed: () async {
@@ -265,7 +265,7 @@ class MetadataInstalledPluginItem extends HookConsumerWidget {
                             : context.l10n.set_default_metadata_source,
                       ),
                     ),
-                  if (plugin.abilities.contains(PluginAbilities.audioSource))
+                  if (plugin.abilities.contains(PluginAbility.audioSource))
                     Button.secondary(
                       enabled: !isDefaultAudioSource,
                       onPressed: () async {
@@ -378,8 +378,13 @@ class MetadataInstalledPluginItem extends HookConsumerWidget {
                       !isAuthenticated)
                     Button.primary(
                       onPressed: () async {
-                        await pluginSnapshot?.asData?.value?.auth
-                            .authenticate();
+                        if ((pluginSnapshot?.hasValue ?? false) == false) {
+                          return;
+                        }
+
+                        await pluginSnapshot!.value!.auth.authenticate(
+                          mpscTx: pluginSnapshot.value!.sender,
+                        );
                       },
                       leading: const Icon(SpotubeIcons.login),
                       child: Text(context.l10n.login),
@@ -389,7 +394,13 @@ class MetadataInstalledPluginItem extends HookConsumerWidget {
                       isAuthenticated)
                     Button.destructive(
                       onPressed: () async {
-                        await pluginSnapshot?.asData?.value?.auth.logout();
+                        if ((pluginSnapshot?.hasValue ?? false) == false) {
+                          return;
+                        }
+
+                        await pluginSnapshot!.value!.auth.logout(
+                          mpscTx: pluginSnapshot.value!.sender,
+                        );
                       },
                       leading: const Icon(SpotubeIcons.logout),
                       child: Text(context.l10n.logout),

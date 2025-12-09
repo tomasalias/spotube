@@ -23,8 +23,8 @@ _$SpotubeSearchResponseObjectImpl _$$SpotubeSearchResponseObjectImplFromJson(
               Map<String, dynamic>.from(e as Map)))
           .toList(),
       tracks: (json['tracks'] as List<dynamic>)
-          .map((e) =>
-              SpotubeTrackObject.fromJson(Map<String, dynamic>.from(e as Map)))
+          .map((e) => SpotubeFullTrackObject.fromJson(
+              Map<String, dynamic>.from(e as Map)))
           .toList(),
     );
 

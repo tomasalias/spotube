@@ -103,7 +103,8 @@ class AudioPlayerStreamListeners {
           return;
         }
 
-        scrobbler.scrobble(audioPlayerState.activeTrack!);
+        scrobbler.scrobble(
+            audioPlayerState.activeTrack!.field0 as SpotubeFullTrackObject);
         ref
             .read(metadataPluginScrobbleProvider.notifier)
             .scrobble(audioPlayerState.activeTrack!);
@@ -115,13 +116,28 @@ class AudioPlayerStreamListeners {
         if (activeTrack.artists.any((a) => a.images == null)) {
           final metadataPlugin = await ref.read(metadataPluginProvider.future);
           final artists = await Future.wait(
-            activeTrack.artists
-                .map((artist) => metadataPlugin!.artist.getArtist(artist.id)),
+            activeTrack.artists.map(
+              (artist) => metadataPlugin!.artist.getArtist(
+                id: artist.id,
+                mpscTx: metadataPlugin.sender,
+              ),
+            ),
           );
-          activeTrack = activeTrack.copyWith(
-            artists: artists
-                .map((e) => SpotubeSimpleArtistObject.fromJson(e.toJson()))
-                .toList(),
+          activeTrack = activeTrack.when(
+            full: (field0) => SpotubeTrackObject.full(
+              field0.copyWith(
+                artists: artists
+                    .map((e) => SpotubeSimpleArtistObject.fromJson(e.toJson()))
+                    .toList(),
+              ),
+            ),
+            local: (field0) => SpotubeTrackObject.local(
+              field0.copyWith(
+                artists: artists
+                    .map((e) => SpotubeSimpleArtistObject.fromJson(e.toJson()))
+                    .toList(),
+              ),
+            ),
           );
         }
 
@@ -155,7 +171,8 @@ class AudioPlayerStreamListeners {
 
         try {
           await ref.read(
-            sourcedTrackProvider(nextTrack as SpotubeFullTrackObject).future,
+            sourcedTrackProvider(nextTrack.field0 as SpotubeFullTrackObject)
+                .future,
           );
         } finally {
           lastTrack = nextTrack.id;

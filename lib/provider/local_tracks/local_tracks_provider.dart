@@ -130,11 +130,11 @@ final localTracksProvider =
 
       final tracksFromMetadata = filesWithMetadata
           .map(
-            (fileWithMetadata) => SpotubeTrackObject.localTrackFromFile(
+            (fileWithMetadata) => localTrackFromFile(
               fileWithMetadata.file,
               metadata: fileWithMetadata.metadata,
               art: fileWithMetadata.art,
-            ) as SpotubeLocalTrackObject,
+            ),
           )
           .toList();
 

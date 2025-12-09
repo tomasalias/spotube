@@ -5,7 +5,8 @@ use crate::api::plugin::commands::{
 use crate::api::plugin::models::album::SpotubeFullAlbumObject;
 use crate::api::plugin::models::artist::SpotubeFullArtistObject;
 use crate::api::plugin::models::audio_source::{
-    SpotubeAudioSourceMatchObject, SpotubeAudioSourceStreamObject,
+    SpotubeAudioSourceContainerPreset, SpotubeAudioSourceMatchObject,
+    SpotubeAudioSourceStreamObject,
 };
 use crate::api::plugin::models::core::{
     PluginConfiguration, PluginUpdateAvailable, ScrobbleDetails,
@@ -13,7 +14,7 @@ use crate::api::plugin::models::core::{
 use crate::api::plugin::models::pagination::SpotubePaginationResponseObject;
 use crate::api::plugin::models::playlist::SpotubeFullPlaylistObject;
 use crate::api::plugin::models::search::SpotubeSearchResponseObject;
-use crate::api::plugin::models::track::SpotubeTrackObject;
+use crate::api::plugin::models::track::SpotubeFullTrackObject;
 use crate::api::plugin::models::user::SpotubeUserObject;
 use crate::api::plugin::plugin::OpaqueSender;
 use anyhow::anyhow;
@@ -239,10 +240,25 @@ impl PluginAudioSourceSender {
         Self {}
     }
 
+    pub async fn supported_presets(
+        &self,
+        mpsc_tx: &OpaqueSender,
+    ) -> anyhow::Result<Vec<SpotubeAudioSourceContainerPreset>> {
+        let (tx, rx) = oneshot::channel();
+        mpsc_tx
+            .sender
+            .send(PluginCommand::AudioSource(
+                AudioSourceCommands::SupportedPresets { response_tx: tx },
+            ))
+            .await?;
+
+        rx.await.map_err(|e| anyhow!("{e}")).and_then(|o| o)
+    }
+
     pub async fn matches(
         &self,
         mpsc_tx: &OpaqueSender,
-        track: SpotubeTrackObject,
+        track: SpotubeFullTrackObject,
     ) -> anyhow::Result<Vec<SpotubeAudioSourceMatchObject>> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
@@ -749,7 +765,7 @@ impl PluginTrackSender {
         &self,
         mpsc_tx: &OpaqueSender,
         id: String,
-    ) -> anyhow::Result<SpotubeTrackObject> {
+    ) -> anyhow::Result<SpotubeFullTrackObject> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender
@@ -792,7 +808,7 @@ impl PluginTrackSender {
         &self,
         mpsc_tx: &OpaqueSender,
         id: String,
-    ) -> anyhow::Result<Vec<SpotubeTrackObject>> {
+    ) -> anyhow::Result<Vec<SpotubeFullTrackObject>> {
         let (tx, rx) = oneshot::channel();
         mpsc_tx
             .sender

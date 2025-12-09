@@ -10,14 +10,14 @@ final queryingTrackInfoProvider = Provider<bool>((ref) {
     return false;
   }
 
-  if (audioPlayer.activeTrack is! SpotubeFullTrackObject) {
+  if (audioPlayer.activeTrack is! SpotubeTrackObject_Full) {
     return false;
   }
 
   return ref
       .watch(
         sourcedTrackProvider(
-            audioPlayer.activeTrack! as SpotubeFullTrackObject),
+            audioPlayer.activeTrack?.field0 as SpotubeFullTrackObject),
       )
       .isLoading;
 });

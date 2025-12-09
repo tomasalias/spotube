@@ -1,4 +1,4 @@
-use crate::api::plugin::models::track::SpotubeTrackObject;
+use crate::api::plugin::models::track::SpotubeFullTrackObject;
 use crate::internal::utils::js_invoke_async_method_to_json;
 use flutter_rust_bridge::frb;
 use rquickjs::{async_with, AsyncContext};
@@ -12,7 +12,7 @@ impl<'a> PluginTrackEndpoint<'a> {
         PluginTrackEndpoint(context)
     }
 
-    pub async fn get_track(&self, id: String) -> anyhow::Result<SpotubeTrackObject> {
+    pub async fn get_track(&self, id: String) -> anyhow::Result<SpotubeFullTrackObject> {
         async_with!(self.0 => |ctx| {
             Ok(
                 js_invoke_async_method_to_json(
@@ -60,10 +60,10 @@ impl<'a> PluginTrackEndpoint<'a> {
         }).await
     }
 
-    pub async fn radio(&self, id: String) -> anyhow::Result<Vec<SpotubeTrackObject>> {
+    pub async fn radio(&self, id: String) -> anyhow::Result<Vec<SpotubeFullTrackObject>> {
         async_with!(self.0 => |ctx| {
             Ok(
-                js_invoke_async_method_to_json::<_, Vec<SpotubeTrackObject>>(
+                js_invoke_async_method_to_json::<_, Vec<SpotubeFullTrackObject>>(
                     ctx.clone(),
                     "track",
                     "radio",

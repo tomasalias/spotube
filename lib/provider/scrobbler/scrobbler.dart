@@ -10,8 +10,8 @@ import 'package:spotube/provider/database/database.dart';
 import 'package:spotube/services/logger/logger.dart';
 
 class ScrobblerNotifier extends AsyncNotifier<Scrobblenaut?> {
-  final StreamController<SpotubeTrackObject> _scrobbleController =
-      StreamController<SpotubeTrackObject>.broadcast();
+  final _scrobbleController =
+      StreamController<SpotubeFullTrackObject>.broadcast();
   @override
   build() async {
     final database = ref.watch(databaseProvider);
@@ -107,18 +107,18 @@ class ScrobblerNotifier extends AsyncNotifier<Scrobblenaut?> {
     await database.delete(database.scrobblerTable).go();
   }
 
-  void scrobble(SpotubeTrackObject track) {
+  void scrobble(SpotubeFullTrackObject track) {
     _scrobbleController.add(track);
   }
 
-  Future<void> love(SpotubeTrackObject track) async {
+  Future<void> love(SpotubeFullTrackObject track) async {
     await state.asData?.value?.track.love(
       artist: track.artists.asString(),
       track: track.name,
     );
   }
 
-  Future<void> unlove(SpotubeTrackObject track) async {
+  Future<void> unlove(SpotubeFullTrackObject track) async {
     await state.asData?.value?.track.unLove(
       artist: track.artists.asString(),
       track: track.name,

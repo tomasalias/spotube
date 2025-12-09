@@ -15,6 +15,7 @@ final metadataPluginArtistProvider =
       throw MetadataPluginException.noDefaultMetadataPlugin();
     }
 
-    return metadataPlugin.artist.getArtist(artistId);
+    return metadataPlugin.artist
+        .getArtist(id: artistId, mpscTx: metadataPlugin.sender);
   },
 );

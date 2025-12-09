@@ -11,7 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:spotube/models/database/database.dart';
 import 'package:spotube/models/metadata/metadata.dart';
 import 'package:spotube/provider/database/database.dart';
-import 'package:spotube/provider/youtube_engine/youtube_engine.dart';
+import 'package:spotube/provider/server/server.dart';
 import 'package:spotube/services/dio/dio.dart';
 import 'package:spotube/services/logger/logger.dart';
 import 'package:spotube/services/metadata/errors/exceptions.dart';
@@ -23,6 +23,8 @@ import 'package:pub_semver/pub_semver.dart';
 final allowedDomainsRegex = RegExp(
   r"^(https?:\/\/)?(www\.)?(github\.com|codeberg\.org)\/.+",
 );
+
+final kPluginApiVersion = Version.parse("2.0.0");
 
 class MetadataPluginState {
   final List<PluginConfiguration> plugins;
@@ -129,7 +131,7 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
         repository: plugin.repository,
         apis: plugin.apis
             .map(
-              (e) => PluginApis.values.firstWhereOrNull(
+              (e) => PluginApi.values.firstWhereOrNull(
                 (api) => api.name == e,
               ),
             )
@@ -137,7 +139,7 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
             .toList(),
         abilities: plugin.abilities
             .map(
-              (e) => PluginAbilities.values.firstWhereOrNull(
+              (e) => PluginAbility.values.firstWhereOrNull(
                 (ability) => ability.name == e,
               ),
             )
@@ -149,7 +151,7 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
       final pluginJsonFile =
           File(join(pluginExtractionDir.path, "plugin.json"));
       final pluginBinaryFile =
-          File(join(pluginExtractionDir.path, "plugin.out"));
+          File(join(pluginExtractionDir.path, "plugin.js"));
 
       if (!await pluginExtractionDir.exists() ||
           !await pluginJsonFile.exists() ||
@@ -374,13 +376,12 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
 
   bool validatePluginApiCompatibility(PluginConfiguration plugin) {
     final configPluginApiVersion = Version.parse(plugin.pluginApiVersion);
-    final appPluginApiVersion = MetadataPlugin.pluginApiVersion;
 
     // Plugin API's major version must match the app's major version
-    if (configPluginApiVersion.major != appPluginApiVersion.major) {
+    if (configPluginApiVersion.major != kPluginApiVersion.major) {
       return false;
     }
-    return configPluginApiVersion >= appPluginApiVersion;
+    return configPluginApiVersion >= kPluginApiVersion;
   }
 
   void _assertPluginApiCompatibility(PluginConfiguration plugin) {
@@ -419,18 +420,18 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
         selectedForMetadata: Value(
           (state.valueOrNull?.plugins
                       .where(
-                          (d) => d.abilities.contains(PluginAbilities.metadata))
+                          (d) => d.abilities.contains(PluginAbility.metadata))
                       .isEmpty ??
                   true) &&
-              plugin.abilities.contains(PluginAbilities.metadata),
+              plugin.abilities.contains(PluginAbility.metadata),
         ),
         selectedForAudioSource: Value(
           (state.valueOrNull?.plugins
                       .where((d) =>
-                          d.abilities.contains(PluginAbilities.audioSource))
+                          d.abilities.contains(PluginAbility.audioSource))
                       .isEmpty ??
                   true) &&
-              plugin.abilities.contains(PluginAbilities.audioSource),
+              plugin.abilities.contains(PluginAbility.audioSource),
         ),
       ),
     );
@@ -450,8 +451,7 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
     // only when there is 1 remaining plugin
     if (state.valueOrNull?.defaultMetadataPluginConfig == plugin) {
       final remainingPlugins = state.valueOrNull?.plugins.where(
-            (p) =>
-                p != plugin && p.abilities.contains(PluginAbilities.metadata),
+            (p) => p != plugin && p.abilities.contains(PluginAbility.metadata),
           ) ??
           [];
       if (remainingPlugins.length == 1) {
@@ -462,8 +462,7 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
     if (state.valueOrNull?.defaultAudioSourcePluginConfig == plugin) {
       final remainingPlugins = state.valueOrNull?.plugins.where(
             (p) =>
-                p != plugin &&
-                p.abilities.contains(PluginAbilities.audioSource),
+                p != plugin && p.abilities.contains(PluginAbility.audioSource),
           ) ??
           [];
       if (remainingPlugins.length == 1) {
@@ -523,7 +522,7 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
 
   Future<void> setDefaultMetadataPlugin(PluginConfiguration plugin) async {
     assert(
-      plugin.abilities.contains(PluginAbilities.metadata),
+      plugin.abilities.contains(PluginAbility.metadata),
       "Must be a metadata plugin",
     );
 
@@ -541,7 +540,7 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
 
   Future<void> setDefaultAudioSourcePlugin(PluginConfiguration plugin) async {
     assert(
-      plugin.abilities.contains(PluginAbilities.audioSource),
+      plugin.abilities.contains(PluginAbility.audioSource),
       "Must be an audio-source plugin",
     );
 
@@ -556,16 +555,16 @@ class MetadataPluginNotifier extends AsyncNotifier<MetadataPluginState> {
     );
   }
 
-  Future<Uint8List> getPluginByteCode(PluginConfiguration plugin) async {
+  Future<String> getPluginSourceCode(PluginConfiguration plugin) async {
     final pluginExtractionDirPath = await _getPluginExtractionDir(plugin);
 
-    final libraryFile = File(join(pluginExtractionDirPath.path, "plugin.out"));
+    final libraryFile = File(join(pluginExtractionDirPath.path, "plugin.js"));
 
     if (!libraryFile.existsSync()) {
-      throw MetadataPluginException.pluginByteCodeFileNotFound();
+      throw MetadataPluginException.pluginSourceCodeFileNotFound();
     }
 
-    return await libraryFile.readAsBytes();
+    return await libraryFile.readAsString();
   }
 
   Future<File?> getLogoPath(PluginConfiguration plugin) async {
@@ -586,27 +585,41 @@ final metadataPluginsProvider =
   MetadataPluginNotifier.new,
 );
 
+final _pluginProvider =
+    FutureProvider.family<MetadataPlugin?, PluginConfiguration?>(
+  (ref, config) async {
+    final (:server, :port) = await ref.watch(serverProvider.future);
+    final serverSecret = ref.watch(serverRandomSecretProvider);
+
+    if (config == null) {
+      return null;
+    }
+
+    final pluginsNotifier = ref.read(metadataPluginsProvider.notifier);
+    final pluginSourceCode = await pluginsNotifier.getPluginSourceCode(config);
+
+    final plugin = MetadataPlugin(
+      pluginScript: pluginSourceCode,
+      pluginConfig: config,
+      serverEndpointUrl: "http://${server.address.host}:$port",
+      serverSecret: serverSecret,
+    );
+
+    ref.onDispose(() {
+      plugin.close();
+    });
+
+    return plugin;
+  },
+);
+
 final metadataPluginProvider = FutureProvider<MetadataPlugin?>(
   (ref) async {
     final defaultPlugin = await ref.watch(
       metadataPluginsProvider
           .selectAsync((data) => data.defaultMetadataPluginConfig),
     );
-    final youtubeEngine = ref.read(youtubeEngineProvider);
-
-    if (defaultPlugin == null) {
-      return null;
-    }
-
-    final pluginsNotifier = ref.read(metadataPluginsProvider.notifier);
-    final pluginByteCode =
-        await pluginsNotifier.getPluginByteCode(defaultPlugin);
-
-    return await MetadataPlugin.create(
-      youtubeEngine,
-      defaultPlugin,
-      pluginByteCode,
-    );
+    return await ref.watch(_pluginProvider(defaultPlugin).future);
   },
 );
 
@@ -616,20 +629,6 @@ final audioSourcePluginProvider = FutureProvider<MetadataPlugin?>(
       metadataPluginsProvider
           .selectAsync((data) => data.defaultAudioSourcePluginConfig),
     );
-    final youtubeEngine = ref.watch(youtubeEngineProvider);
-
-    if (defaultPlugin == null) {
-      return null;
-    }
-
-    final pluginsNotifier = ref.read(metadataPluginsProvider.notifier);
-    final pluginByteCode =
-        await pluginsNotifier.getPluginByteCode(defaultPlugin);
-
-    return await MetadataPlugin.create(
-      youtubeEngine,
-      defaultPlugin,
-      pluginByteCode,
-    );
+    return await ref.watch(_pluginProvider(defaultPlugin).future);
   },
 );

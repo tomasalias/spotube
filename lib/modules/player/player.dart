@@ -123,7 +123,7 @@ class PlayerView extends HookConsumerWidget {
                                     context: context,
                                     builder: (context) {
                                       return TrackDetailsDialog(
-                                        track: currentActiveTrack
+                                        track: currentActiveTrack?.field0
                                             as SpotubeFullTrackObject,
                                       );
                                     });
@@ -180,7 +180,7 @@ class PlayerView extends HookConsumerWidget {
                         ),
                         if (isLocalTrack)
                           Text(
-                            currentActiveTrack.artists.asString(),
+                            currentActiveTrack?.artists.asString() ?? "",
                             style: theme.typography.normal
                                 .copyWith(fontWeight: FontWeight.bold),
                           )
