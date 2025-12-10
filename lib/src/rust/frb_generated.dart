@@ -170,12 +170,13 @@ abstract class RustLibApi extends BaseApi {
   Future<void> crateApiPluginPluginSpotubePluginClose(
       {required SpotubePlugin that, required OpaqueSender tx});
 
-  OpaqueSender crateApiPluginPluginSpotubePluginCreateContext(
+  Future<OpaqueSender> crateApiPluginPluginSpotubePluginCreateContext(
       {required SpotubePlugin that,
       required String pluginScript,
       required PluginConfiguration pluginConfig,
       required String serverEndpointUrl,
-      required String serverSecret});
+      required String serverSecret,
+      required String localStorageDir});
 
   SpotubePlugin crateApiPluginPluginSpotubePluginNew();
 
@@ -1204,14 +1205,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       );
 
   @override
-  OpaqueSender crateApiPluginPluginSpotubePluginCreateContext(
+  Future<OpaqueSender> crateApiPluginPluginSpotubePluginCreateContext(
       {required SpotubePlugin that,
       required String pluginScript,
       required PluginConfiguration pluginConfig,
       required String serverEndpointUrl,
-      required String serverSecret}) {
-    return handler.executeSync(SyncTask(
-      callFfi: () {
+      required String serverSecret,
+      required String localStorageDir}) {
+    return handler.executeNormal(NormalTask(
+      callFfi: (port_) {
         final serializer = SseSerializer(generalizedFrbRustBinding);
         sse_encode_Auto_Ref_RustOpaque_flutter_rust_bridgefor_generatedRustAutoOpaqueInnerSpotubePlugin(
             that, serializer);
@@ -1219,7 +1221,9 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         sse_encode_box_autoadd_plugin_configuration(pluginConfig, serializer);
         sse_encode_String(serverEndpointUrl, serializer);
         sse_encode_String(serverSecret, serializer);
-        return pdeCallFfi(generalizedFrbRustBinding, serializer, funcId: 25)!;
+        sse_encode_String(localStorageDir, serializer);
+        pdeCallFfi(generalizedFrbRustBinding, serializer,
+            funcId: 25, port: port_);
       },
       codec: SseCodec(
         decodeSuccessData:
@@ -1232,7 +1236,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
         pluginScript,
         pluginConfig,
         serverEndpointUrl,
-        serverSecret
+        serverSecret,
+        localStorageDir
       ],
       apiImpl: this,
     ));
@@ -1246,7 +1251,8 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
           "pluginScript",
           "pluginConfig",
           "serverEndpointUrl",
-          "serverSecret"
+          "serverSecret",
+          "localStorageDir"
         ],
       );
 
@@ -6951,15 +6957,17 @@ class SpotubePluginImpl extends RustOpaque implements SpotubePlugin {
   Future<void> close({required OpaqueSender tx}) => RustLib.instance.api
       .crateApiPluginPluginSpotubePluginClose(that: this, tx: tx);
 
-  OpaqueSender createContext(
+  Future<OpaqueSender> createContext(
           {required String pluginScript,
           required PluginConfiguration pluginConfig,
           required String serverEndpointUrl,
-          required String serverSecret}) =>
+          required String serverSecret,
+          required String localStorageDir}) =>
       RustLib.instance.api.crateApiPluginPluginSpotubePluginCreateContext(
           that: this,
           pluginScript: pluginScript,
           pluginConfig: pluginConfig,
           serverEndpointUrl: serverEndpointUrl,
-          serverSecret: serverSecret);
+          serverSecret: serverSecret,
+          localStorageDir: localStorageDir);
 }

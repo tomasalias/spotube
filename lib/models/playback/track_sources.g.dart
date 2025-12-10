@@ -7,7 +7,7 @@ part of 'track_sources.dart';
 // **************************************************************************
 
 BasicSourcedTrack _$BasicSourcedTrackFromJson(Map json) => BasicSourcedTrack(
-      query: SpotubeTrackObject.fromJson(
+      query: SpotubeFullTrackObject.fromJson(
           Map<String, dynamic>.from(json['query'] as Map)),
       source: json['source'] as String,
       info: SpotubeAudioSourceMatchObject.fromJson(

@@ -52,7 +52,7 @@
         "--flavor",
         "dev"
       ]
-    }
+    },
   ],
   "compounds": []
 }

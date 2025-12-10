@@ -1,5 +1,4 @@
 import 'package:spotube/src/rust/api/plugin/models/auth.dart';
-import 'package:spotube/src/rust/api/plugin/models/core.dart';
 import 'package:spotube/src/rust/api/plugin/plugin.dart';
 import 'package:spotube/src/rust/api/plugin/senders.dart';
 
@@ -7,19 +6,7 @@ class MetadataPlugin {
   final SpotubePlugin plugin;
   late final OpaqueSender sender;
 
-  MetadataPlugin({
-    required String pluginScript,
-    required PluginConfiguration pluginConfig,
-    required String serverEndpointUrl,
-    required String serverSecret,
-  }) : plugin = SpotubePlugin() {
-    sender = plugin.createContext(
-      pluginScript: pluginScript,
-      pluginConfig: pluginConfig,
-      serverEndpointUrl: serverEndpointUrl,
-      serverSecret: serverSecret,
-    );
-  }
+  MetadataPlugin({required this.sender, required this.plugin});
 
   Stream<AuthEventObject> authState() => plugin.authState();
 

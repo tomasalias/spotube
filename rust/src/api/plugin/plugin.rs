@@ -4,7 +4,7 @@ use crate::api::plugin::executors::{
     execute_core, execute_playlist, execute_search, execute_track, execute_user,
 };
 use crate::api::plugin::models::auth::{AuthEventObject, AuthEventType};
-use crate::api::plugin::models::core::PluginConfiguration;
+use crate::api::plugin::models::core::{PluginAbility, PluginConfiguration};
 use crate::api::plugin::senders::{
     PluginAlbumSender, PluginArtistSender, PluginAudioSourceSender, PluginAuthSender,
     PluginBrowseSender, PluginCoreSender, PluginPlaylistSender, PluginSearchSender,
@@ -12,9 +12,9 @@ use crate::api::plugin::senders::{
 };
 use crate::frb_generated::StreamSink;
 use crate::internal::apis;
-use crate::internal::apis::{form, get_platform_directories, timezone, webview, yt_engine};
+use crate::internal::apis::{form, timezone, webview, yt_engine};
 use anyhow::anyhow;
-use flutter_rust_bridge::{frb, Rust2DartSendError};
+use flutter_rust_bridge::frb;
 use llrt_modules::module_builder::ModuleBuilder;
 use llrt_modules::{
     abort, buffer, console, crypto, events, exceptions, fetch, navigator, timers, url, util,
@@ -37,8 +37,9 @@ async fn create_context(
     server_endpoint_url: String,
     server_secret: String,
     plugin_slug: String,
+    local_storage_dir: String,
 ) -> anyhow::Result<(AsyncContext, AsyncRuntime)> {
-    let runtime = AsyncRuntime::new().expect("Unable to create async runtime");
+    let runtime = AsyncRuntime::new()?;
 
     let mut module_builder = ModuleBuilder::new();
 
@@ -64,15 +65,7 @@ async fn create_context(
         .set_loader((module_resolver,), (module_loader,))
         .await;
 
-    let context = AsyncContext::full(&runtime)
-        .await
-        .expect("Unable to create async context");
-
-    let directories =
-        get_platform_directories(server_endpoint_url.clone(), server_secret.clone()).await?;
-    let local_storage_dir = directories
-        .application_support
-        .ok_or_else(|| anyhow!("Application support directory not found"))?;
+    let context = AsyncContext::full(&runtime).await?;
 
     async_with!(context => |ctx| {
         apis::init(&ctx, server_endpoint_url, server_secret).catch(&ctx).map_err(|e| anyhow!("Failed to initialize APIs: {}", e))?;
@@ -80,7 +73,7 @@ async fn create_context(
         global_attachment.attach(&ctx).catch(&ctx).map_err(|e| anyhow!("Failed to attach global modules: {}", e))?;
         anyhow::Ok(())
     })
-    .await?;
+        .await?;
 
     Ok((context, runtime))
 }
@@ -90,9 +83,7 @@ async fn js_executor_thread(
     context: &AsyncContext,
 ) -> anyhow::Result<()> {
     while let Some(command) = rx.recv().await {
-        println!("JS Executor thread received command: {:?}", command);
         if let PluginCommand::Shutdown = command {
-            println!("JS Executor thread shutting down.");
             return anyhow::Ok(());
         }
 
@@ -134,7 +125,7 @@ pub struct SpotubePlugin {
     pub track: PluginTrackSender,
     pub user: PluginUserSender,
     event_tx: Sender<AuthEventObject>,
-    event_rx: Receiver<AuthEventObject>,
+    event_rx: Option<Receiver<AuthEventObject>>,
 }
 
 impl SpotubePlugin {
@@ -154,29 +145,40 @@ impl SpotubePlugin {
             track: PluginTrackSender::new(),
             user: PluginUserSender::new(),
             event_tx,
-            event_rx,
+            event_rx: Some(event_rx),
         }
     }
 
     pub async fn auth_state(&mut self, sink: StreamSink<AuthEventObject>) -> anyhow::Result<()> {
-        while let Some(event) = self.event_rx.recv().await {
-            sink.add(event)
-                .map_err(|e: Rust2DartSendError| anyhow::anyhow!(e))?;
-        }
+        let mut receiver = self
+            .event_rx
+            .take()
+            .ok_or_else(|| anyhow::anyhow!("Receiver already consumed"))?;
+
+        tokio::spawn(async move {
+            while let Some(event) = receiver.recv().await {
+                if let Err(e) = sink.add(event) {
+                    eprintln!("Failed to send auth event to stream sink: {:?}", e);
+                    break;
+                }
+            }
+        });
 
         Ok(())
     }
 
-    #[frb(sync)]
-    pub fn create_context(
+    pub async fn create_context(
         &self,
         plugin_script: String,
         plugin_config: PluginConfiguration,
         server_endpoint_url: String,
         server_secret: String,
+        local_storage_dir: String,
     ) -> anyhow::Result<OpaqueSender> {
         let (command_tx, mut command_rx) = mpsc::channel(32);
+        let (init_tx, init_rx) = tokio::sync::oneshot::channel::<anyhow::Result<()>>();
         let sender = self.event_tx.clone();
+
         let _thread_handle = thread::spawn(move || {
             let rt = tokio::runtime::Builder::new_current_thread()
                 .enable_all()
@@ -184,24 +186,36 @@ impl SpotubePlugin {
                 .unwrap();
             let local = LocalSet::new();
             if let Err(e) = local.block_on(&rt, async {
-                let (ctx, _) = create_context(
+                let ctx_res = create_context(
                     server_endpoint_url,
                     server_secret,
                     plugin_config.slug(),
-                ).await?;
+                    local_storage_dir,
+                ).await;
 
-                let injection = format!(
-                    "globalThis.pluginInstance = new {}();",
-                    plugin_config.entry_point
-                );
-                let script = format!("{}\n{}", plugin_script, injection);
+                if let Err(e) = ctx_res {
+                    let _ = init_tx.send(Err(e));
+                    return anyhow::Ok(());
+                }
 
-                async_with!(ctx => |cx| {
+                let (ctx, _runtime) = ctx_res.unwrap();
+
+                let begin_injection = "globalThis.module = {exports: {}};";
+
+                let end_injection = "globalThis.pluginInstance = new module.exports.default();";
+                let script = format!("{}\n{}\n{}", begin_injection, plugin_script, end_injection);
+
+                let script_eval_res = async_with!(ctx => |cx| {
                     cx.eval::<(), _>(script.as_str())
                         .catch(&cx).map_err(|e| anyhow!("Failed to evaluate supplied plugin script: {}", e))
-                }).await?;
+                }).await;
 
-                async_with!(ctx => |ctx|{
+                if let Err(e) = script_eval_res {
+                    let _ = init_tx.send(Err(e));
+                    return anyhow::Ok(());
+                }
+
+                let on_auth_event_res = async_with!(ctx => |ctx|{
                     let globals = ctx.globals();
                     let callback = Func::new(move |event: Object| -> rquickjs::Result<()>{
                         let sender_clone = sender.clone();
@@ -223,25 +237,38 @@ impl SpotubePlugin {
                         }
                     });
 
-                    if let Err(e) = globals.get::<_, Object>("pluginInstance")?.get::<_, Object>("auth")?.set(
-                        "onAuthEvent", callback
-                    ) {
-                        eprintln!("Error setting auth event handler: {:?}", e);
+                    if plugin_config.abilities.contains(&PluginAbility::Authentication) {
+                        if let Err(e) = globals.get::<_, Object>("pluginInstance")?.get::<_, Object>("auth")?.set(
+                            "onAuthEvent", callback
+                        ) {
+                            eprintln!("Error setting auth event handler: {:?}", e);
+                        }
                     }
 
                     Ok::<(), Error>(())
                 })
                     .await
-                    .map_err(|e| anyhow!("[onAuthEvent] {e}"))?;
+                    .map_err(|e| anyhow!("[onAuthEvent] {e}"));
+
+                if let Err(e) = on_auth_event_res {
+                    let _ = init_tx.send(Err(e));
+                    return anyhow::Ok(());
+                }
+
+                let _ = init_tx.send(Ok(()));
 
                 if let Err(e) = js_executor_thread(&mut command_rx, &ctx).await {
                     eprintln!("JS executor error: {}", e);
                 }
                 anyhow::Ok(())
             }) {
-                eprintln!("JS Executor thread error: {}", e);
+                eprintln!("[PluginInitializationError]: {}", e);
             }
         });
+
+        init_rx
+            .await
+            .map_err(|e| anyhow!("Failed to receive initialization result: {}", e))??;
 
         Ok(OpaqueSender { sender: command_tx })
     }

@@ -7,9 +7,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shadcn_flutter/shadcn_flutter.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'package:spotube/provider/server/libs/eventsource_publisher.dart';
 import 'package:spotube/provider/server/server.dart';
+import 'package:spotube/provider/server/sse_publisher.dart';
 import 'package:spotube/src/plugin_api/webview/webview.dart';
-import 'package:async/async.dart';
 import 'package:encrypt/encrypt.dart' as encrypt;
 
 class ServerWebviewRoutes {
@@ -17,6 +18,7 @@ class ServerWebviewRoutes {
   ServerWebviewRoutes({required this.ref});
 
   final Map<String, Webview> _webviews = {};
+  final Map<String, StreamSubscription> _eventSubscriptions = {};
 
   String _encryptCookies(dynamic cookies, String secret) {
     final keyBytes = base64.decode(secret);
@@ -39,6 +41,16 @@ class ServerWebviewRoutes {
 
     final webview = Webview(uri: uri.toString());
     _webviews[webview.uid] = webview;
+
+    _eventSubscriptions[webview.uid] = webview.onUrlRequestStream.listen((url) {
+      ref.read(ssePublisherProvider).add(
+            Event(
+              event: "url-request",
+              data: jsonEncode({'uid': webview.uid, 'url': url}),
+            ),
+          );
+    });
+
     return Response.ok(
       jsonEncode({'uid': webview.uid}),
       encoding: utf8,
@@ -56,40 +68,16 @@ class ServerWebviewRoutes {
       return Response.notFound('Webview with uid $uid not found');
     }
 
-    // Create a stream that merges URL events with keepalive pings
-    final controller = StreamController<List<int>>();
-
-    // Send keepalive comment every 15 seconds to prevent connection timeout
-    final keepaliveTimer = Stream.periodic(
-      const Duration(seconds: 15),
-      (_) => utf8.encode(": keepalive\n\n"),
-    );
-
     final urlStream = webview.onUrlRequestStream.map((url) {
-      return utf8.encode("event: url-request\n"
-          "data: ${jsonEncode({'url': url})}\n\n");
+      final payload = "event: url-request\n"
+          "data: ${jsonEncode({'url': url})}\n\n";
+
+      debugPrint('[server][webview] sending:\n$payload');
+      return utf8.encode(payload);
     });
 
-    // Merge both streams
-    final subscription = StreamGroup.merge([keepaliveTimer, urlStream]).listen(
-      (data) {
-        if (!controller.isClosed) {
-          controller.add(data);
-        }
-      },
-      onDone: () {
-        controller.close();
-      },
-    );
-
-    // Clean up when client disconnects
-    controller.onCancel = () {
-      debugPrint('Webview $uid client disconnected');
-      subscription.cancel();
-    };
-
     return Response.ok(
-      controller.stream,
+      urlStream,
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
@@ -117,11 +105,14 @@ class ServerWebviewRoutes {
     final uid = body['uid'] as String;
 
     final webview = _webviews[uid];
-    if (webview == null) {
+    final subscription = _eventSubscriptions[uid];
+    if (webview == null || subscription == null) {
       return Response.notFound('Webview with uid $uid not found');
     }
+    subscription.cancel();
     await webview.close();
 
+    _eventSubscriptions.remove(uid);
     _webviews.remove(uid);
     return Response.ok(null);
   }
@@ -149,6 +140,10 @@ class ServerWebviewRoutes {
   }
 
   Future<void> dispose() async {
+    for (final subscription in _eventSubscriptions.values) {
+      await subscription.cancel();
+    }
+    _eventSubscriptions.clear();
     for (final webview in _webviews.values) {
       await webview.close();
     }

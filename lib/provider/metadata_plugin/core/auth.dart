@@ -19,16 +19,19 @@ class MetadataPluginAuthenticatedNotifier extends AsyncNotifier<bool> {
       return false;
     }
 
+    /// `authState` can be called once in the SpotubePlugin's lifetime.
     final sub = defaultPlugin.authState().listen((event) async {
-      state = AsyncData(await defaultPlugin.auth
-          .isAuthenticated(mpscTx: defaultPlugin.sender));
+      state = AsyncData(
+        await defaultPlugin.auth.isAuthenticated(mpscTx: defaultPlugin.sender),
+      );
     });
 
     ref.onDispose(() {
       sub.cancel();
     });
 
-    return defaultPlugin.auth.isAuthenticated(mpscTx: defaultPlugin.sender);
+    return await defaultPlugin.auth
+        .isAuthenticated(mpscTx: defaultPlugin.sender);
   }
 }
 

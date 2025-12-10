@@ -66,11 +66,12 @@ abstract class SpotubePlugin implements RustOpaqueInterface {
 
   Future<void> close({required OpaqueSender tx});
 
-  OpaqueSender createContext(
+  Future<OpaqueSender> createContext(
       {required String pluginScript,
       required PluginConfiguration pluginConfig,
       required String serverEndpointUrl,
-      required String serverSecret});
+      required String serverSecret,
+      required String localStorageDir});
 
   factory SpotubePlugin() =>
       RustLib.instance.api.crateApiPluginPluginSpotubePluginNew();

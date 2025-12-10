@@ -16,6 +16,7 @@ import 'package:spotube/services/dio/dio.dart';
 import 'package:spotube/services/logger/logger.dart';
 import 'package:spotube/services/metadata/errors/exceptions.dart';
 import 'package:spotube/services/metadata/metadata.dart';
+import 'package:spotube/src/rust/api/plugin/plugin.dart';
 import 'package:spotube/utils/service_utils.dart';
 import 'package:archive/archive.dart';
 import 'package:pub_semver/pub_semver.dart';
@@ -598,11 +599,16 @@ final _pluginProvider =
     final pluginsNotifier = ref.read(metadataPluginsProvider.notifier);
     final pluginSourceCode = await pluginsNotifier.getPluginSourceCode(config);
 
+    final spotubePlugin = SpotubePlugin();
     final plugin = MetadataPlugin(
-      pluginScript: pluginSourceCode,
-      pluginConfig: config,
-      serverEndpointUrl: "http://${server.address.host}:$port",
-      serverSecret: serverSecret,
+      plugin: spotubePlugin,
+      sender: await spotubePlugin.createContext(
+        pluginScript: pluginSourceCode,
+        pluginConfig: config,
+        serverEndpointUrl: "http://${server.address.host}:$port",
+        serverSecret: serverSecret,
+        localStorageDir: (await getApplicationSupportDirectory()).path,
+      ),
     );
 
     ref.onDispose(() {

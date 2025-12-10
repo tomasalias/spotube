@@ -1,5 +1,5 @@
 use rquickjs::prelude::Func;
-use rquickjs::{Class, Ctx, Object};
+use rquickjs::{Ctx, Object};
 
 pub fn get_local_timezone() -> rquickjs::Result<String> {
     let timezone = iana_time_zone::get_timezone()

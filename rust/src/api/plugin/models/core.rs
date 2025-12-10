@@ -11,14 +11,11 @@ pub enum PluginApi {
 }
 
 #[derive(Debug, Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
 pub enum PluginAbility {
-    #[serde(rename = "authentication")]
     Authentication,
-    #[serde(rename = "scrobbling")]
     Scrobbling,
-    #[serde(rename = "metadata")]
     Metadata,
-    #[serde(rename = "audio-source")]
     AudioSource,
 }
 

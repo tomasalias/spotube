@@ -1,4 +1,4 @@
-use crate::internal::utils::js_invoke_async_method_to_json;
+use crate::internal::utils::{js_invoke_async_method_to_json, js_invoke_method_to_json};
 use flutter_rust_bridge::frb;
 use rquickjs::{async_with, AsyncContext};
 
@@ -28,16 +28,14 @@ impl<'a> PluginAuthEndpoint<'a> {
 
     pub async fn is_authenticated(&self) -> anyhow::Result<bool> {
         async_with!(self.0 => |ctx| {
-            Ok(
-                js_invoke_async_method_to_json::<(), bool>(
+            let s = js_invoke_method_to_json::<(), bool>(
                     ctx.clone(),
                     "auth",
-                    "is_authenticated",
+                    "isAuthenticated",
                     &[]
-                )
-                .await?
-                .expect("[hey][smartypants] auth.is_authenticated should return a boolean")
-            )
+                )?.expect("[hey][smartypants] auth.isAuthenticated should return a boolean");
+
+            Ok(s)
         })
         .await
     }

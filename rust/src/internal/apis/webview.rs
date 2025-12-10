@@ -185,10 +185,7 @@ impl<'js> WebView<'js> {
     }
 
     async fn url_change_task(&self, ctx: Ctx<'js>) {
-        let endpoint = format!(
-            "{}/plugin-api/webview/{}/on-url-request",
-            self.endpoint_url, self.uid
-        );
+        let endpoint = format!("{}/plugin-api/webview/events", self.endpoint_url);
 
         let secret = self.secret.clone();
 
@@ -201,22 +198,39 @@ impl<'js> WebView<'js> {
                 .header("X-Plugin-Secret", &secret)
                 .expect("Failed to set header for EventSourceClient")
                 .build();
+
             let mut stream = client.stream();
             while let Some(event) = stream.next().await {
                 match event {
                     Ok(eventsource_client::SSE::Event(msg)) => {
                         if msg.event_type != "url-request" {
+                            eprintln!(
+                                "[rust][webview] Not expected event-type: {}",
+                                msg.event_type
+                            );
                             continue;
                         }
                         backoff = 1;
                         if let Ok(data) = serde_json::from_str::<HashMap<String, String>>(&msg.data)
                         {
                             let url = data.get("url").cloned().unwrap_or_default();
+                            let uid = data.get("uid").cloned().unwrap_or_default();
+
+                            if uid != self.uid {
+                                println!(
+                                    "[rust][webview] Ignored event for different uid: {}",
+                                    uid
+                                );
+                                continue;
+                            }
+
                             for callback in self.callbacks.iter() {
                                 match callback.call::<_, Value>((url.clone(),)) {
                                     Ok(res) => {
                                         if let Some(promise) = res.into_promise() {
-                                            if let Err(e) = promise.into_future::<()>().await.catch(&ctx) {
+                                            if let Err(e) =
+                                                promise.into_future::<()>().await.catch(&ctx)
+                                            {
                                                 eprintln!("Error in onUrlChange promise: {}", e);
                                             }
                                         }
@@ -230,7 +244,9 @@ impl<'js> WebView<'js> {
                             eprintln!("Failed to parse event data: {}", msg.data);
                         }
                     }
-                    Ok(_) => {}
+                    Ok(e) => {
+                        eprintln!("[rust][webview] Ignored non-event message: {:?}", e);
+                    }
                     Err(err) => {
                         eprintln!("Error in EventSource stream: {}", err);
                     }

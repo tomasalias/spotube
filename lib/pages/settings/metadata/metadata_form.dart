@@ -13,7 +13,7 @@ import 'package:spotube/models/metadata/metadata.dart';
 @RoutePage()
 class SettingsMetadataProviderFormPage extends HookConsumerWidget {
   final String title;
-  final List<MetadataFormFieldObject> fields;
+  final List fields;
   const SettingsMetadataProviderFormPage({
     super.key,
     required this.title,

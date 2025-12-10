@@ -632,7 +632,7 @@ class SettingsMetadataProviderFormRoute
   SettingsMetadataProviderFormRoute({
     _i44.Key? key,
     required String title,
-    required List<void> fields,
+    required List<dynamic> fields,
     List<_i41.PageRouteInfo>? children,
   }) : super(
          SettingsMetadataProviderFormRoute.name,
@@ -670,7 +670,7 @@ class SettingsMetadataProviderFormRouteArgs {
 
   final String title;
 
-  final List<void> fields;
+  final List<dynamic> fields;
 
   @override
   String toString() {

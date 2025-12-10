@@ -1,12 +1,13 @@
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
+import 'package:spotube/provider/server/libs/shelf_eventsource.dart';
 import 'package:spotube/provider/server/routes/connect.dart';
 import 'package:spotube/provider/server/routes/playback.dart';
 import 'package:spotube/provider/server/routes/plugin_apis/form.dart';
-import 'package:spotube/provider/server/routes/plugin_apis/path_provider.dart';
 import 'package:spotube/provider/server/routes/plugin_apis/webview.dart';
 import 'package:spotube/provider/server/routes/plugin_apis/yt_engine.dart';
+import 'package:spotube/provider/server/sse_publisher.dart';
 
 Handler pluginApiAuthMiddleware(Handler handler) {
   return (Request request) {
@@ -25,6 +26,8 @@ final serverRouterProvider = Provider((ref) {
   final webviewRoutes = ref.watch(serverWebviewRoutesProvider);
   final formRoutes = ref.watch(serverFormRoutesProvider);
   final ytEngineRoutes = ref.watch(serverYTEngineRoutesProvider);
+  final publisher = ref.watch(ssePublisherProvider);
+  final sseHandler = eventSourceHandler(publisher);
 
   final router = Router();
 
@@ -42,8 +45,8 @@ final serverRouterProvider = Provider((ref) {
     pluginApiAuthMiddleware(webviewRoutes.postCreateWebview),
   );
   router.get(
-    "/plugin-api/webview/<uid>/on-url-request",
-    pluginApiAuthMiddleware(webviewRoutes.getOnUrlRequestStream),
+    "/plugin-api/webview/events",
+    pluginApiAuthMiddleware(sseHandler),
   );
   router.post(
     "/plugin-api/webview/open",
@@ -60,10 +63,6 @@ final serverRouterProvider = Provider((ref) {
   router.post(
     "/plugin-api/form/show",
     pluginApiAuthMiddleware(formRoutes.showForm),
-  );
-  router.get(
-    "/plugin/localstorage/directories",
-    pluginApiAuthMiddleware(ServerPathProviderRoutes.getDirectories),
   );
 
   router.get(
