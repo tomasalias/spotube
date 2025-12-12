@@ -85,7 +85,7 @@ impl SpotubeAudioSourceContainerPreset {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct SpotubeAudioSourceMatchObject {
-    pub type_name: String,
+    // pub type_name: String,
     pub id: String,
     pub title: String,
     pub artists: Vec<String>,

@@ -6,9 +6,12 @@ class MetadataPlugin {
   final SpotubePlugin plugin;
   late final OpaqueSender sender;
 
-  MetadataPlugin({required this.sender, required this.plugin});
+  late Stream<AuthEventObject> _authStateStream;
+  MetadataPlugin({required this.sender, required this.plugin}) {
+    _authStateStream = plugin.authState().asBroadcastStream();
+  }
 
-  Stream<AuthEventObject> authState() => plugin.authState();
+  Stream<AuthEventObject> authState() => _authStateStream;
 
   PluginAlbumSender get album => plugin.album;
   PluginArtistSender get artist => plugin.artist;
@@ -21,5 +24,7 @@ class MetadataPlugin {
   PluginTrackSender get track => plugin.track;
   PluginUserSender get user => plugin.user;
 
-  Future<void> close() => plugin.close(tx: sender);
+  Future<void> close() async {
+    await plugin.close(tx: sender);
+  }
 }

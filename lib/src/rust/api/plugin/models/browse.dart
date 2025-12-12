@@ -19,7 +19,6 @@ part 'browse.freezed.dart';
 @freezed
 sealed class SpotubeBrowseSectionObject with _$SpotubeBrowseSectionObject {
   const factory SpotubeBrowseSectionObject({
-    required String typeName,
     required String id,
     required String title,
     required String externalUri,

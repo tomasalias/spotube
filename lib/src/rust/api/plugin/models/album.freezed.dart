@@ -21,7 +21,6 @@ SpotubeFullAlbumObject _$SpotubeFullAlbumObjectFromJson(
 
 /// @nodoc
 mixin _$SpotubeFullAlbumObject {
-  String get typeName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   List<SpotubeSimpleArtistObject> get artists =>
@@ -51,8 +50,7 @@ abstract class $SpotubeFullAlbumObjectCopyWith<$Res> {
       _$SpotubeFullAlbumObjectCopyWithImpl<$Res, SpotubeFullAlbumObject>;
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String name,
       List<SpotubeSimpleArtistObject> artists,
       List<SpotubeImageObject> images,
@@ -80,7 +78,6 @@ class _$SpotubeFullAlbumObjectCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? name = null,
     Object? artists = null,
@@ -93,10 +90,6 @@ class _$SpotubeFullAlbumObjectCopyWithImpl<$Res,
     Object? genres = freezed,
   }) {
     return _then(_value.copyWith(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -151,8 +144,7 @@ abstract class _$$SpotubeFullAlbumObjectImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String name,
       List<SpotubeSimpleArtistObject> artists,
       List<SpotubeImageObject> images,
@@ -179,7 +171,6 @@ class __$$SpotubeFullAlbumObjectImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? name = null,
     Object? artists = null,
@@ -192,10 +183,6 @@ class __$$SpotubeFullAlbumObjectImplCopyWithImpl<$Res>
     Object? genres = freezed,
   }) {
     return _then(_$SpotubeFullAlbumObjectImpl(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -244,8 +231,7 @@ class __$$SpotubeFullAlbumObjectImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SpotubeFullAlbumObjectImpl implements _SpotubeFullAlbumObject {
   const _$SpotubeFullAlbumObjectImpl(
-      {required this.typeName,
-      required this.id,
+      {required this.id,
       required this.name,
       required final List<SpotubeSimpleArtistObject> artists,
       required final List<SpotubeImageObject> images,
@@ -262,8 +248,6 @@ class _$SpotubeFullAlbumObjectImpl implements _SpotubeFullAlbumObject {
   factory _$SpotubeFullAlbumObjectImpl.fromJson(Map<String, dynamic> json) =>
       _$$SpotubeFullAlbumObjectImplFromJson(json);
 
-  @override
-  final String typeName;
   @override
   final String id;
   @override
@@ -306,7 +290,7 @@ class _$SpotubeFullAlbumObjectImpl implements _SpotubeFullAlbumObject {
 
   @override
   String toString() {
-    return 'SpotubeFullAlbumObject(typeName: $typeName, id: $id, name: $name, artists: $artists, images: $images, releaseDate: $releaseDate, externalUri: $externalUri, totalTracks: $totalTracks, albumType: $albumType, recordLabel: $recordLabel, genres: $genres)';
+    return 'SpotubeFullAlbumObject(id: $id, name: $name, artists: $artists, images: $images, releaseDate: $releaseDate, externalUri: $externalUri, totalTracks: $totalTracks, albumType: $albumType, recordLabel: $recordLabel, genres: $genres)';
   }
 
   @override
@@ -314,8 +298,6 @@ class _$SpotubeFullAlbumObjectImpl implements _SpotubeFullAlbumObject {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SpotubeFullAlbumObjectImpl &&
-            (identical(other.typeName, typeName) ||
-                other.typeName == typeName) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             const DeepCollectionEquality().equals(other._artists, _artists) &&
@@ -337,7 +319,6 @@ class _$SpotubeFullAlbumObjectImpl implements _SpotubeFullAlbumObject {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      typeName,
       id,
       name,
       const DeepCollectionEquality().hash(_artists),
@@ -368,8 +349,7 @@ class _$SpotubeFullAlbumObjectImpl implements _SpotubeFullAlbumObject {
 
 abstract class _SpotubeFullAlbumObject implements SpotubeFullAlbumObject {
   const factory _SpotubeFullAlbumObject(
-      {required final String typeName,
-      required final String id,
+      {required final String id,
       required final String name,
       required final List<SpotubeSimpleArtistObject> artists,
       required final List<SpotubeImageObject> images,
@@ -383,8 +363,6 @@ abstract class _SpotubeFullAlbumObject implements SpotubeFullAlbumObject {
   factory _SpotubeFullAlbumObject.fromJson(Map<String, dynamic> json) =
       _$SpotubeFullAlbumObjectImpl.fromJson;
 
-  @override
-  String get typeName;
   @override
   String get id;
   @override
@@ -421,7 +399,6 @@ SpotubeSimpleAlbumObject _$SpotubeSimpleAlbumObjectFromJson(
 
 /// @nodoc
 mixin _$SpotubeSimpleAlbumObject {
-  String get typeName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get externalUri => throw _privateConstructorUsedError;
@@ -448,8 +425,7 @@ abstract class $SpotubeSimpleAlbumObjectCopyWith<$Res> {
       _$SpotubeSimpleAlbumObjectCopyWithImpl<$Res, SpotubeSimpleAlbumObject>;
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String name,
       String externalUri,
       List<SpotubeSimpleArtistObject> artists,
@@ -474,7 +450,6 @@ class _$SpotubeSimpleAlbumObjectCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? name = null,
     Object? externalUri = null,
@@ -484,10 +459,6 @@ class _$SpotubeSimpleAlbumObjectCopyWithImpl<$Res,
     Object? releaseDate = freezed,
   }) {
     return _then(_value.copyWith(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -530,8 +501,7 @@ abstract class _$$SpotubeSimpleAlbumObjectImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String name,
       String externalUri,
       List<SpotubeSimpleArtistObject> artists,
@@ -555,7 +525,6 @@ class __$$SpotubeSimpleAlbumObjectImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? name = null,
     Object? externalUri = null,
@@ -565,10 +534,6 @@ class __$$SpotubeSimpleAlbumObjectImplCopyWithImpl<$Res>
     Object? releaseDate = freezed,
   }) {
     return _then(_$SpotubeSimpleAlbumObjectImpl(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -605,8 +570,7 @@ class __$$SpotubeSimpleAlbumObjectImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SpotubeSimpleAlbumObjectImpl implements _SpotubeSimpleAlbumObject {
   const _$SpotubeSimpleAlbumObjectImpl(
-      {required this.typeName,
-      required this.id,
+      {required this.id,
       required this.name,
       required this.externalUri,
       required final List<SpotubeSimpleArtistObject> artists,
@@ -619,8 +583,6 @@ class _$SpotubeSimpleAlbumObjectImpl implements _SpotubeSimpleAlbumObject {
   factory _$SpotubeSimpleAlbumObjectImpl.fromJson(Map<String, dynamic> json) =>
       _$$SpotubeSimpleAlbumObjectImplFromJson(json);
 
-  @override
-  final String typeName;
   @override
   final String id;
   @override
@@ -650,7 +612,7 @@ class _$SpotubeSimpleAlbumObjectImpl implements _SpotubeSimpleAlbumObject {
 
   @override
   String toString() {
-    return 'SpotubeSimpleAlbumObject(typeName: $typeName, id: $id, name: $name, externalUri: $externalUri, artists: $artists, images: $images, albumType: $albumType, releaseDate: $releaseDate)';
+    return 'SpotubeSimpleAlbumObject(id: $id, name: $name, externalUri: $externalUri, artists: $artists, images: $images, albumType: $albumType, releaseDate: $releaseDate)';
   }
 
   @override
@@ -658,8 +620,6 @@ class _$SpotubeSimpleAlbumObjectImpl implements _SpotubeSimpleAlbumObject {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SpotubeSimpleAlbumObjectImpl &&
-            (identical(other.typeName, typeName) ||
-                other.typeName == typeName) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.externalUri, externalUri) ||
@@ -676,7 +636,6 @@ class _$SpotubeSimpleAlbumObjectImpl implements _SpotubeSimpleAlbumObject {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      typeName,
       id,
       name,
       externalUri,
@@ -704,8 +663,7 @@ class _$SpotubeSimpleAlbumObjectImpl implements _SpotubeSimpleAlbumObject {
 
 abstract class _SpotubeSimpleAlbumObject implements SpotubeSimpleAlbumObject {
   const factory _SpotubeSimpleAlbumObject(
-      {required final String typeName,
-      required final String id,
+      {required final String id,
       required final String name,
       required final String externalUri,
       required final List<SpotubeSimpleArtistObject> artists,
@@ -716,8 +674,6 @@ abstract class _SpotubeSimpleAlbumObject implements SpotubeSimpleAlbumObject {
   factory _SpotubeSimpleAlbumObject.fromJson(Map<String, dynamic> json) =
       _$SpotubeSimpleAlbumObjectImpl.fromJson;
 
-  @override
-  String get typeName;
   @override
   String get id;
   @override

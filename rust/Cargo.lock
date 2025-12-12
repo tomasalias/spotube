@@ -556,9 +556,9 @@ dependencies = [
 
 [[package]]
 name = "curve25519-dalek"
-version = "5.0.0-pre.2"
+version = "5.0.0-pre.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4d8cfa313d59919eda35b420bd37db85bf58d6754d6f128b9949932b0c0fcce7"
+checksum = "92419e1cdc506051ffd30713ad09d0ec6a24bba9197e12989de389e35b19c77a"
 dependencies = [
  "cfg-if",
  "cpufeatures",
@@ -1324,7 +1324,6 @@ dependencies = [
  "tokio",
  "tokio-rustls 0.26.4",
  "tower-service",
- "webpki-roots",
 ]
 
 [[package]]
@@ -1591,6 +1590,16 @@ dependencies = [
 ]
 
 [[package]]
+name = "junction"
+version = "1.3.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c52f6e1bf39a7894f618c9d378904a11dbd7e10fe3ec20d1173600e79b1408d8"
+dependencies = [
+ "scopeguard",
+ "windows-sys 0.60.2",
+]
+
+[[package]]
 name = "lazy_static"
 version = "1.5.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1654,7 +1663,7 @@ checksum = "6373607a59f0be73a39b6fe456b8192fcc3585f602af20751600e974dd455e77"
 [[package]]
 name = "llrt_abort"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_async_hooks",
  "llrt_events",
@@ -1667,7 +1676,7 @@ dependencies = [
 [[package]]
 name = "llrt_assert"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_utils",
  "rquickjs",
@@ -1676,7 +1685,7 @@ dependencies = [
 [[package]]
 name = "llrt_async_hooks"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_hooking",
  "llrt_utils",
@@ -1687,7 +1696,7 @@ dependencies = [
 [[package]]
 name = "llrt_buffer"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "itoa",
  "llrt_encoding",
@@ -1699,7 +1708,7 @@ dependencies = [
 [[package]]
 name = "llrt_build"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "rustc_version",
 ]
@@ -1707,7 +1716,7 @@ dependencies = [
 [[package]]
 name = "llrt_child_process"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "itoa",
  "libc",
@@ -1723,7 +1732,7 @@ dependencies = [
 [[package]]
 name = "llrt_compression"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "brotlic",
  "flate2",
@@ -1733,7 +1742,7 @@ dependencies = [
 [[package]]
 name = "llrt_console"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_logging",
  "llrt_utils",
@@ -1743,7 +1752,7 @@ dependencies = [
 [[package]]
 name = "llrt_context"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_build",
  "llrt_utils",
@@ -1755,7 +1764,7 @@ dependencies = [
 [[package]]
 name = "llrt_crypto"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "aes",
  "aes-gcm",
@@ -1788,9 +1797,24 @@ dependencies = [
 ]
 
 [[package]]
+name = "llrt_dgram"
+version = "0.7.0-beta"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
+dependencies = [
+ "itoa",
+ "llrt_buffer",
+ "llrt_context",
+ "llrt_events",
+ "llrt_utils",
+ "rquickjs",
+ "tokio",
+ "tracing",
+]
+
+[[package]]
 name = "llrt_dns"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "either",
  "llrt_context",
@@ -1803,7 +1827,7 @@ dependencies = [
 [[package]]
 name = "llrt_dns_cache"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "hyper-util",
  "llrt_context",
@@ -1816,7 +1840,7 @@ dependencies = [
 [[package]]
 name = "llrt_encoding"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "base64-simd",
  "hex-simd",
@@ -1828,7 +1852,7 @@ dependencies = [
 [[package]]
 name = "llrt_events"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_utils",
  "rquickjs",
@@ -1838,7 +1862,7 @@ dependencies = [
 [[package]]
 name = "llrt_exceptions"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_utils",
  "rquickjs",
@@ -1847,7 +1871,7 @@ dependencies = [
 [[package]]
 name = "llrt_fetch"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "bytes",
  "either",
@@ -1861,6 +1885,7 @@ dependencies = [
  "llrt_encoding",
  "llrt_http",
  "llrt_json",
+ "llrt_stream_web",
  "llrt_url",
  "llrt_utils",
  "once_cell",
@@ -1875,9 +1900,10 @@ dependencies = [
 [[package]]
 name = "llrt_fs"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "either",
+ "junction",
  "llrt_buffer",
  "llrt_encoding",
  "llrt_path",
@@ -1890,7 +1916,7 @@ dependencies = [
 [[package]]
 name = "llrt_hooking"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_utils",
  "once_cell",
@@ -1900,7 +1926,7 @@ dependencies = [
 [[package]]
 name = "llrt_http"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "bytes",
  "http-body-util",
@@ -1918,7 +1944,7 @@ dependencies = [
 [[package]]
 name = "llrt_json"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "itoa",
  "llrt_build",
@@ -1931,7 +1957,7 @@ dependencies = [
 [[package]]
 name = "llrt_logging"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "itoa",
  "llrt_context",
@@ -1946,7 +1972,7 @@ dependencies = [
 [[package]]
 name = "llrt_modules"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "home",
  "llrt_abort",
@@ -1956,6 +1982,7 @@ dependencies = [
  "llrt_child_process",
  "llrt_console",
  "llrt_crypto",
+ "llrt_dgram",
  "llrt_dns",
  "llrt_events",
  "llrt_exceptions",
@@ -1989,7 +2016,7 @@ dependencies = [
 [[package]]
 name = "llrt_navigator"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "rquickjs",
 ]
@@ -1997,7 +2024,7 @@ dependencies = [
 [[package]]
 name = "llrt_net"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "itoa",
  "llrt_buffer",
@@ -2013,7 +2040,7 @@ dependencies = [
 [[package]]
 name = "llrt_numbers"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "itoa",
  "llrt_utils",
@@ -2024,7 +2051,7 @@ dependencies = [
 [[package]]
 name = "llrt_os"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "home",
  "libc",
@@ -2042,7 +2069,7 @@ dependencies = [
 [[package]]
 name = "llrt_path"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_utils",
  "memchr",
@@ -2052,8 +2079,9 @@ dependencies = [
 [[package]]
 name = "llrt_perf_hooks"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
+ "llrt_events",
  "llrt_utils",
  "rquickjs",
 ]
@@ -2061,7 +2089,7 @@ dependencies = [
 [[package]]
 name = "llrt_process"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "libc",
  "llrt_utils",
@@ -2071,7 +2099,7 @@ dependencies = [
 [[package]]
 name = "llrt_stream"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_buffer",
  "llrt_context",
@@ -2084,7 +2112,7 @@ dependencies = [
 [[package]]
 name = "llrt_stream_web"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_abort",
  "llrt_utils",
@@ -2094,7 +2122,7 @@ dependencies = [
 [[package]]
 name = "llrt_string_decoder"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_buffer",
  "llrt_encoding",
@@ -2105,7 +2133,7 @@ dependencies = [
 [[package]]
 name = "llrt_timers"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_context",
  "llrt_hooking",
@@ -2118,17 +2146,18 @@ dependencies = [
 [[package]]
 name = "llrt_tls"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "once_cell",
  "rustls 0.23.35",
+ "tracing",
  "webpki-roots",
 ]
 
 [[package]]
 name = "llrt_tty"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "libc",
  "llrt_utils",
@@ -2138,7 +2167,7 @@ dependencies = [
 [[package]]
 name = "llrt_url"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_utils",
  "rquickjs",
@@ -2148,7 +2177,7 @@ dependencies = [
 [[package]]
 name = "llrt_util"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_context",
  "llrt_encoding",
@@ -2160,7 +2189,7 @@ dependencies = [
 [[package]]
 name = "llrt_utils"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "libc",
  "llrt_build",
@@ -2173,7 +2202,7 @@ dependencies = [
 [[package]]
 name = "llrt_zlib"
 version = "0.7.0-beta"
-source = "git+https://github.com/awslabs/llrt.git?rev=7d749dd18cf26a2e51119094c3b945975ae57bd4#7d749dd18cf26a2e51119094c3b945975ae57bd4"
+source = "git+https://github.com/chessbyte/awslabs-llrt.git?branch=feat%2Ffetch-body-streams#6fe1e60d53b9ccaf5f17ba8f4463198e2061cb02"
 dependencies = [
  "llrt_buffer",
  "llrt_compression",
@@ -4179,9 +4208,9 @@ checksum = "9edde0db4769d2dc68579893f2306b26c6ecfbe0ef499b013d731b7b9247e0b9"
 
 [[package]]
 name = "x25519-dalek"
-version = "3.0.0-pre.2"
+version = "3.0.0-pre.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a1de04376e841a39a324c95b2b099eb13b8b81d0c0a5adec29f322c205761d6"
+checksum = "8367a41efe370c38fa4af81968298cdd695311791e4797118a1621f04ed75859"
 dependencies = [
  "curve25519-dalek",
  "rand_core 0.10.0-rc-2",

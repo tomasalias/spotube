@@ -14,7 +14,6 @@ part 'image.g.dart';
 @freezed
 sealed class SpotubeImageObject with _$SpotubeImageObject {
   const factory SpotubeImageObject({
-    required String typeName,
     required String url,
     int? width,
     int? height,

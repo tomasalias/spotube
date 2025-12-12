@@ -9,7 +9,6 @@ part of 'artist.dart';
 _$SpotubeFullArtistObjectImpl _$$SpotubeFullArtistObjectImplFromJson(
         Map json) =>
     _$SpotubeFullArtistObjectImpl(
-      typeName: json['typeName'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
@@ -25,7 +24,6 @@ _$SpotubeFullArtistObjectImpl _$$SpotubeFullArtistObjectImplFromJson(
 Map<String, dynamic> _$$SpotubeFullArtistObjectImplToJson(
         _$SpotubeFullArtistObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'name': instance.name,
       'externalUri': instance.externalUri,
@@ -37,7 +35,6 @@ Map<String, dynamic> _$$SpotubeFullArtistObjectImplToJson(
 _$SpotubeSimpleArtistObjectImpl _$$SpotubeSimpleArtistObjectImplFromJson(
         Map json) =>
     _$SpotubeSimpleArtistObjectImpl(
-      typeName: json['typeName'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
@@ -50,7 +47,6 @@ _$SpotubeSimpleArtistObjectImpl _$$SpotubeSimpleArtistObjectImplFromJson(
 Map<String, dynamic> _$$SpotubeSimpleArtistObjectImplToJson(
         _$SpotubeSimpleArtistObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'name': instance.name,
       'externalUri': instance.externalUri,

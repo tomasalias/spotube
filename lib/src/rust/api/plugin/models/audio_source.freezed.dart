@@ -969,7 +969,6 @@ SpotubeAudioSourceMatchObject _$SpotubeAudioSourceMatchObjectFromJson(
 
 /// @nodoc
 mixin _$SpotubeAudioSourceMatchObject {
-  String get typeName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   List<String> get artists => throw _privateConstructorUsedError;
@@ -996,8 +995,7 @@ abstract class $SpotubeAudioSourceMatchObjectCopyWith<$Res> {
           SpotubeAudioSourceMatchObject>;
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String title,
       List<String> artists,
       int duration,
@@ -1021,7 +1019,6 @@ class _$SpotubeAudioSourceMatchObjectCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? title = null,
     Object? artists = null,
@@ -1030,10 +1027,6 @@ class _$SpotubeAudioSourceMatchObjectCopyWithImpl<$Res,
     Object? externalUri = null,
   }) {
     return _then(_value.copyWith(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1072,8 +1065,7 @@ abstract class _$$SpotubeAudioSourceMatchObjectImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String title,
       List<String> artists,
       int duration,
@@ -1096,7 +1088,6 @@ class __$$SpotubeAudioSourceMatchObjectImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? title = null,
     Object? artists = null,
@@ -1105,10 +1096,6 @@ class __$$SpotubeAudioSourceMatchObjectImplCopyWithImpl<$Res>
     Object? externalUri = null,
   }) {
     return _then(_$SpotubeAudioSourceMatchObjectImpl(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -1142,8 +1129,7 @@ class __$$SpotubeAudioSourceMatchObjectImplCopyWithImpl<$Res>
 class _$SpotubeAudioSourceMatchObjectImpl
     implements _SpotubeAudioSourceMatchObject {
   const _$SpotubeAudioSourceMatchObjectImpl(
-      {required this.typeName,
-      required this.id,
+      {required this.id,
       required this.title,
       required final List<String> artists,
       required this.duration,
@@ -1155,8 +1141,6 @@ class _$SpotubeAudioSourceMatchObjectImpl
           Map<String, dynamic> json) =>
       _$$SpotubeAudioSourceMatchObjectImplFromJson(json);
 
-  @override
-  final String typeName;
   @override
   final String id;
   @override
@@ -1178,7 +1162,7 @@ class _$SpotubeAudioSourceMatchObjectImpl
 
   @override
   String toString() {
-    return 'SpotubeAudioSourceMatchObject(typeName: $typeName, id: $id, title: $title, artists: $artists, duration: $duration, thumbnail: $thumbnail, externalUri: $externalUri)';
+    return 'SpotubeAudioSourceMatchObject(id: $id, title: $title, artists: $artists, duration: $duration, thumbnail: $thumbnail, externalUri: $externalUri)';
   }
 
   @override
@@ -1186,8 +1170,6 @@ class _$SpotubeAudioSourceMatchObjectImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SpotubeAudioSourceMatchObjectImpl &&
-            (identical(other.typeName, typeName) ||
-                other.typeName == typeName) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             const DeepCollectionEquality().equals(other._artists, _artists) &&
@@ -1203,7 +1185,6 @@ class _$SpotubeAudioSourceMatchObjectImpl
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      typeName,
       id,
       title,
       const DeepCollectionEquality().hash(_artists),
@@ -1232,8 +1213,7 @@ class _$SpotubeAudioSourceMatchObjectImpl
 abstract class _SpotubeAudioSourceMatchObject
     implements SpotubeAudioSourceMatchObject {
   const factory _SpotubeAudioSourceMatchObject(
-      {required final String typeName,
-      required final String id,
+      {required final String id,
       required final String title,
       required final List<String> artists,
       required final int duration,
@@ -1243,8 +1223,6 @@ abstract class _SpotubeAudioSourceMatchObject
   factory _SpotubeAudioSourceMatchObject.fromJson(Map<String, dynamic> json) =
       _$SpotubeAudioSourceMatchObjectImpl.fromJson;
 
-  @override
-  String get typeName;
   @override
   String get id;
   @override

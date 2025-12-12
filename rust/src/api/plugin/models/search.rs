@@ -9,7 +9,7 @@ use crate::api::plugin::models::track::SpotubeFullTrackObject;
 #[serde(rename_all = "camelCase")]
 #[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct SpotubeSearchResponseObject {
-    pub type_name: String,
+    // pub type_name: String,
     pub albums: Vec<SpotubeSimpleAlbumObject>,
     pub artists: Vec<SpotubeFullArtistObject>,
     pub playlists: Vec<SpotubeSimplePlaylistObject>,

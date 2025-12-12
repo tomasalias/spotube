@@ -20,7 +20,6 @@ part 'search.g.dart';
 @freezed
 sealed class SpotubeSearchResponseObject with _$SpotubeSearchResponseObject {
   const factory SpotubeSearchResponseObject({
-    required String typeName,
     required List<SpotubeSimpleAlbumObject> albums,
     required List<SpotubeFullArtistObject> artists,
     required List<SpotubeSimplePlaylistObject> playlists,

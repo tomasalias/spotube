@@ -16,7 +16,6 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$SpotubeBrowseSectionObject {
-  String get typeName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get title => throw _privateConstructorUsedError;
   String get externalUri => throw _privateConstructorUsedError;
@@ -39,8 +38,7 @@ abstract class $SpotubeBrowseSectionObjectCopyWith<$Res> {
           SpotubeBrowseSectionObject>;
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String title,
       String externalUri,
       bool browseMore,
@@ -63,7 +61,6 @@ class _$SpotubeBrowseSectionObjectCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? title = null,
     Object? externalUri = null,
@@ -71,10 +68,6 @@ class _$SpotubeBrowseSectionObjectCopyWithImpl<$Res,
     Object? items = null,
   }) {
     return _then(_value.copyWith(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -109,8 +102,7 @@ abstract class _$$SpotubeBrowseSectionObjectImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String title,
       String externalUri,
       bool browseMore,
@@ -132,7 +124,6 @@ class __$$SpotubeBrowseSectionObjectImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? title = null,
     Object? externalUri = null,
@@ -140,10 +131,6 @@ class __$$SpotubeBrowseSectionObjectImplCopyWithImpl<$Res>
     Object? items = null,
   }) {
     return _then(_$SpotubeBrowseSectionObjectImpl(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -172,16 +159,13 @@ class __$$SpotubeBrowseSectionObjectImplCopyWithImpl<$Res>
 
 class _$SpotubeBrowseSectionObjectImpl implements _SpotubeBrowseSectionObject {
   const _$SpotubeBrowseSectionObjectImpl(
-      {required this.typeName,
-      required this.id,
+      {required this.id,
       required this.title,
       required this.externalUri,
       required this.browseMore,
       required final List<SpotubeBrowseSectionResponseObjectItem> items})
       : _items = items;
 
-  @override
-  final String typeName;
   @override
   final String id;
   @override
@@ -200,7 +184,7 @@ class _$SpotubeBrowseSectionObjectImpl implements _SpotubeBrowseSectionObject {
 
   @override
   String toString() {
-    return 'SpotubeBrowseSectionObject(typeName: $typeName, id: $id, title: $title, externalUri: $externalUri, browseMore: $browseMore, items: $items)';
+    return 'SpotubeBrowseSectionObject(id: $id, title: $title, externalUri: $externalUri, browseMore: $browseMore, items: $items)';
   }
 
   @override
@@ -208,8 +192,6 @@ class _$SpotubeBrowseSectionObjectImpl implements _SpotubeBrowseSectionObject {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SpotubeBrowseSectionObjectImpl &&
-            (identical(other.typeName, typeName) ||
-                other.typeName == typeName) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.title, title) || other.title == title) &&
             (identical(other.externalUri, externalUri) ||
@@ -220,7 +202,7 @@ class _$SpotubeBrowseSectionObjectImpl implements _SpotubeBrowseSectionObject {
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, typeName, id, title, externalUri,
+  int get hashCode => Object.hash(runtimeType, id, title, externalUri,
       browseMore, const DeepCollectionEquality().hash(_items));
 
   /// Create a copy of SpotubeBrowseSectionObject
@@ -236,16 +218,13 @@ class _$SpotubeBrowseSectionObjectImpl implements _SpotubeBrowseSectionObject {
 abstract class _SpotubeBrowseSectionObject
     implements SpotubeBrowseSectionObject {
   const factory _SpotubeBrowseSectionObject(
-          {required final String typeName,
-          required final String id,
+          {required final String id,
           required final String title,
           required final String externalUri,
           required final bool browseMore,
           required final List<SpotubeBrowseSectionResponseObjectItem> items}) =
       _$SpotubeBrowseSectionObjectImpl;
 
-  @override
-  String get typeName;
   @override
   String get id;
   @override

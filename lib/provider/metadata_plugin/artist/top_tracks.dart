@@ -18,7 +18,10 @@ class MetadataPluginArtistTopTracksNotifier
           mpscTx: await mpscTx,
         );
 
-    return tracks.flatten();
+    return SpotubeFlattenedPaginationObject.from(
+      tracks,
+      (item) => SpotubeTrackObject.full(item.field0 as SpotubeFullTrackObject),
+    );
   }
 
   @override

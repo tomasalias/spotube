@@ -86,7 +86,6 @@ Map<String, dynamic> _$$SpotubeAudioSourceContainerPreset_LosslessImplToJson(
 _$SpotubeAudioSourceMatchObjectImpl
     _$$SpotubeAudioSourceMatchObjectImplFromJson(Map json) =>
         _$SpotubeAudioSourceMatchObjectImpl(
-          typeName: json['typeName'] as String,
           id: json['id'] as String,
           title: json['title'] as String,
           artists: (json['artists'] as List<dynamic>)
@@ -100,7 +99,6 @@ _$SpotubeAudioSourceMatchObjectImpl
 Map<String, dynamic> _$$SpotubeAudioSourceMatchObjectImplToJson(
         _$SpotubeAudioSourceMatchObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'title': instance.title,
       'artists': instance.artists,

@@ -9,7 +9,6 @@ part of 'search.dart';
 _$SpotubeSearchResponseObjectImpl _$$SpotubeSearchResponseObjectImplFromJson(
         Map json) =>
     _$SpotubeSearchResponseObjectImpl(
-      typeName: json['typeName'] as String,
       albums: (json['albums'] as List<dynamic>)
           .map((e) => SpotubeSimpleAlbumObject.fromJson(
               Map<String, dynamic>.from(e as Map)))
@@ -31,7 +30,6 @@ _$SpotubeSearchResponseObjectImpl _$$SpotubeSearchResponseObjectImplFromJson(
 Map<String, dynamic> _$$SpotubeSearchResponseObjectImplToJson(
         _$SpotubeSearchResponseObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'albums': instance.albums.map((e) => e.toJson()).toList(),
       'artists': instance.artists.map((e) => e.toJson()).toList(),
       'playlists': instance.playlists.map((e) => e.toJson()).toList(),

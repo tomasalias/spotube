@@ -7,7 +7,7 @@ use crate::api::plugin::models::user::SpotubeUserObject;
 #[serde(rename_all = "camelCase")]
 #[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct SpotubeSimplePlaylistObject {
-    pub type_name: String,
+    // pub type_name: String,
     pub id: String,
     pub name: String,
     pub description: String,
@@ -21,7 +21,7 @@ pub struct SpotubeSimplePlaylistObject {
 #[serde(rename_all = "camelCase")]
 #[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct SpotubeFullPlaylistObject {
-    pub type_name: String,
+    // pub type_name: String,
     pub id: String,
     pub name: String,
     pub description: String,

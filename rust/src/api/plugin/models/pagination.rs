@@ -18,7 +18,7 @@ pub struct SpotubePaginationResponseObject {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone)]
-#[serde(rename_all = "camelCase", tag = "type_name")]
+#[serde(rename_all = "camelCase", tag = "typeName")]
 pub enum SpotubePaginationResponseObjectItem {
     #[serde(rename = "track")]
     Track(SpotubeFullTrackObject),

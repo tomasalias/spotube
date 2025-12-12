@@ -3808,16 +3808,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return SpotubeAudioSourceMatchObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      title: dco_decode_String(arr[2]),
-      artists: dco_decode_list_String(arr[3]),
-      duration: dco_decode_u_32(arr[4]),
-      thumbnail: dco_decode_opt_String(arr[5]),
-      externalUri: dco_decode_String(arr[6]),
+      id: dco_decode_String(arr[0]),
+      title: dco_decode_String(arr[1]),
+      artists: dco_decode_list_String(arr[2]),
+      duration: dco_decode_u_32(arr[3]),
+      thumbnail: dco_decode_opt_String(arr[4]),
+      externalUri: dco_decode_String(arr[5]),
     );
   }
 
@@ -3845,16 +3844,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 6)
-      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
+    if (arr.length != 5)
+      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
     return SpotubeBrowseSectionObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      title: dco_decode_String(arr[2]),
-      externalUri: dco_decode_String(arr[3]),
-      browseMore: dco_decode_bool(arr[4]),
+      id: dco_decode_String(arr[0]),
+      title: dco_decode_String(arr[1]),
+      externalUri: dco_decode_String(arr[2]),
+      browseMore: dco_decode_bool(arr[3]),
       items:
-          dco_decode_list_spotube_browse_section_response_object_item(arr[5]),
+          dco_decode_list_spotube_browse_section_response_object_item(arr[4]),
     );
   }
 
@@ -3900,20 +3898,19 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeFullAlbumObject dco_decode_spotube_full_album_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 11)
-      throw Exception('unexpected arr length: expect 11 but see ${arr.length}');
+    if (arr.length != 10)
+      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
     return SpotubeFullAlbumObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      artists: dco_decode_list_spotube_simple_artist_object(arr[3]),
-      images: dco_decode_list_spotube_image_object(arr[4]),
-      releaseDate: dco_decode_String(arr[5]),
-      externalUri: dco_decode_String(arr[6]),
-      totalTracks: dco_decode_i_32(arr[7]),
-      albumType: dco_decode_spotube_album_type(arr[8]),
-      recordLabel: dco_decode_opt_String(arr[9]),
-      genres: dco_decode_opt_list_String(arr[10]),
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      artists: dco_decode_list_spotube_simple_artist_object(arr[2]),
+      images: dco_decode_list_spotube_image_object(arr[3]),
+      releaseDate: dco_decode_String(arr[4]),
+      externalUri: dco_decode_String(arr[5]),
+      totalTracks: dco_decode_i_32(arr[6]),
+      albumType: dco_decode_spotube_album_type(arr[7]),
+      recordLabel: dco_decode_opt_String(arr[8]),
+      genres: dco_decode_opt_list_String(arr[9]),
     );
   }
 
@@ -3921,16 +3918,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeFullArtistObject dco_decode_spotube_full_artist_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return SpotubeFullArtistObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      externalUri: dco_decode_String(arr[3]),
-      images: dco_decode_list_spotube_image_object(arr[4]),
-      genres: dco_decode_opt_list_String(arr[5]),
-      followers: dco_decode_opt_box_autoadd_i_32(arr[6]),
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      externalUri: dco_decode_String(arr[2]),
+      images: dco_decode_list_spotube_image_object(arr[3]),
+      genres: dco_decode_opt_list_String(arr[4]),
+      followers: dco_decode_opt_box_autoadd_i_32(arr[5]),
     );
   }
 
@@ -3939,19 +3935,18 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 10)
-      throw Exception('unexpected arr length: expect 10 but see ${arr.length}');
+    if (arr.length != 9)
+      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
     return SpotubeFullPlaylistObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      description: dco_decode_String(arr[3]),
-      externalUri: dco_decode_String(arr[4]),
-      owner: dco_decode_spotube_user_object(arr[5]),
-      images: dco_decode_list_spotube_image_object(arr[6]),
-      collaborators: dco_decode_list_spotube_user_object(arr[7]),
-      collaborative: dco_decode_bool(arr[8]),
-      public: dco_decode_bool(arr[9]),
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      description: dco_decode_String(arr[2]),
+      externalUri: dco_decode_String(arr[3]),
+      owner: dco_decode_spotube_user_object(arr[4]),
+      images: dco_decode_list_spotube_image_object(arr[5]),
+      collaborators: dco_decode_list_spotube_user_object(arr[6]),
+      collaborative: dco_decode_bool(arr[7]),
+      public: dco_decode_bool(arr[8]),
     );
   }
 
@@ -3959,18 +3954,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeFullTrackObject dco_decode_spotube_full_track_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 9)
-      throw Exception('unexpected arr length: expect 9 but see ${arr.length}');
+    if (arr.length != 8)
+      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
     return SpotubeFullTrackObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      externalUri: dco_decode_String(arr[3]),
-      artists: dco_decode_list_spotube_simple_artist_object(arr[4]),
-      album: dco_decode_spotube_simple_album_object(arr[5]),
-      durationMs: dco_decode_u_32(arr[6]),
-      isrc: dco_decode_String(arr[7]),
-      explicit: dco_decode_bool(arr[8]),
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      externalUri: dco_decode_String(arr[2]),
+      artists: dco_decode_list_spotube_simple_artist_object(arr[3]),
+      album: dco_decode_spotube_simple_album_object(arr[4]),
+      durationMs: dco_decode_u_32(arr[5]),
+      isrc: dco_decode_String(arr[6]),
+      explicit: dco_decode_bool(arr[7]),
     );
   }
 
@@ -3978,13 +3972,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeImageObject dco_decode_spotube_image_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 4)
-      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
+    if (arr.length != 3)
+      throw Exception('unexpected arr length: expect 3 but see ${arr.length}');
     return SpotubeImageObject(
-      typeName: dco_decode_String(arr[0]),
-      url: dco_decode_String(arr[1]),
-      width: dco_decode_opt_box_autoadd_i_32(arr[2]),
-      height: dco_decode_opt_box_autoadd_i_32(arr[3]),
+      url: dco_decode_String(arr[0]),
+      width: dco_decode_opt_box_autoadd_i_32(arr[1]),
+      height: dco_decode_opt_box_autoadd_i_32(arr[2]),
     );
   }
 
@@ -3992,17 +3985,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeLocalTrackObject dco_decode_spotube_local_track_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 8)
-      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
     return SpotubeLocalTrackObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      externalUri: dco_decode_String(arr[3]),
-      artists: dco_decode_list_spotube_simple_artist_object(arr[4]),
-      album: dco_decode_spotube_simple_album_object(arr[5]),
-      durationMs: dco_decode_u_32(arr[6]),
-      path: dco_decode_String(arr[7]),
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      externalUri: dco_decode_String(arr[2]),
+      artists: dco_decode_list_spotube_simple_artist_object(arr[3]),
+      album: dco_decode_spotube_simple_album_object(arr[4]),
+      durationMs: dco_decode_u_32(arr[5]),
+      path: dco_decode_String(arr[6]),
     );
   }
 
@@ -4076,14 +4068,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return SpotubeSearchResponseObject(
-      typeName: dco_decode_String(arr[0]),
-      albums: dco_decode_list_spotube_simple_album_object(arr[1]),
-      artists: dco_decode_list_spotube_full_artist_object(arr[2]),
-      playlists: dco_decode_list_spotube_simple_playlist_object(arr[3]),
-      tracks: dco_decode_list_spotube_full_track_object(arr[4]),
+      albums: dco_decode_list_spotube_simple_album_object(arr[0]),
+      artists: dco_decode_list_spotube_full_artist_object(arr[1]),
+      playlists: dco_decode_list_spotube_simple_playlist_object(arr[2]),
+      tracks: dco_decode_list_spotube_full_track_object(arr[3]),
     );
   }
 
@@ -4091,17 +4082,16 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeSimpleAlbumObject dco_decode_spotube_simple_album_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 8)
-      throw Exception('unexpected arr length: expect 8 but see ${arr.length}');
+    if (arr.length != 7)
+      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
     return SpotubeSimpleAlbumObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      externalUri: dco_decode_String(arr[3]),
-      artists: dco_decode_list_spotube_simple_artist_object(arr[4]),
-      images: dco_decode_list_spotube_image_object(arr[5]),
-      albumType: dco_decode_spotube_album_type(arr[6]),
-      releaseDate: dco_decode_opt_String(arr[7]),
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      externalUri: dco_decode_String(arr[2]),
+      artists: dco_decode_list_spotube_simple_artist_object(arr[3]),
+      images: dco_decode_list_spotube_image_object(arr[4]),
+      albumType: dco_decode_spotube_album_type(arr[5]),
+      releaseDate: dco_decode_opt_String(arr[6]),
     );
   }
 
@@ -4110,14 +4100,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return SpotubeSimpleArtistObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      externalUri: dco_decode_String(arr[3]),
-      images: dco_decode_opt_list_spotube_image_object(arr[4]),
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      externalUri: dco_decode_String(arr[2]),
+      images: dco_decode_opt_list_spotube_image_object(arr[3]),
     );
   }
 
@@ -4126,16 +4115,15 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
       dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 7)
-      throw Exception('unexpected arr length: expect 7 but see ${arr.length}');
+    if (arr.length != 6)
+      throw Exception('unexpected arr length: expect 6 but see ${arr.length}');
     return SpotubeSimplePlaylistObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      description: dco_decode_String(arr[3]),
-      externalUri: dco_decode_String(arr[4]),
-      owner: dco_decode_spotube_user_object(arr[5]),
-      images: dco_decode_list_spotube_image_object(arr[6]),
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      description: dco_decode_String(arr[2]),
+      externalUri: dco_decode_String(arr[3]),
+      owner: dco_decode_spotube_user_object(arr[4]),
+      images: dco_decode_list_spotube_image_object(arr[5]),
     );
   }
 
@@ -4160,14 +4148,13 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeUserObject dco_decode_spotube_user_object(dynamic raw) {
     // Codec=Dco (DartCObject based), see doc to use other codecs
     final arr = raw as List<dynamic>;
-    if (arr.length != 5)
-      throw Exception('unexpected arr length: expect 5 but see ${arr.length}');
+    if (arr.length != 4)
+      throw Exception('unexpected arr length: expect 4 but see ${arr.length}');
     return SpotubeUserObject(
-      typeName: dco_decode_String(arr[0]),
-      id: dco_decode_String(arr[1]),
-      name: dco_decode_String(arr[2]),
-      images: dco_decode_list_spotube_image_object(arr[3]),
-      externalUri: dco_decode_String(arr[4]),
+      id: dco_decode_String(arr[0]),
+      name: dco_decode_String(arr[1]),
+      images: dco_decode_list_spotube_image_object(arr[2]),
+      externalUri: dco_decode_String(arr[3]),
     );
   }
 
@@ -5142,7 +5129,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeAudioSourceMatchObject sse_decode_spotube_audio_source_match_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_title = sse_decode_String(deserializer);
     var var_artists = sse_decode_list_String(deserializer);
@@ -5150,7 +5136,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_thumbnail = sse_decode_opt_String(deserializer);
     var var_externalUri = sse_decode_String(deserializer);
     return SpotubeAudioSourceMatchObject(
-        typeName: var_typeName,
         id: var_id,
         title: var_title,
         artists: var_artists,
@@ -5187,7 +5172,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeBrowseSectionObject sse_decode_spotube_browse_section_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_title = sse_decode_String(deserializer);
     var var_externalUri = sse_decode_String(deserializer);
@@ -5195,7 +5179,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_items = sse_decode_list_spotube_browse_section_response_object_item(
         deserializer);
     return SpotubeBrowseSectionObject(
-        typeName: var_typeName,
         id: var_id,
         title: var_title,
         externalUri: var_externalUri,
@@ -5249,7 +5232,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeFullAlbumObject sse_decode_spotube_full_album_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_artists =
@@ -5262,7 +5244,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_recordLabel = sse_decode_opt_String(deserializer);
     var var_genres = sse_decode_opt_list_String(deserializer);
     return SpotubeFullAlbumObject(
-        typeName: var_typeName,
         id: var_id,
         name: var_name,
         artists: var_artists,
@@ -5279,7 +5260,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeFullArtistObject sse_decode_spotube_full_artist_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_externalUri = sse_decode_String(deserializer);
@@ -5287,7 +5267,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_genres = sse_decode_opt_list_String(deserializer);
     var var_followers = sse_decode_opt_box_autoadd_i_32(deserializer);
     return SpotubeFullArtistObject(
-        typeName: var_typeName,
         id: var_id,
         name: var_name,
         externalUri: var_externalUri,
@@ -5300,7 +5279,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeFullPlaylistObject sse_decode_spotube_full_playlist_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_description = sse_decode_String(deserializer);
@@ -5311,7 +5289,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_collaborative = sse_decode_bool(deserializer);
     var var_public = sse_decode_bool(deserializer);
     return SpotubeFullPlaylistObject(
-        typeName: var_typeName,
         id: var_id,
         name: var_name,
         description: var_description,
@@ -5327,7 +5304,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeFullTrackObject sse_decode_spotube_full_track_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_externalUri = sse_decode_String(deserializer);
@@ -5338,7 +5314,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_isrc = sse_decode_String(deserializer);
     var var_explicit = sse_decode_bool(deserializer);
     return SpotubeFullTrackObject(
-        typeName: var_typeName,
         id: var_id,
         name: var_name,
         externalUri: var_externalUri,
@@ -5353,22 +5328,17 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeImageObject sse_decode_spotube_image_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_url = sse_decode_String(deserializer);
     var var_width = sse_decode_opt_box_autoadd_i_32(deserializer);
     var var_height = sse_decode_opt_box_autoadd_i_32(deserializer);
     return SpotubeImageObject(
-        typeName: var_typeName,
-        url: var_url,
-        width: var_width,
-        height: var_height);
+        url: var_url, width: var_width, height: var_height);
   }
 
   @protected
   SpotubeLocalTrackObject sse_decode_spotube_local_track_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_externalUri = sse_decode_String(deserializer);
@@ -5378,7 +5348,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_durationMs = sse_decode_u_32(deserializer);
     var var_path = sse_decode_String(deserializer);
     return SpotubeLocalTrackObject(
-        typeName: var_typeName,
         id: var_id,
         name: var_name,
         externalUri: var_externalUri,
@@ -5463,14 +5432,12 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeSearchResponseObject sse_decode_spotube_search_response_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_albums = sse_decode_list_spotube_simple_album_object(deserializer);
     var var_artists = sse_decode_list_spotube_full_artist_object(deserializer);
     var var_playlists =
         sse_decode_list_spotube_simple_playlist_object(deserializer);
     var var_tracks = sse_decode_list_spotube_full_track_object(deserializer);
     return SpotubeSearchResponseObject(
-        typeName: var_typeName,
         albums: var_albums,
         artists: var_artists,
         playlists: var_playlists,
@@ -5481,7 +5448,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeSimpleAlbumObject sse_decode_spotube_simple_album_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_externalUri = sse_decode_String(deserializer);
@@ -5491,7 +5457,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_albumType = sse_decode_spotube_album_type(deserializer);
     var var_releaseDate = sse_decode_opt_String(deserializer);
     return SpotubeSimpleAlbumObject(
-        typeName: var_typeName,
         id: var_id,
         name: var_name,
         externalUri: var_externalUri,
@@ -5505,13 +5470,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeSimpleArtistObject sse_decode_spotube_simple_artist_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_externalUri = sse_decode_String(deserializer);
     var var_images = sse_decode_opt_list_spotube_image_object(deserializer);
     return SpotubeSimpleArtistObject(
-        typeName: var_typeName,
         id: var_id,
         name: var_name,
         externalUri: var_externalUri,
@@ -5522,7 +5485,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeSimplePlaylistObject sse_decode_spotube_simple_playlist_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_description = sse_decode_String(deserializer);
@@ -5530,7 +5492,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
     var var_owner = sse_decode_spotube_user_object(deserializer);
     var var_images = sse_decode_list_spotube_image_object(deserializer);
     return SpotubeSimplePlaylistObject(
-        typeName: var_typeName,
         id: var_id,
         name: var_name,
         description: var_description,
@@ -5563,13 +5524,11 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   SpotubeUserObject sse_decode_spotube_user_object(
       SseDeserializer deserializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    var var_typeName = sse_decode_String(deserializer);
     var var_id = sse_decode_String(deserializer);
     var var_name = sse_decode_String(deserializer);
     var var_images = sse_decode_list_spotube_image_object(deserializer);
     var var_externalUri = sse_decode_String(deserializer);
     return SpotubeUserObject(
-        typeName: var_typeName,
         id: var_id,
         name: var_name,
         images: var_images,
@@ -6445,7 +6404,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_audio_source_match_object(
       SpotubeAudioSourceMatchObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.title, serializer);
     sse_encode_list_String(self.artists, serializer);
@@ -6472,7 +6430,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_browse_section_object(
       SpotubeBrowseSectionObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.title, serializer);
     sse_encode_String(self.externalUri, serializer);
@@ -6527,7 +6484,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_full_album_object(
       SpotubeFullAlbumObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_list_spotube_simple_artist_object(self.artists, serializer);
@@ -6544,7 +6500,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_full_artist_object(
       SpotubeFullArtistObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_String(self.externalUri, serializer);
@@ -6557,7 +6512,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_full_playlist_object(
       SpotubeFullPlaylistObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_String(self.description, serializer);
@@ -6573,7 +6527,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_full_track_object(
       SpotubeFullTrackObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_String(self.externalUri, serializer);
@@ -6588,7 +6541,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_image_object(
       SpotubeImageObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.url, serializer);
     sse_encode_opt_box_autoadd_i_32(self.width, serializer);
     sse_encode_opt_box_autoadd_i_32(self.height, serializer);
@@ -6598,7 +6550,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_local_track_object(
       SpotubeLocalTrackObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_String(self.externalUri, serializer);
@@ -6675,7 +6626,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_search_response_object(
       SpotubeSearchResponseObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_list_spotube_simple_album_object(self.albums, serializer);
     sse_encode_list_spotube_full_artist_object(self.artists, serializer);
     sse_encode_list_spotube_simple_playlist_object(self.playlists, serializer);
@@ -6686,7 +6636,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_simple_album_object(
       SpotubeSimpleAlbumObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_String(self.externalUri, serializer);
@@ -6700,7 +6649,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_simple_artist_object(
       SpotubeSimpleArtistObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_String(self.externalUri, serializer);
@@ -6711,7 +6659,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_simple_playlist_object(
       SpotubeSimplePlaylistObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_String(self.description, serializer);
@@ -6738,7 +6685,6 @@ class RustLibApiImpl extends RustLibApiImplPlatform implements RustLibApi {
   void sse_encode_spotube_user_object(
       SpotubeUserObject self, SseSerializer serializer) {
     // Codec=Sse (Serialization based), see doc to use other codecs
-    sse_encode_String(self.typeName, serializer);
     sse_encode_String(self.id, serializer);
     sse_encode_String(self.name, serializer);
     sse_encode_list_spotube_image_object(self.images, serializer);

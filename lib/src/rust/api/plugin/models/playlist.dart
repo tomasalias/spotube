@@ -16,7 +16,6 @@ part 'playlist.g.dart';
 @freezed
 sealed class SpotubeFullPlaylistObject with _$SpotubeFullPlaylistObject {
   const factory SpotubeFullPlaylistObject({
-    required String typeName,
     required String id,
     required String name,
     required String description,
@@ -35,7 +34,6 @@ sealed class SpotubeFullPlaylistObject with _$SpotubeFullPlaylistObject {
 @freezed
 sealed class SpotubeSimplePlaylistObject with _$SpotubeSimplePlaylistObject {
   const factory SpotubeSimplePlaylistObject({
-    required String typeName,
     required String id,
     required String name,
     required String description,

@@ -81,7 +81,7 @@ class HomePageBrowseSection extends HookConsumerWidget {
         if (section.items.isEmpty) return const SizedBox.shrink();
 
         return HorizontalPlaybuttonCardView(
-          items: section.items,
+          items: section.items.map((e) => e.field0).toList(),
           title: Text(section.title),
           hasNextPage: false,
           isLoadingNextPage: false,

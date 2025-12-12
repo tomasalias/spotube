@@ -8,7 +8,6 @@ part of 'user.dart';
 
 _$SpotubeUserObjectImpl _$$SpotubeUserObjectImplFromJson(Map json) =>
     _$SpotubeUserObjectImpl(
-      typeName: json['typeName'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       images: (json['images'] as List<dynamic>)
@@ -21,7 +20,6 @@ _$SpotubeUserObjectImpl _$$SpotubeUserObjectImplFromJson(Map json) =>
 Map<String, dynamic> _$$SpotubeUserObjectImplToJson(
         _$SpotubeUserObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'name': instance.name,
       'images': instance.images.map((e) => e.toJson()).toList(),

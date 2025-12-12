@@ -8,7 +8,6 @@ part of 'track.dart';
 
 _$SpotubeFullTrackObjectImpl _$$SpotubeFullTrackObjectImplFromJson(Map json) =>
     _$SpotubeFullTrackObjectImpl(
-      typeName: json['typeName'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
@@ -26,7 +25,6 @@ _$SpotubeFullTrackObjectImpl _$$SpotubeFullTrackObjectImplFromJson(Map json) =>
 Map<String, dynamic> _$$SpotubeFullTrackObjectImplToJson(
         _$SpotubeFullTrackObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'name': instance.name,
       'externalUri': instance.externalUri,
@@ -40,7 +38,6 @@ Map<String, dynamic> _$$SpotubeFullTrackObjectImplToJson(
 _$SpotubeLocalTrackObjectImpl _$$SpotubeLocalTrackObjectImplFromJson(
         Map json) =>
     _$SpotubeLocalTrackObjectImpl(
-      typeName: json['typeName'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
@@ -57,7 +54,6 @@ _$SpotubeLocalTrackObjectImpl _$$SpotubeLocalTrackObjectImplFromJson(
 Map<String, dynamic> _$$SpotubeLocalTrackObjectImplToJson(
         _$SpotubeLocalTrackObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'name': instance.name,
       'externalUri': instance.externalUri,

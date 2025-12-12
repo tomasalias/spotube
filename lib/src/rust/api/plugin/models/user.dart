@@ -15,7 +15,6 @@ part 'user.g.dart';
 @freezed
 sealed class SpotubeUserObject with _$SpotubeUserObject {
   const factory SpotubeUserObject({
-    required String typeName,
     required String id,
     required String name,
     required List<SpotubeImageObject> images,

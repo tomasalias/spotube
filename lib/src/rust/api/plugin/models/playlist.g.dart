@@ -9,7 +9,6 @@ part of 'playlist.dart';
 _$SpotubeFullPlaylistObjectImpl _$$SpotubeFullPlaylistObjectImplFromJson(
         Map json) =>
     _$SpotubeFullPlaylistObjectImpl(
-      typeName: json['typeName'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
@@ -31,7 +30,6 @@ _$SpotubeFullPlaylistObjectImpl _$$SpotubeFullPlaylistObjectImplFromJson(
 Map<String, dynamic> _$$SpotubeFullPlaylistObjectImplToJson(
         _$SpotubeFullPlaylistObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,
@@ -46,7 +44,6 @@ Map<String, dynamic> _$$SpotubeFullPlaylistObjectImplToJson(
 _$SpotubeSimplePlaylistObjectImpl _$$SpotubeSimplePlaylistObjectImplFromJson(
         Map json) =>
     _$SpotubeSimplePlaylistObjectImpl(
-      typeName: json['typeName'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       description: json['description'] as String,
@@ -62,7 +59,6 @@ _$SpotubeSimplePlaylistObjectImpl _$$SpotubeSimplePlaylistObjectImplFromJson(
 Map<String, dynamic> _$$SpotubeSimplePlaylistObjectImplToJson(
         _$SpotubeSimplePlaylistObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'name': instance.name,
       'description': instance.description,

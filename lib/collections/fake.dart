@@ -4,14 +4,14 @@ import 'package:spotube/provider/history/summary.dart';
 
 abstract class FakeData {
   static const SpotubeImageObject image = SpotubeImageObject(
-    typeName: "image",
+    // typeName: "image",
     height: 100,
     width: 100,
     url: "https://dummyimage.com/100x100/cfcfcf/cfcfcf.jpg",
   );
 
   static const SpotubeFullArtistObject artist = SpotubeFullArtistObject(
-    typeName: "artist_full",
+    // typeName: "artist_full",
     id: "1",
     name: "What an artist",
     externalUri: "https://example.com",
@@ -19,7 +19,7 @@ abstract class FakeData {
     genres: ["genre"],
     images: [
       SpotubeImageObject(
-        typeName: "image",
+        // typeName: "image",
         height: 100,
         width: 100,
         url: "https://dummyimage.com/100x100/cfcfcf/cfcfcf.jpg",
@@ -28,7 +28,7 @@ abstract class FakeData {
   );
 
   static const SpotubeFullAlbumObject album = SpotubeFullAlbumObject(
-    typeName: "album_full",
+    // typeName: "album_full",
     id: "1",
     name: "A good album",
     externalUri: "https://example.com",
@@ -43,7 +43,7 @@ abstract class FakeData {
 
   static const SpotubeSimpleArtistObject artistSimple =
       SpotubeSimpleArtistObject(
-    typeName: "artist_simple",
+    // typeName: "artist_simple",
     id: "1",
     name: "What an artist",
     externalUri: "https://example.com",
@@ -51,7 +51,7 @@ abstract class FakeData {
   );
 
   static const SpotubeSimpleAlbumObject albumSimple = SpotubeSimpleAlbumObject(
-    typeName: "album_simple",
+    // typeName: "album_simple",
     albumType: SpotubeAlbumType.album,
     artists: [],
     externalUri: "https://example.com",
@@ -60,7 +60,7 @@ abstract class FakeData {
     releaseDate: "2021-01-01",
     images: [
       SpotubeImageObject(
-        typeName: "image",
+        // typeName: "image",
         height: 1,
         width: 1,
         url: "https://dummyimage.com/100x100/cfcfcf/cfcfcf.jpg",
@@ -70,7 +70,7 @@ abstract class FakeData {
 
   static const SpotubeTrackObject track = SpotubeTrackObject.full(
     SpotubeFullTrackObject(
-      typeName: "track",
+      // typeName: "track",
       id: "1",
       name: "A good track",
       externalUri: "https://example.com",
@@ -83,7 +83,7 @@ abstract class FakeData {
   );
 
   static const SpotubeUserObject user = SpotubeUserObject(
-    typeName: "user",
+    // typeName: "user",
     id: "1",
     name: "User Name",
     externalUri: "https://example.com",
@@ -91,7 +91,7 @@ abstract class FakeData {
   );
 
   static const SpotubeFullPlaylistObject playlist = SpotubeFullPlaylistObject(
-      typeName: "playlist_full",
+      // typeName: "playlist_full",
       id: "1",
       name: "A good playlist",
       description: "A very good playlist description",
@@ -104,7 +104,7 @@ abstract class FakeData {
 
   static const SpotubeSimplePlaylistObject playlistSimple =
       SpotubeSimplePlaylistObject(
-    typeName: "playlist_simple",
+    // typeName: "playlist_simple",
     id: "1",
     name: "A good playlist",
     description: "A very good playlist description",
@@ -115,7 +115,7 @@ abstract class FakeData {
 
   static const SpotubeBrowseSectionObject browseSection =
       SpotubeBrowseSectionObject(
-          typeName: "browse_section",
+          // typeName: "browse_section",
           id: "section-id",
           title: "Browse Section",
           browseMore: true,

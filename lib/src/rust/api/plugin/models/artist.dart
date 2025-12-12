@@ -15,7 +15,6 @@ part 'artist.g.dart';
 @freezed
 sealed class SpotubeFullArtistObject with _$SpotubeFullArtistObject {
   const factory SpotubeFullArtistObject({
-    required String typeName,
     required String id,
     required String name,
     required String externalUri,
@@ -31,7 +30,6 @@ sealed class SpotubeFullArtistObject with _$SpotubeFullArtistObject {
 @freezed
 sealed class SpotubeSimpleArtistObject with _$SpotubeSimpleArtistObject {
   const factory SpotubeSimpleArtistObject({
-    required String typeName,
     required String id,
     required String name,
     required String externalUri,

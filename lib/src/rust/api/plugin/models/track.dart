@@ -17,7 +17,6 @@ part 'track.g.dart';
 @freezed
 sealed class SpotubeFullTrackObject with _$SpotubeFullTrackObject {
   const factory SpotubeFullTrackObject({
-    required String typeName,
     required String id,
     required String name,
     required String externalUri,
@@ -35,7 +34,6 @@ sealed class SpotubeFullTrackObject with _$SpotubeFullTrackObject {
 @freezed
 sealed class SpotubeLocalTrackObject with _$SpotubeLocalTrackObject {
   const factory SpotubeLocalTrackObject({
-    required String typeName,
     required String id,
     required String name,
     required String externalUri,

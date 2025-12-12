@@ -153,7 +153,7 @@ impl SpotubePlugin {
         let mut receiver = self
             .event_rx
             .take()
-            .ok_or_else(|| anyhow::anyhow!("Receiver already consumed"))?;
+            .ok_or_else(|| anyhow::anyhow!("[SpotubePlugin][auth_state] Receiver already consumed"))?;
 
         tokio::spawn(async move {
             while let Some(event) = receiver.recv().await {
@@ -200,7 +200,7 @@ impl SpotubePlugin {
 
                 let (ctx, _runtime) = ctx_res.unwrap();
 
-                let begin_injection = "globalThis.module = {exports: {}};";
+                let begin_injection = "console.log(globalThis);globalThis.module = {exports: {}};";
 
                 let end_injection = "globalThis.pluginInstance = new module.exports.default();";
                 let script = format!("{}\n{}\n{}", begin_injection, plugin_script, end_injection);

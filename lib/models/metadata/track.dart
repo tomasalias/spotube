@@ -98,13 +98,13 @@ SpotubeLocalTrackObject localTrackFromFile(
   String? art,
 }) {
   return SpotubeLocalTrackObject(
-    typeName: "track_local",
+    // typeName: "track_local",
     id: file.absolute.path,
     name: metadata?.title ?? basenameWithoutExtension(file.path),
     externalUri: "file://${file.absolute.path}",
     artists: metadata?.artist?.split(",").map((a) {
           return SpotubeSimpleArtistObject(
-            typeName: "artist_simple",
+            // typeName: "artist_simple",
             id: a.trim(),
             name: a.trim(),
             externalUri: "file://${file.absolute.path}",
@@ -112,21 +112,21 @@ SpotubeLocalTrackObject localTrackFromFile(
         }).toList() ??
         [
           SpotubeSimpleArtistObject(
-            typeName: "artist_simple",
+            // typeName: "artist_simple",
             id: "unknown",
             name: "Unknown Artist",
             externalUri: "file://${file.absolute.path}",
           ),
         ],
     album: SpotubeSimpleAlbumObject(
-      typeName: "album_simple",
+      // typeName: "album_simple",
       albumType: SpotubeAlbumType.album,
       id: metadata?.album ?? "unknown",
       name: metadata?.album ?? "Unknown Album",
       externalUri: "file://${file.absolute.path}",
       artists: [
         SpotubeSimpleArtistObject(
-          typeName: "artist_simple",
+          // typeName: "artist_simple",
           id: metadata?.albumArtist ?? "unknown",
           name: metadata?.albumArtist ?? "Unknown Artist",
           externalUri: "file://${file.absolute.path}",
@@ -137,7 +137,7 @@ SpotubeLocalTrackObject localTrackFromFile(
       images: [
         if (art != null)
           SpotubeImageObject(
-            typeName: "image",
+            // typeName: "image",
             url: art,
             width: 300,
             height: 300,

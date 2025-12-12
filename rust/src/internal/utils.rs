@@ -56,8 +56,14 @@ pub fn js_value_to_json<'a>(value: rquickjs::Value<'a>, ctx: Ctx<'a>) -> anyhow:
         return Ok(Value::Bool(b));
     }
 
-    if let Some(n) = value.as_number() {
-        let num = serde_json::Number::from_f64(n).ok_or(anyhow!("Invalid number"))?;
+    if value.is_int() {
+        let num = serde_json::Number::from(value.as_int().unwrap_or(0));
+        return Ok(Value::Number(num));
+    }
+
+    if value.is_float() {
+        let num = serde_json::Number::from_f64(value.as_float().unwrap_or(0.0))
+            .ok_or(anyhow!("[js_value_to_json][as_number] Invalid number"))?;
         return Ok(Value::Number(num));
     }
 
@@ -73,7 +79,7 @@ pub fn js_value_to_json<'a>(value: rquickjs::Value<'a>, ctx: Ctx<'a>) -> anyhow:
         if obj.is_array() {
             let obj: Array = Array::from_value(obj.into_value())
                 .catch(&ctx)
-                .map_err(|e| anyhow!("{}", e))?;
+                .map_err(|e| anyhow!("[js_value_to_json][Array::from_value] {e}"))?;
             let length = obj.len();
             let mut json_arr = Vec::<Value>::with_capacity(length);
 
@@ -113,57 +119,68 @@ pub async fn js_invoke_async_method_to_json<'b, T, R>(
     args: &[T],
 ) -> anyhow::Result<Option<R>>
 where
-    T: Serialize,
+    T: Serialize + Debug,
     R: DeserializeOwned + Debug,
 {
     let global = ctx.globals();
     let plugin_instance: Object<'b> = global
         .get("pluginInstance")
         .catch(&ctx)
-        .map_err(|e| anyhow!("{e}"))?;
+        .map_err(|e| anyhow!("[js_invoke_async_method_to_json][global.pluginInstance] {e}"))?;
     let core_val: Object<'b> = plugin_instance
         .get(endpoint_name)
         .catch(&ctx)
-        .map_err(|e| anyhow!("{e}"))?;
-    let js_fn: Function<'b> = core_val.get(name).catch(&ctx).map_err(|e| anyhow!("{e}"))?;
+        .map_err(|e| {
+            anyhow!("[js_invoke_async_method_to_json][global.pluginInstance.{endpoint_name}] {e}")
+        })?;
+    let js_fn: Function<'b> = core_val.get(name).catch(&ctx).map_err(|e| {
+        anyhow!(
+            "[js_invoke_async_method_to_json][global.pluginInstance.{endpoint_name}.{name}()] {e}"
+        )
+    })?;
     let mut args_js = Args::new(ctx.clone(), args.len() as usize);
 
     args_js
         .this(core_val)
         .catch(&ctx)
-        .map_err(|e| anyhow!("{e}"))?;
+        .map_err(|e| anyhow!("[js_invoke_async_method_to_json][global.pluginInstance.{endpoint_name}.{name}.args.this] {e}"))?;
 
     for arg in args.iter() {
-        let arg_value = serde_json::to_value(arg).map_err(|e| anyhow!("{e}"))?;
+        let arg_value = serde_json::to_value(arg).map_err(|e| {
+            anyhow!("[js_invoke_async_method_to_json][global.pluginInstance.{endpoint_name}.{name}.args.{:?}] {e}", arg)
+        })?;
         let arg_js = json_value_to_js(&arg_value, ctx.clone())
             .catch(&ctx)
-            .map_err(|e| anyhow!("{e}"))?;
+            .map_err(|e| anyhow!("[js_invoke_async_method_to_json][json_value_to_js] {e}"))?;
         args_js
             .push_arg(arg_js)
             .catch(&ctx)
-            .map_err(|e| anyhow!("{e}"))?;
+            .map_err(|e| anyhow!("[js_invoke_async_method_to_json][Args::push_arg] {e}"))?;
     }
 
-    let result_promise: Promise = js_fn
-        .call_arg(args_js)
-        .catch(&ctx)
-        .map_err(|e| anyhow!("{e}"))?;
+    let result_promise: Promise = js_fn.call_arg(args_js).catch(&ctx).map_err(|e| {
+        anyhow!(
+            "[js_invoke_async_method_to_json][pluginInstance.{endpoint_name}.{name}() result] {e}"
+        )
+    })?;
 
-    println!("Sync Result: {:?}", result_promise);
     let result_future: rquickjs::Value = result_promise
         .into_future()
         .await
         .catch(&ctx)
-        .map_err(|e| anyhow!("{e}"))?;
+        .map_err(|e| anyhow!("[js_invoke_async_method_to_json][pluginInstance.{endpoint_name}.{name}() future]{e}"))?;
 
     let value = js_value_to_json(result_future, ctx.clone())?;
 
     if value.is_null() {
         return Ok(None);
     }
-    Ok(Some(
-        serde_json::from_value::<R>(value).map_err(|e| anyhow!("{e}"))?,
-    ))
+
+    Ok(Some(serde_json::from_value::<R>(value).map_err(|e| {
+        anyhow!(
+            "[js_invoke_async_method_to_json][pluginInstance.{endpoint_name}.{name}() toJson] {e}"
+        )
+    })?))
 }
 
 pub fn js_invoke_method_to_json<'b, T, R>(
@@ -173,48 +190,48 @@ pub fn js_invoke_method_to_json<'b, T, R>(
     args: &[T],
 ) -> anyhow::Result<Option<R>>
 where
-    T: Serialize,
+    T: Serialize + Debug,
     R: DeserializeOwned,
 {
     let global = ctx.globals();
     let plugin_instance: Object<'b> = global
         .get("pluginInstance")
         .catch(&ctx)
-        .map_err(|e| anyhow!("{e}"))?;
+        .map_err(|e| anyhow!("[js_invoke_method_to_json][pluginInstance] {e}"))?;
     let core_val: Object<'b> = plugin_instance
         .get(endpoint_name)
         .catch(&ctx)
-        .map_err(|e| anyhow!("{e}"))?;
-    let js_fn: Function<'b> = core_val.get(name).catch(&ctx).map_err(|e| anyhow!("{e}"))?;
+        .map_err(|e| anyhow!("[js_invoke_method_to_json][pluginInstance.{endpoint_name}] {e}"))?;
+    let js_fn: Function<'b> = core_val.get(name).catch(&ctx).map_err(|e| {
+        anyhow!("[js_invoke_method_to_json][pluginInstance.{endpoint_name}.{name}] {e}")
+    })?;
     let mut args_js = Args::new(ctx.clone(), args.len() as usize);
 
-    args_js
-        .this(core_val)
-        .catch(&ctx)
-        .map_err(|e| anyhow!("{e}"))?;
+    args_js.this(core_val).catch(&ctx).map_err(|e| {
+        anyhow!("[js_invoke_method_to_json][pluginInstance.{endpoint_name}.{name}.args.this] {e}")
+    })?;
 
-    for arg in args.iter().enumerate() {
+    for arg in args.iter() {
         let arg_value = serde_json::to_value(arg).map_err(|e| anyhow!("{e}"))?;
         let arg_js = json_value_to_js(&arg_value, ctx.clone())
             .catch(&ctx)
-            .map_err(|e| anyhow!("{e}"))?;
+            .map_err(|e| anyhow!("[js_invoke_method_to_json][pluginInstance.{endpoint_name}.{name}.args.{:?}] {e}", arg))?;
         args_js
             .push_arg(arg_js)
             .catch(&ctx)
-            .map_err(|e| anyhow!("{e}"))?;
+            .map_err(|e| anyhow!("[js_invoke_method_to_json][Args::push_arg] {e}"))?;
     }
 
-    let result: rquickjs::Value = js_fn
-        .call_arg(args_js)
-        .catch(&ctx)
-        .map_err(|e| anyhow!("{e}"))?;
+    let result: rquickjs::Value = js_fn.call_arg(args_js).catch(&ctx).map_err(|e| {
+        anyhow!("[js_invoke_method_to_json][pluginInstance.{endpoint_name}.{name}() result] {e}")
+    })?;
     let value = js_value_to_json(result, ctx.clone())?;
 
     if value.is_null() {
         return Ok(None);
     }
 
-    Ok(Some(
-        serde_json::from_value::<R>(value).map_err(|e| anyhow!("{e}"))?,
-    ))
+    Ok(Some(serde_json::from_value::<R>(value).map_err(|e| {
+        anyhow!("[js_invoke_method_to_json][pluginInstance.{endpoint_name}.{name}() toJson] {e}")
+    })?))
 }

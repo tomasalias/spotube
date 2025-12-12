@@ -6,7 +6,7 @@ use crate::api::plugin::models::image::SpotubeImageObject;
 #[serde(rename_all = "camelCase")]
 #[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct SpotubeSimpleArtistObject {
-    pub type_name: String,
+    // pub type_name: String,
     pub id: String,
     pub name: String,
     pub external_uri: String,
@@ -17,7 +17,7 @@ pub struct SpotubeSimpleArtistObject {
 #[serde(rename_all = "camelCase")]
 #[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct SpotubeFullArtistObject {
-    pub type_name: String,
+    // pub type_name: String,
     pub id: String,
     pub name: String,
     pub external_uri: String,

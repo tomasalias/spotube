@@ -21,7 +21,6 @@ SpotubeSearchResponseObject _$SpotubeSearchResponseObjectFromJson(
 
 /// @nodoc
 mixin _$SpotubeSearchResponseObject {
-  String get typeName => throw _privateConstructorUsedError;
   List<SpotubeSimpleAlbumObject> get albums =>
       throw _privateConstructorUsedError;
   List<SpotubeFullArtistObject> get artists =>
@@ -49,8 +48,7 @@ abstract class $SpotubeSearchResponseObjectCopyWith<$Res> {
           SpotubeSearchResponseObject>;
   @useResult
   $Res call(
-      {String typeName,
-      List<SpotubeSimpleAlbumObject> albums,
+      {List<SpotubeSimpleAlbumObject> albums,
       List<SpotubeFullArtistObject> artists,
       List<SpotubeSimplePlaylistObject> playlists,
       List<SpotubeFullTrackObject> tracks});
@@ -72,17 +70,12 @@ class _$SpotubeSearchResponseObjectCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? albums = null,
     Object? artists = null,
     Object? playlists = null,
     Object? tracks = null,
   }) {
     return _then(_value.copyWith(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       albums: null == albums
           ? _value.albums
           : albums // ignore: cast_nullable_to_non_nullable
@@ -113,8 +106,7 @@ abstract class _$$SpotubeSearchResponseObjectImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String typeName,
-      List<SpotubeSimpleAlbumObject> albums,
+      {List<SpotubeSimpleAlbumObject> albums,
       List<SpotubeFullArtistObject> artists,
       List<SpotubeSimplePlaylistObject> playlists,
       List<SpotubeFullTrackObject> tracks});
@@ -135,17 +127,12 @@ class __$$SpotubeSearchResponseObjectImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? albums = null,
     Object? artists = null,
     Object? playlists = null,
     Object? tracks = null,
   }) {
     return _then(_$SpotubeSearchResponseObjectImpl(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       albums: null == albums
           ? _value._albums
           : albums // ignore: cast_nullable_to_non_nullable
@@ -171,8 +158,7 @@ class __$$SpotubeSearchResponseObjectImplCopyWithImpl<$Res>
 class _$SpotubeSearchResponseObjectImpl
     implements _SpotubeSearchResponseObject {
   const _$SpotubeSearchResponseObjectImpl(
-      {required this.typeName,
-      required final List<SpotubeSimpleAlbumObject> albums,
+      {required final List<SpotubeSimpleAlbumObject> albums,
       required final List<SpotubeFullArtistObject> artists,
       required final List<SpotubeSimplePlaylistObject> playlists,
       required final List<SpotubeFullTrackObject> tracks})
@@ -185,8 +171,6 @@ class _$SpotubeSearchResponseObjectImpl
           Map<String, dynamic> json) =>
       _$$SpotubeSearchResponseObjectImplFromJson(json);
 
-  @override
-  final String typeName;
   final List<SpotubeSimpleAlbumObject> _albums;
   @override
   List<SpotubeSimpleAlbumObject> get albums {
@@ -221,7 +205,7 @@ class _$SpotubeSearchResponseObjectImpl
 
   @override
   String toString() {
-    return 'SpotubeSearchResponseObject(typeName: $typeName, albums: $albums, artists: $artists, playlists: $playlists, tracks: $tracks)';
+    return 'SpotubeSearchResponseObject(albums: $albums, artists: $artists, playlists: $playlists, tracks: $tracks)';
   }
 
   @override
@@ -229,8 +213,6 @@ class _$SpotubeSearchResponseObjectImpl
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SpotubeSearchResponseObjectImpl &&
-            (identical(other.typeName, typeName) ||
-                other.typeName == typeName) &&
             const DeepCollectionEquality().equals(other._albums, _albums) &&
             const DeepCollectionEquality().equals(other._artists, _artists) &&
             const DeepCollectionEquality()
@@ -242,7 +224,6 @@ class _$SpotubeSearchResponseObjectImpl
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      typeName,
       const DeepCollectionEquality().hash(_albums),
       const DeepCollectionEquality().hash(_artists),
       const DeepCollectionEquality().hash(_playlists),
@@ -268,8 +249,7 @@ class _$SpotubeSearchResponseObjectImpl
 abstract class _SpotubeSearchResponseObject
     implements SpotubeSearchResponseObject {
   const factory _SpotubeSearchResponseObject(
-          {required final String typeName,
-          required final List<SpotubeSimpleAlbumObject> albums,
+          {required final List<SpotubeSimpleAlbumObject> albums,
           required final List<SpotubeFullArtistObject> artists,
           required final List<SpotubeSimplePlaylistObject> playlists,
           required final List<SpotubeFullTrackObject> tracks}) =
@@ -278,8 +258,6 @@ abstract class _SpotubeSearchResponseObject
   factory _SpotubeSearchResponseObject.fromJson(Map<String, dynamic> json) =
       _$SpotubeSearchResponseObjectImpl.fromJson;
 
-  @override
-  String get typeName;
   @override
   List<SpotubeSimpleAlbumObject> get albums;
   @override

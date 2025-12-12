@@ -8,7 +8,6 @@ part of 'album.dart';
 
 _$SpotubeFullAlbumObjectImpl _$$SpotubeFullAlbumObjectImplFromJson(Map json) =>
     _$SpotubeFullAlbumObjectImpl(
-      typeName: json['typeName'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       artists: (json['artists'] as List<dynamic>)
@@ -31,7 +30,6 @@ _$SpotubeFullAlbumObjectImpl _$$SpotubeFullAlbumObjectImplFromJson(Map json) =>
 Map<String, dynamic> _$$SpotubeFullAlbumObjectImplToJson(
         _$SpotubeFullAlbumObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'name': instance.name,
       'artists': instance.artists.map((e) => e.toJson()).toList(),
@@ -53,7 +51,6 @@ const _$SpotubeAlbumTypeEnumMap = {
 _$SpotubeSimpleAlbumObjectImpl _$$SpotubeSimpleAlbumObjectImplFromJson(
         Map json) =>
     _$SpotubeSimpleAlbumObjectImpl(
-      typeName: json['typeName'] as String,
       id: json['id'] as String,
       name: json['name'] as String,
       externalUri: json['externalUri'] as String,
@@ -72,7 +69,6 @@ _$SpotubeSimpleAlbumObjectImpl _$$SpotubeSimpleAlbumObjectImplFromJson(
 Map<String, dynamic> _$$SpotubeSimpleAlbumObjectImplToJson(
         _$SpotubeSimpleAlbumObjectImpl instance) =>
     <String, dynamic>{
-      'typeName': instance.typeName,
       'id': instance.id,
       'name': instance.name,
       'externalUri': instance.externalUri,

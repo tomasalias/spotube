@@ -23,7 +23,6 @@ enum SpotubeAlbumType {
 @freezed
 sealed class SpotubeFullAlbumObject with _$SpotubeFullAlbumObject {
   const factory SpotubeFullAlbumObject({
-    required String typeName,
     required String id,
     required String name,
     required List<SpotubeSimpleArtistObject> artists,
@@ -43,7 +42,6 @@ sealed class SpotubeFullAlbumObject with _$SpotubeFullAlbumObject {
 @freezed
 sealed class SpotubeSimpleAlbumObject with _$SpotubeSimpleAlbumObject {
   const factory SpotubeSimpleAlbumObject({
-    required String typeName,
     required String id,
     required String name,
     required String externalUri,

@@ -9,7 +9,7 @@ use crate::api::plugin::models::track::{SpotubeFullTrackObject};
 #[serde(rename_all = "camelCase")]
 #[frb(dart_metadata=("freezed"))]
 pub struct SpotubeBrowseSectionObject {
-    pub type_name: String,
+    // pub type_name: String,
     pub id: String,
     pub title: String,
     pub external_uri: String,
@@ -18,7 +18,7 @@ pub struct SpotubeBrowseSectionObject {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
-#[serde(rename_all = "camelCase", tag = "type_name")]
+#[serde(rename_all = "camelCase", tag = "typeName")]
 pub enum SpotubeBrowseSectionResponseObjectItem {
     #[serde(rename = "track")]
     Track(SpotubeFullTrackObject),

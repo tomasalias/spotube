@@ -19,7 +19,6 @@ use crate::api::plugin::models::user::SpotubeUserObject;
 use crate::api::plugin::plugin::OpaqueSender;
 use anyhow::anyhow;
 use flutter_rust_bridge::frb;
-use std::backtrace::Backtrace;
 use tokio::sync::oneshot;
 
 #[derive(Debug, Clone, Copy)]
@@ -43,9 +42,11 @@ impl PluginArtistSender {
                 id,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginArtistSender][get_artist][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginArtistSender][get_artist][rx] {e}"))?
     }
 
     pub async fn top_tracks(
@@ -64,9 +65,11 @@ impl PluginArtistSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginArtistSender][top_tracks][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginArtistSender][top_tracks][rx] {e}"))?
     }
 
     pub async fn albums(
@@ -85,9 +88,11 @@ impl PluginArtistSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginArtistSender][albums][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginArtistSender][albums][rx] {e}"))?
     }
 
     pub async fn related(
@@ -106,9 +111,11 @@ impl PluginArtistSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginArtistSender][related][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginArtistSender][related][rx] {e}"))?
     }
 
     pub async fn save(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
@@ -119,9 +126,11 @@ impl PluginArtistSender {
                 ids,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginArtistSender][save][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginArtistSender][save][rx] {e}"))?
     }
 
     pub async fn unsave(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
@@ -132,9 +141,11 @@ impl PluginArtistSender {
                 ids,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginArtistSender][unsave][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginArtistSender][unsave][rx] {e}"))?
     }
 }
 
@@ -159,9 +170,11 @@ impl PluginAlbumSender {
                 id,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAlbumSender][get_album][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAlbumSender][get_album][rx] {e}"))?
     }
 
     pub async fn tracks(
@@ -180,9 +193,11 @@ impl PluginAlbumSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAlbumSender][tracks][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAlbumSender][tracks][rx] {e}"))?
     }
 
     pub async fn releases(
@@ -199,9 +214,11 @@ impl PluginAlbumSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAlbumSender][releases][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAlbumSender][releases][rx] {e}"))?
     }
 
     pub async fn save(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
@@ -212,9 +229,11 @@ impl PluginAlbumSender {
                 ids,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAlbumSender][save][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAlbumSender][save][rx] {e}"))?
     }
 
     pub async fn unsave(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
@@ -225,9 +244,11 @@ impl PluginAlbumSender {
                 ids,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAlbumSender][unsave][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAlbumSender][unsave][rx] {e}"))?
     }
 }
 
@@ -250,9 +271,11 @@ impl PluginAudioSourceSender {
             .send(PluginCommand::AudioSource(
                 AudioSourceCommands::SupportedPresets { response_tx: tx },
             ))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAudioSourceSender][supported_presets][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAudioSourceSender][supported_presets][rx] {e}"))?
     }
 
     pub async fn matches(
@@ -267,9 +290,11 @@ impl PluginAudioSourceSender {
                 track,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAudioSourceSender][matches][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAudioSourceSender][matches][rx] {e}"))?
     }
 
     pub async fn streams(
@@ -284,9 +309,11 @@ impl PluginAudioSourceSender {
                 matched,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAudioSourceSender][streams][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAudioSourceSender][streams][rx] {e}"))?
     }
 }
 
@@ -306,9 +333,11 @@ impl PluginAuthSender {
             .send(PluginCommand::Auth(AuthCommands::Authenticate {
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAuthSender][authenticate][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAuthSender][authenticate][rx] {e}"))?
     }
 
     pub async fn logout(&self, mpsc_tx: &OpaqueSender) -> anyhow::Result<()> {
@@ -318,9 +347,11 @@ impl PluginAuthSender {
             .send(PluginCommand::Auth(AuthCommands::Logout {
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAuthSender][logout][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAuthSender][logout][rx] {e}"))?
     }
 
     pub async fn is_authenticated(&self, mpsc_tx: &OpaqueSender) -> anyhow::Result<bool> {
@@ -330,9 +361,11 @@ impl PluginAuthSender {
             .send(PluginCommand::Auth(AuthCommands::IsAuthenticated {
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginAuthSender][is_authenticated][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginAuthSender][is_authenticated][rx] {e}"))?
     }
 }
 
@@ -359,9 +392,11 @@ impl PluginBrowseSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginBrowseSender][sections][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginBrowseSender][sections][rx] {e}"))?
     }
 
     pub async fn section_items(
@@ -380,9 +415,11 @@ impl PluginBrowseSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginBrowseSender][section_items][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginBrowseSender][section_items][rx] {e}"))?
     }
 }
 
@@ -407,9 +444,11 @@ impl PluginCoreSender {
                 plugin_config,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginCoreSender][check_update][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginCoreSender][check_update][rx] {e}"))?
     }
 
     pub async fn support(&self, mpsc_tx: &OpaqueSender) -> anyhow::Result<String> {
@@ -419,9 +458,11 @@ impl PluginCoreSender {
             .send(PluginCommand::Core(CoreCommands::Support {
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginCoreSender][support][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginCoreSender][support][rx] {e}"))?
     }
 
     pub async fn scrobble(
@@ -436,9 +477,11 @@ impl PluginCoreSender {
                 details,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginCoreSender][scrobble][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginCoreSender][scrobble][rx] {e}"))?
     }
 }
 
@@ -463,9 +506,11 @@ impl PluginPlaylistSender {
                 id,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][get_playlist][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][get_playlist][rx] {e}"))?
     }
 
     pub async fn tracks(
@@ -484,9 +529,11 @@ impl PluginPlaylistSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][tracks][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][tracks][rx] {e}"))?
     }
 
     pub async fn create_playlist(
@@ -509,9 +556,11 @@ impl PluginPlaylistSender {
                 collaborative,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][create_playlist][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][create_playlist][rx] {e}"))?
     }
 
     pub async fn update_playlist(
@@ -534,9 +583,11 @@ impl PluginPlaylistSender {
                 collaborative,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][update_playlist][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][update_playlist][rx] {e}"))?
     }
 
     pub async fn delete_playlist(
@@ -551,9 +602,11 @@ impl PluginPlaylistSender {
                 playlist_id,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][delete_playlist][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][delete_playlist][rx] {e}"))?
     }
 
     pub async fn add_tracks(
@@ -572,9 +625,11 @@ impl PluginPlaylistSender {
                 position,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][add_tracks][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][add_tracks][rx] {e}"))?
     }
 
     pub async fn remove_tracks(
@@ -591,9 +646,11 @@ impl PluginPlaylistSender {
                 track_ids,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][remove_tracks][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][remove_tracks][rx] {e}"))?
     }
 
     pub async fn save(&self, mpsc_tx: &OpaqueSender, playlist_id: String) -> anyhow::Result<()> {
@@ -604,9 +661,11 @@ impl PluginPlaylistSender {
                 playlist_id,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][save][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][save][rx] {e}"))?
     }
 
     pub async fn unsave(&self, mpsc_tx: &OpaqueSender, playlist_id: String) -> anyhow::Result<()> {
@@ -617,9 +676,11 @@ impl PluginPlaylistSender {
                 playlist_id,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][unsave][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginPlaylistSender][unsave][rx] {e}"))?
     }
 }
 
@@ -639,9 +700,11 @@ impl PluginSearchSender {
             .send(PluginCommand::Search(SearchCommands::Chips {
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginSearchSender][chips][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginSearchSender][chips][rx] {e}"))?
     }
 
     pub async fn all(
@@ -656,9 +719,11 @@ impl PluginSearchSender {
                 query,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginSearchSender][all][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginSearchSender][all][rx] {e}"))?
     }
 
     pub async fn tracks(
@@ -677,9 +742,11 @@ impl PluginSearchSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginSearchSender][tracks][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginSearchSender][tracks][rx] {e}"))?
     }
 
     pub async fn albums(
@@ -698,9 +765,11 @@ impl PluginSearchSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginSearchSender][albums][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginSearchSender][albums][rx] {e}"))?
     }
 
     pub async fn artists(
@@ -719,9 +788,11 @@ impl PluginSearchSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginSearchSender][artists][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginSearchSender][artists][rx] {e}"))?
     }
 
     pub async fn playlists(
@@ -740,9 +811,11 @@ impl PluginSearchSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginSearchSender][playlists][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginSearchSender][playlists][rx] {e}"))?
     }
 }
 
@@ -767,9 +840,11 @@ impl PluginTrackSender {
                 id,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginTrackSender][get_track][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginTrackSender][get_track][rx] {e}"))?
     }
 
     pub async fn save(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
@@ -780,9 +855,11 @@ impl PluginTrackSender {
                 ids,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginTrackSender][save][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginTrackSender][save][rx] {e}"))?
     }
 
     pub async fn unsave(&self, mpsc_tx: &OpaqueSender, ids: Vec<String>) -> anyhow::Result<()> {
@@ -793,9 +870,11 @@ impl PluginTrackSender {
                 ids,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginTrackSender][unsave][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginTrackSender][unsave][rx] {e}"))?
     }
 
     pub async fn radio(
@@ -810,9 +889,11 @@ impl PluginTrackSender {
                 id,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginTrackSender][radio][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginTrackSender][radio][rx] {e}"))?
     }
 }
 
@@ -830,9 +911,11 @@ impl PluginUserSender {
         mpsc_tx
             .sender
             .send(PluginCommand::User(UserCommands::Me { response_tx: tx }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginUserSender][me][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginUserSender][me][rx] {e}"))?
     }
 
     pub async fn saved_tracks(
@@ -849,9 +932,11 @@ impl PluginUserSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginUserSender][saved_tracks][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginUserSender][saved_tracks][rx] {e}"))?
     }
 
     pub async fn saved_albums(
@@ -868,9 +953,11 @@ impl PluginUserSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginUserSender][saved_albums][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginUserSender][saved_albums][rx] {e}"))?
     }
 
     pub async fn saved_artists(
@@ -887,9 +974,11 @@ impl PluginUserSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginUserSender][saved_artists][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginUserSender][saved_artists][rx] {e}"))?
     }
 
     pub async fn saved_playlists(
@@ -906,8 +995,10 @@ impl PluginUserSender {
                 limit,
                 response_tx: tx,
             }))
-            .await?;
+            .await
+            .map_err(|e| anyhow!("[PluginUserSender][saved_playlists][mpsc_tx] {e}"))?;
 
-        rx.await.map_err(|e| anyhow!("{e}"))?
+        rx.await
+            .map_err(|e| anyhow!("[PluginUserSender][saved_playlists][rx] {e}"))?
     }
 }

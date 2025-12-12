@@ -5257,7 +5257,6 @@ impl SseDecode for crate::api::plugin::models::audio_source::SpotubeAudioSourceC
 impl SseDecode for crate::api::plugin::models::audio_source::SpotubeAudioSourceMatchObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_title = <String>::sse_decode(deserializer);
         let mut var_artists = <Vec<String>>::sse_decode(deserializer);
@@ -5265,7 +5264,6 @@ impl SseDecode for crate::api::plugin::models::audio_source::SpotubeAudioSourceM
         let mut var_thumbnail = <Option<String>>::sse_decode(deserializer);
         let mut var_externalUri = <String>::sse_decode(deserializer);
         return crate::api::plugin::models::audio_source::SpotubeAudioSourceMatchObject {
-            type_name: var_typeName,
             id: var_id,
             title: var_title,
             artists: var_artists,
@@ -5306,7 +5304,6 @@ impl SseDecode for crate::api::plugin::models::audio_source::SpotubeAudioSourceS
 impl SseDecode for crate::api::plugin::models::browse::SpotubeBrowseSectionObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_title = <String>::sse_decode(deserializer);
         let mut var_externalUri = <String>::sse_decode(deserializer);
@@ -5315,7 +5312,6 @@ impl SseDecode for crate::api::plugin::models::browse::SpotubeBrowseSectionObjec
             crate::api::plugin::models::browse::SpotubeBrowseSectionResponseObjectItem,
         >>::sse_decode(deserializer);
         return crate::api::plugin::models::browse::SpotubeBrowseSectionObject {
-            type_name: var_typeName,
             id: var_id,
             title: var_title,
             external_uri: var_externalUri,
@@ -5389,7 +5385,6 @@ impl SseDecode for crate::api::plugin::models::browse::SpotubeBrowseSectionRespo
 impl SseDecode for crate::api::plugin::models::album::SpotubeFullAlbumObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_artists =
@@ -5406,7 +5401,6 @@ impl SseDecode for crate::api::plugin::models::album::SpotubeFullAlbumObject {
         let mut var_recordLabel = <Option<String>>::sse_decode(deserializer);
         let mut var_genres = <Option<Vec<String>>>::sse_decode(deserializer);
         return crate::api::plugin::models::album::SpotubeFullAlbumObject {
-            type_name: var_typeName,
             id: var_id,
             name: var_name,
             artists: var_artists,
@@ -5424,7 +5418,6 @@ impl SseDecode for crate::api::plugin::models::album::SpotubeFullAlbumObject {
 impl SseDecode for crate::api::plugin::models::artist::SpotubeFullArtistObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_externalUri = <String>::sse_decode(deserializer);
@@ -5433,7 +5426,6 @@ impl SseDecode for crate::api::plugin::models::artist::SpotubeFullArtistObject {
         let mut var_genres = <Option<Vec<String>>>::sse_decode(deserializer);
         let mut var_followers = <Option<i32>>::sse_decode(deserializer);
         return crate::api::plugin::models::artist::SpotubeFullArtistObject {
-            type_name: var_typeName,
             id: var_id,
             name: var_name,
             external_uri: var_externalUri,
@@ -5447,7 +5439,6 @@ impl SseDecode for crate::api::plugin::models::artist::SpotubeFullArtistObject {
 impl SseDecode for crate::api::plugin::models::playlist::SpotubeFullPlaylistObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_description = <String>::sse_decode(deserializer);
@@ -5461,7 +5452,6 @@ impl SseDecode for crate::api::plugin::models::playlist::SpotubeFullPlaylistObje
         let mut var_collaborative = <bool>::sse_decode(deserializer);
         let mut var_public = <bool>::sse_decode(deserializer);
         return crate::api::plugin::models::playlist::SpotubeFullPlaylistObject {
-            type_name: var_typeName,
             id: var_id,
             name: var_name,
             description: var_description,
@@ -5478,7 +5468,6 @@ impl SseDecode for crate::api::plugin::models::playlist::SpotubeFullPlaylistObje
 impl SseDecode for crate::api::plugin::models::track::SpotubeFullTrackObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_externalUri = <String>::sse_decode(deserializer);
@@ -5492,7 +5481,6 @@ impl SseDecode for crate::api::plugin::models::track::SpotubeFullTrackObject {
         let mut var_isrc = <String>::sse_decode(deserializer);
         let mut var_explicit = <bool>::sse_decode(deserializer);
         return crate::api::plugin::models::track::SpotubeFullTrackObject {
-            type_name: var_typeName,
             id: var_id,
             name: var_name,
             external_uri: var_externalUri,
@@ -5508,12 +5496,10 @@ impl SseDecode for crate::api::plugin::models::track::SpotubeFullTrackObject {
 impl SseDecode for crate::api::plugin::models::image::SpotubeImageObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_url = <String>::sse_decode(deserializer);
         let mut var_width = <Option<i32>>::sse_decode(deserializer);
         let mut var_height = <Option<i32>>::sse_decode(deserializer);
         return crate::api::plugin::models::image::SpotubeImageObject {
-            type_name: var_typeName,
             url: var_url,
             width: var_width,
             height: var_height,
@@ -5524,7 +5510,6 @@ impl SseDecode for crate::api::plugin::models::image::SpotubeImageObject {
 impl SseDecode for crate::api::plugin::models::track::SpotubeLocalTrackObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_externalUri = <String>::sse_decode(deserializer);
@@ -5537,7 +5522,6 @@ impl SseDecode for crate::api::plugin::models::track::SpotubeLocalTrackObject {
         let mut var_durationMs = <u32>::sse_decode(deserializer);
         let mut var_path = <String>::sse_decode(deserializer);
         return crate::api::plugin::models::track::SpotubeLocalTrackObject {
-            type_name: var_typeName,
             id: var_id,
             name: var_name,
             external_uri: var_externalUri,
@@ -5652,7 +5636,6 @@ impl SseDecode for crate::api::plugin::models::pagination::SpotubePaginationResp
 impl SseDecode for crate::api::plugin::models::search::SpotubeSearchResponseObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_albums =
             <Vec<crate::api::plugin::models::album::SpotubeSimpleAlbumObject>>::sse_decode(
                 deserializer,
@@ -5669,7 +5652,6 @@ impl SseDecode for crate::api::plugin::models::search::SpotubeSearchResponseObje
                 deserializer,
             );
         return crate::api::plugin::models::search::SpotubeSearchResponseObject {
-            type_name: var_typeName,
             albums: var_albums,
             artists: var_artists,
             playlists: var_playlists,
@@ -5681,7 +5663,6 @@ impl SseDecode for crate::api::plugin::models::search::SpotubeSearchResponseObje
 impl SseDecode for crate::api::plugin::models::album::SpotubeSimpleAlbumObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_externalUri = <String>::sse_decode(deserializer);
@@ -5695,7 +5676,6 @@ impl SseDecode for crate::api::plugin::models::album::SpotubeSimpleAlbumObject {
             <crate::api::plugin::models::album::SpotubeAlbumType>::sse_decode(deserializer);
         let mut var_releaseDate = <Option<String>>::sse_decode(deserializer);
         return crate::api::plugin::models::album::SpotubeSimpleAlbumObject {
-            type_name: var_typeName,
             id: var_id,
             name: var_name,
             external_uri: var_externalUri,
@@ -5710,7 +5690,6 @@ impl SseDecode for crate::api::plugin::models::album::SpotubeSimpleAlbumObject {
 impl SseDecode for crate::api::plugin::models::artist::SpotubeSimpleArtistObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_externalUri = <String>::sse_decode(deserializer);
@@ -5719,7 +5698,6 @@ impl SseDecode for crate::api::plugin::models::artist::SpotubeSimpleArtistObject
                 deserializer,
             );
         return crate::api::plugin::models::artist::SpotubeSimpleArtistObject {
-            type_name: var_typeName,
             id: var_id,
             name: var_name,
             external_uri: var_externalUri,
@@ -5731,7 +5709,6 @@ impl SseDecode for crate::api::plugin::models::artist::SpotubeSimpleArtistObject
 impl SseDecode for crate::api::plugin::models::playlist::SpotubeSimplePlaylistObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_description = <String>::sse_decode(deserializer);
@@ -5741,7 +5718,6 @@ impl SseDecode for crate::api::plugin::models::playlist::SpotubeSimplePlaylistOb
         let mut var_images =
             <Vec<crate::api::plugin::models::image::SpotubeImageObject>>::sse_decode(deserializer);
         return crate::api::plugin::models::playlist::SpotubeSimplePlaylistObject {
-            type_name: var_typeName,
             id: var_id,
             name: var_name,
             description: var_description,
@@ -5781,14 +5757,12 @@ impl SseDecode for crate::api::plugin::models::track::SpotubeTrackObject {
 impl SseDecode for crate::api::plugin::models::user::SpotubeUserObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_decode(deserializer: &mut flutter_rust_bridge::for_generated::SseDeserializer) -> Self {
-        let mut var_typeName = <String>::sse_decode(deserializer);
         let mut var_id = <String>::sse_decode(deserializer);
         let mut var_name = <String>::sse_decode(deserializer);
         let mut var_images =
             <Vec<crate::api::plugin::models::image::SpotubeImageObject>>::sse_decode(deserializer);
         let mut var_externalUri = <String>::sse_decode(deserializer);
         return crate::api::plugin::models::user::SpotubeUserObject {
-            type_name: var_typeName,
             id: var_id,
             name: var_name,
             images: var_images,
@@ -6473,7 +6447,6 @@ impl flutter_rust_bridge::IntoDart
 {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.title.into_into_dart().into_dart(),
             self.artists.into_into_dart().into_dart(),
@@ -6538,7 +6511,6 @@ impl flutter_rust_bridge::IntoDart
 {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.title.into_into_dart().into_dart(),
             self.external_uri.into_into_dart().into_dart(),
@@ -6602,7 +6574,6 @@ impl
 impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::album::SpotubeFullAlbumObject {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.name.into_into_dart().into_dart(),
             self.artists.into_into_dart().into_dart(),
@@ -6632,7 +6603,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::plugin::models::album::Spotub
 impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::artist::SpotubeFullArtistObject {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.name.into_into_dart().into_dart(),
             self.external_uri.into_into_dart().into_dart(),
@@ -6660,7 +6630,6 @@ impl flutter_rust_bridge::IntoDart
 {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.name.into_into_dart().into_dart(),
             self.description.into_into_dart().into_dart(),
@@ -6691,7 +6660,6 @@ impl
 impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::track::SpotubeFullTrackObject {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.name.into_into_dart().into_dart(),
             self.external_uri.into_into_dart().into_dart(),
@@ -6719,7 +6687,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::plugin::models::track::Spotub
 impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::image::SpotubeImageObject {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.url.into_into_dart().into_dart(),
             self.width.into_into_dart().into_dart(),
             self.height.into_into_dart().into_dart(),
@@ -6742,7 +6709,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::plugin::models::image::Spotub
 impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::track::SpotubeLocalTrackObject {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.name.into_into_dart().into_dart(),
             self.external_uri.into_into_dart().into_dart(),
@@ -6867,7 +6833,6 @@ impl flutter_rust_bridge::IntoDart
 {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.albums.into_into_dart().into_dart(),
             self.artists.into_into_dart().into_dart(),
             self.playlists.into_into_dart().into_dart(),
@@ -6893,7 +6858,6 @@ impl
 impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::album::SpotubeSimpleAlbumObject {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.name.into_into_dart().into_dart(),
             self.external_uri.into_into_dart().into_dart(),
@@ -6922,7 +6886,6 @@ impl flutter_rust_bridge::IntoDart
 {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.name.into_into_dart().into_dart(),
             self.external_uri.into_into_dart().into_dart(),
@@ -6949,7 +6912,6 @@ impl flutter_rust_bridge::IntoDart
 {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.name.into_into_dart().into_dart(),
             self.description.into_into_dart().into_dart(),
@@ -7004,7 +6966,6 @@ impl flutter_rust_bridge::IntoIntoDart<crate::api::plugin::models::track::Spotub
 impl flutter_rust_bridge::IntoDart for crate::api::plugin::models::user::SpotubeUserObject {
     fn into_dart(self) -> flutter_rust_bridge::for_generated::DartAbi {
         [
-            self.type_name.into_into_dart().into_dart(),
             self.id.into_into_dart().into_dart(),
             self.name.into_into_dart().into_dart(),
             self.images.into_into_dart().into_dart(),
@@ -7677,7 +7638,6 @@ crate::api::plugin::models::audio_source::SpotubeAudioSourceContainerPreset::Los
 impl SseEncode for crate::api::plugin::models::audio_source::SpotubeAudioSourceMatchObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.title, serializer);
         <Vec<String>>::sse_encode(self.artists, serializer);
@@ -7707,7 +7667,6 @@ impl SseEncode for crate::api::plugin::models::audio_source::SpotubeAudioSourceS
 impl SseEncode for crate::api::plugin::models::browse::SpotubeBrowseSectionObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.title, serializer);
         <String>::sse_encode(self.external_uri, serializer);
@@ -7740,7 +7699,6 @@ crate::api::plugin::models::browse::SpotubeBrowseSectionResponseObjectItem::Arti
 impl SseEncode for crate::api::plugin::models::album::SpotubeFullAlbumObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <Vec<crate::api::plugin::models::artist::SpotubeSimpleArtistObject>>::sse_encode(
@@ -7766,7 +7724,6 @@ impl SseEncode for crate::api::plugin::models::album::SpotubeFullAlbumObject {
 impl SseEncode for crate::api::plugin::models::artist::SpotubeFullArtistObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.external_uri, serializer);
@@ -7782,7 +7739,6 @@ impl SseEncode for crate::api::plugin::models::artist::SpotubeFullArtistObject {
 impl SseEncode for crate::api::plugin::models::playlist::SpotubeFullPlaylistObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.description, serializer);
@@ -7804,7 +7760,6 @@ impl SseEncode for crate::api::plugin::models::playlist::SpotubeFullPlaylistObje
 impl SseEncode for crate::api::plugin::models::track::SpotubeFullTrackObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.external_uri, serializer);
@@ -7824,7 +7779,6 @@ impl SseEncode for crate::api::plugin::models::track::SpotubeFullTrackObject {
 impl SseEncode for crate::api::plugin::models::image::SpotubeImageObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.url, serializer);
         <Option<i32>>::sse_encode(self.width, serializer);
         <Option<i32>>::sse_encode(self.height, serializer);
@@ -7834,7 +7788,6 @@ impl SseEncode for crate::api::plugin::models::image::SpotubeImageObject {
 impl SseEncode for crate::api::plugin::models::track::SpotubeLocalTrackObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.external_uri, serializer);
@@ -7905,7 +7858,6 @@ crate::api::plugin::models::pagination::SpotubePaginationResponseObjectItem::Bro
 impl SseEncode for crate::api::plugin::models::search::SpotubeSearchResponseObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <Vec<crate::api::plugin::models::album::SpotubeSimpleAlbumObject>>::sse_encode(
             self.albums,
             serializer,
@@ -7928,7 +7880,6 @@ impl SseEncode for crate::api::plugin::models::search::SpotubeSearchResponseObje
 impl SseEncode for crate::api::plugin::models::album::SpotubeSimpleAlbumObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.external_uri, serializer);
@@ -7951,7 +7902,6 @@ impl SseEncode for crate::api::plugin::models::album::SpotubeSimpleAlbumObject {
 impl SseEncode for crate::api::plugin::models::artist::SpotubeSimpleArtistObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.external_uri, serializer);
@@ -7965,7 +7915,6 @@ impl SseEncode for crate::api::plugin::models::artist::SpotubeSimpleArtistObject
 impl SseEncode for crate::api::plugin::models::playlist::SpotubeSimplePlaylistObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <String>::sse_encode(self.description, serializer);
@@ -8004,7 +7953,6 @@ impl SseEncode for crate::api::plugin::models::track::SpotubeTrackObject {
 impl SseEncode for crate::api::plugin::models::user::SpotubeUserObject {
     // Codec=Sse (Serialization based), see doc to use other codecs
     fn sse_encode(self, serializer: &mut flutter_rust_bridge::for_generated::SseSerializer) {
-        <String>::sse_encode(self.type_name, serializer);
         <String>::sse_encode(self.id, serializer);
         <String>::sse_encode(self.name, serializer);
         <Vec<crate::api::plugin::models::image::SpotubeImageObject>>::sse_encode(

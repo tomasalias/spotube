@@ -22,7 +22,7 @@ where
     T: Debug,
 {
     tx.send(response)
-        .map_err(|e| anyhow::anyhow!("Failed to send response: {:?}", e))
+        .map_err(|e| anyhow::anyhow!("[send_response] Failed to send response: {:?}", e))
 }
 
 #[frb(ignore)]

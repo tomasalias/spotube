@@ -21,7 +21,6 @@ SpotubeFullTrackObject _$SpotubeFullTrackObjectFromJson(
 
 /// @nodoc
 mixin _$SpotubeFullTrackObject {
-  String get typeName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get externalUri => throw _privateConstructorUsedError;
@@ -49,8 +48,7 @@ abstract class $SpotubeFullTrackObjectCopyWith<$Res> {
       _$SpotubeFullTrackObjectCopyWithImpl<$Res, SpotubeFullTrackObject>;
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String name,
       String externalUri,
       List<SpotubeSimpleArtistObject> artists,
@@ -78,7 +76,6 @@ class _$SpotubeFullTrackObjectCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? name = null,
     Object? externalUri = null,
@@ -89,10 +86,6 @@ class _$SpotubeFullTrackObjectCopyWithImpl<$Res,
     Object? explicit = null,
   }) {
     return _then(_value.copyWith(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -149,8 +142,7 @@ abstract class _$$SpotubeFullTrackObjectImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String name,
       String externalUri,
       List<SpotubeSimpleArtistObject> artists,
@@ -178,7 +170,6 @@ class __$$SpotubeFullTrackObjectImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? name = null,
     Object? externalUri = null,
@@ -189,10 +180,6 @@ class __$$SpotubeFullTrackObjectImplCopyWithImpl<$Res>
     Object? explicit = null,
   }) {
     return _then(_$SpotubeFullTrackObjectImpl(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -233,8 +220,7 @@ class __$$SpotubeFullTrackObjectImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SpotubeFullTrackObjectImpl implements _SpotubeFullTrackObject {
   const _$SpotubeFullTrackObjectImpl(
-      {required this.typeName,
-      required this.id,
+      {required this.id,
       required this.name,
       required this.externalUri,
       required final List<SpotubeSimpleArtistObject> artists,
@@ -247,8 +233,6 @@ class _$SpotubeFullTrackObjectImpl implements _SpotubeFullTrackObject {
   factory _$SpotubeFullTrackObjectImpl.fromJson(Map<String, dynamic> json) =>
       _$$SpotubeFullTrackObjectImplFromJson(json);
 
-  @override
-  final String typeName;
   @override
   final String id;
   @override
@@ -274,7 +258,7 @@ class _$SpotubeFullTrackObjectImpl implements _SpotubeFullTrackObject {
 
   @override
   String toString() {
-    return 'SpotubeFullTrackObject(typeName: $typeName, id: $id, name: $name, externalUri: $externalUri, artists: $artists, album: $album, durationMs: $durationMs, isrc: $isrc, explicit: $explicit)';
+    return 'SpotubeFullTrackObject(id: $id, name: $name, externalUri: $externalUri, artists: $artists, album: $album, durationMs: $durationMs, isrc: $isrc, explicit: $explicit)';
   }
 
   @override
@@ -282,8 +266,6 @@ class _$SpotubeFullTrackObjectImpl implements _SpotubeFullTrackObject {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SpotubeFullTrackObjectImpl &&
-            (identical(other.typeName, typeName) ||
-                other.typeName == typeName) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.externalUri, externalUri) ||
@@ -301,7 +283,6 @@ class _$SpotubeFullTrackObjectImpl implements _SpotubeFullTrackObject {
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      typeName,
       id,
       name,
       externalUri,
@@ -330,8 +311,7 @@ class _$SpotubeFullTrackObjectImpl implements _SpotubeFullTrackObject {
 
 abstract class _SpotubeFullTrackObject implements SpotubeFullTrackObject {
   const factory _SpotubeFullTrackObject(
-      {required final String typeName,
-      required final String id,
+      {required final String id,
       required final String name,
       required final String externalUri,
       required final List<SpotubeSimpleArtistObject> artists,
@@ -343,8 +323,6 @@ abstract class _SpotubeFullTrackObject implements SpotubeFullTrackObject {
   factory _SpotubeFullTrackObject.fromJson(Map<String, dynamic> json) =
       _$SpotubeFullTrackObjectImpl.fromJson;
 
-  @override
-  String get typeName;
   @override
   String get id;
   @override
@@ -377,7 +355,6 @@ SpotubeLocalTrackObject _$SpotubeLocalTrackObjectFromJson(
 
 /// @nodoc
 mixin _$SpotubeLocalTrackObject {
-  String get typeName => throw _privateConstructorUsedError;
   String get id => throw _privateConstructorUsedError;
   String get name => throw _privateConstructorUsedError;
   String get externalUri => throw _privateConstructorUsedError;
@@ -404,8 +381,7 @@ abstract class $SpotubeLocalTrackObjectCopyWith<$Res> {
       _$SpotubeLocalTrackObjectCopyWithImpl<$Res, SpotubeLocalTrackObject>;
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String name,
       String externalUri,
       List<SpotubeSimpleArtistObject> artists,
@@ -432,7 +408,6 @@ class _$SpotubeLocalTrackObjectCopyWithImpl<$Res,
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? name = null,
     Object? externalUri = null,
@@ -442,10 +417,6 @@ class _$SpotubeLocalTrackObjectCopyWithImpl<$Res,
     Object? path = null,
   }) {
     return _then(_value.copyWith(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -498,8 +469,7 @@ abstract class _$$SpotubeLocalTrackObjectImplCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String typeName,
-      String id,
+      {String id,
       String name,
       String externalUri,
       List<SpotubeSimpleArtistObject> artists,
@@ -526,7 +496,6 @@ class __$$SpotubeLocalTrackObjectImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? id = null,
     Object? name = null,
     Object? externalUri = null,
@@ -536,10 +505,6 @@ class __$$SpotubeLocalTrackObjectImplCopyWithImpl<$Res>
     Object? path = null,
   }) {
     return _then(_$SpotubeLocalTrackObjectImpl(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       id: null == id
           ? _value.id
           : id // ignore: cast_nullable_to_non_nullable
@@ -576,8 +541,7 @@ class __$$SpotubeLocalTrackObjectImplCopyWithImpl<$Res>
 @JsonSerializable()
 class _$SpotubeLocalTrackObjectImpl implements _SpotubeLocalTrackObject {
   const _$SpotubeLocalTrackObjectImpl(
-      {required this.typeName,
-      required this.id,
+      {required this.id,
       required this.name,
       required this.externalUri,
       required final List<SpotubeSimpleArtistObject> artists,
@@ -589,8 +553,6 @@ class _$SpotubeLocalTrackObjectImpl implements _SpotubeLocalTrackObject {
   factory _$SpotubeLocalTrackObjectImpl.fromJson(Map<String, dynamic> json) =>
       _$$SpotubeLocalTrackObjectImplFromJson(json);
 
-  @override
-  final String typeName;
   @override
   final String id;
   @override
@@ -614,7 +576,7 @@ class _$SpotubeLocalTrackObjectImpl implements _SpotubeLocalTrackObject {
 
   @override
   String toString() {
-    return 'SpotubeLocalTrackObject(typeName: $typeName, id: $id, name: $name, externalUri: $externalUri, artists: $artists, album: $album, durationMs: $durationMs, path: $path)';
+    return 'SpotubeLocalTrackObject(id: $id, name: $name, externalUri: $externalUri, artists: $artists, album: $album, durationMs: $durationMs, path: $path)';
   }
 
   @override
@@ -622,8 +584,6 @@ class _$SpotubeLocalTrackObjectImpl implements _SpotubeLocalTrackObject {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SpotubeLocalTrackObjectImpl &&
-            (identical(other.typeName, typeName) ||
-                other.typeName == typeName) &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.name, name) || other.name == name) &&
             (identical(other.externalUri, externalUri) ||
@@ -637,7 +597,7 @@ class _$SpotubeLocalTrackObjectImpl implements _SpotubeLocalTrackObject {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, typeName, id, name, externalUri,
+  int get hashCode => Object.hash(runtimeType, id, name, externalUri,
       const DeepCollectionEquality().hash(_artists), album, durationMs, path);
 
   /// Create a copy of SpotubeLocalTrackObject
@@ -659,8 +619,7 @@ class _$SpotubeLocalTrackObjectImpl implements _SpotubeLocalTrackObject {
 
 abstract class _SpotubeLocalTrackObject implements SpotubeLocalTrackObject {
   const factory _SpotubeLocalTrackObject(
-      {required final String typeName,
-      required final String id,
+      {required final String id,
       required final String name,
       required final String externalUri,
       required final List<SpotubeSimpleArtistObject> artists,
@@ -671,8 +630,6 @@ abstract class _SpotubeLocalTrackObject implements SpotubeLocalTrackObject {
   factory _SpotubeLocalTrackObject.fromJson(Map<String, dynamic> json) =
       _$SpotubeLocalTrackObjectImpl.fromJson;
 
-  @override
-  String get typeName;
   @override
   String get id;
   @override

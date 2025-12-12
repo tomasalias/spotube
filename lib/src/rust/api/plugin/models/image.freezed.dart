@@ -20,7 +20,6 @@ SpotubeImageObject _$SpotubeImageObjectFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$SpotubeImageObject {
-  String get typeName => throw _privateConstructorUsedError;
   String get url => throw _privateConstructorUsedError;
   int? get width => throw _privateConstructorUsedError;
   int? get height => throw _privateConstructorUsedError;
@@ -41,7 +40,7 @@ abstract class $SpotubeImageObjectCopyWith<$Res> {
           SpotubeImageObject value, $Res Function(SpotubeImageObject) then) =
       _$SpotubeImageObjectCopyWithImpl<$Res, SpotubeImageObject>;
   @useResult
-  $Res call({String typeName, String url, int? width, int? height});
+  $Res call({String url, int? width, int? height});
 }
 
 /// @nodoc
@@ -59,16 +58,11 @@ class _$SpotubeImageObjectCopyWithImpl<$Res, $Val extends SpotubeImageObject>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? url = null,
     Object? width = freezed,
     Object? height = freezed,
   }) {
     return _then(_value.copyWith(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -93,7 +87,7 @@ abstract class _$$SpotubeImageObjectImplCopyWith<$Res>
       __$$SpotubeImageObjectImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String typeName, String url, int? width, int? height});
+  $Res call({String url, int? width, int? height});
 }
 
 /// @nodoc
@@ -109,16 +103,11 @@ class __$$SpotubeImageObjectImplCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? typeName = null,
     Object? url = null,
     Object? width = freezed,
     Object? height = freezed,
   }) {
     return _then(_$SpotubeImageObjectImpl(
-      typeName: null == typeName
-          ? _value.typeName
-          : typeName // ignore: cast_nullable_to_non_nullable
-              as String,
       url: null == url
           ? _value.url
           : url // ignore: cast_nullable_to_non_nullable
@@ -138,14 +127,11 @@ class __$$SpotubeImageObjectImplCopyWithImpl<$Res>
 /// @nodoc
 @JsonSerializable()
 class _$SpotubeImageObjectImpl implements _SpotubeImageObject {
-  const _$SpotubeImageObjectImpl(
-      {required this.typeName, required this.url, this.width, this.height});
+  const _$SpotubeImageObjectImpl({required this.url, this.width, this.height});
 
   factory _$SpotubeImageObjectImpl.fromJson(Map<String, dynamic> json) =>
       _$$SpotubeImageObjectImplFromJson(json);
 
-  @override
-  final String typeName;
   @override
   final String url;
   @override
@@ -155,7 +141,7 @@ class _$SpotubeImageObjectImpl implements _SpotubeImageObject {
 
   @override
   String toString() {
-    return 'SpotubeImageObject(typeName: $typeName, url: $url, width: $width, height: $height)';
+    return 'SpotubeImageObject(url: $url, width: $width, height: $height)';
   }
 
   @override
@@ -163,8 +149,6 @@ class _$SpotubeImageObjectImpl implements _SpotubeImageObject {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$SpotubeImageObjectImpl &&
-            (identical(other.typeName, typeName) ||
-                other.typeName == typeName) &&
             (identical(other.url, url) || other.url == url) &&
             (identical(other.width, width) || other.width == width) &&
             (identical(other.height, height) || other.height == height));
@@ -172,7 +156,7 @@ class _$SpotubeImageObjectImpl implements _SpotubeImageObject {
 
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
-  int get hashCode => Object.hash(runtimeType, typeName, url, width, height);
+  int get hashCode => Object.hash(runtimeType, url, width, height);
 
   /// Create a copy of SpotubeImageObject
   /// with the given fields replaced by the non-null parameter values.
@@ -193,16 +177,13 @@ class _$SpotubeImageObjectImpl implements _SpotubeImageObject {
 
 abstract class _SpotubeImageObject implements SpotubeImageObject {
   const factory _SpotubeImageObject(
-      {required final String typeName,
-      required final String url,
+      {required final String url,
       final int? width,
       final int? height}) = _$SpotubeImageObjectImpl;
 
   factory _SpotubeImageObject.fromJson(Map<String, dynamic> json) =
       _$SpotubeImageObjectImpl.fromJson;
 
-  @override
-  String get typeName;
   @override
   String get url;
   @override

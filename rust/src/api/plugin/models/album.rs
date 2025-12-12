@@ -4,6 +4,7 @@ use crate::api::plugin::models::artist::SpotubeSimpleArtistObject;
 use crate::api::plugin::models::image::SpotubeImageObject;
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
+#[serde(rename_all = "lowercase")]
 pub enum SpotubeAlbumType {
     Album,
     Single,
@@ -14,7 +15,7 @@ pub enum SpotubeAlbumType {
 #[serde(rename_all = "camelCase")]
 #[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct SpotubeSimpleAlbumObject {
-    pub type_name: String,
+    // pub type_name: String,
     pub id: String,
     pub name: String,
     pub external_uri: String,
@@ -29,7 +30,7 @@ pub struct SpotubeSimpleAlbumObject {
 #[serde(rename_all = "camelCase")]
 #[frb(dart_metadata=("freezed"),json_serializable)]
 pub struct SpotubeFullAlbumObject {
-    pub type_name: String,
+    // pub type_name: String,
     pub id: String,
     pub name: String,
     pub artists: Vec<SpotubeSimpleArtistObject>,

@@ -76,7 +76,6 @@ sealed class SpotubeAudioSourceContainerPreset
 sealed class SpotubeAudioSourceMatchObject
     with _$SpotubeAudioSourceMatchObject {
   const factory SpotubeAudioSourceMatchObject({
-    required String typeName,
     required String id,
     required String title,
     required List<String> artists,

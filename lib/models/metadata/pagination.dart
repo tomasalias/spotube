@@ -50,29 +50,7 @@ extension SpotubePaginationResponseObjectExtension
   SpotubeFlattenedPaginationObject<T> flatten<T>() {
     return SpotubeFlattenedPaginationObject.from<T>(
       this,
-      (item) => switch (T) {
-        SpotubeSimpleAlbumObject() =>
-          (item as SpotubePaginationResponseObjectItem_AlbumSimple).field0 as T,
-        SpotubeFullAlbumObject() =>
-          (item as SpotubePaginationResponseObjectItem_AlbumFull).field0 as T,
-        SpotubeSimpleArtistObject() =>
-          (item as SpotubePaginationResponseObjectItem_ArtistSimple).field0
-              as T,
-        SpotubeFullArtistObject() =>
-          (item as SpotubePaginationResponseObjectItem_ArtistFull).field0 as T,
-        SpotubeTrackObject() =>
-          (item as SpotubePaginationResponseObjectItem_Track).field0 as T,
-        SpotubeSimplePlaylistObject() =>
-          (item as SpotubePaginationResponseObjectItem_PlaylistSimple).field0
-              as T,
-        SpotubeFullPlaylistObject() =>
-          (item as SpotubePaginationResponseObjectItem_PlaylistFull).field0
-              as T,
-        SpotubeBrowseSectionObject() =>
-          (item as SpotubePaginationResponseObjectItem_BrowseSection).field0
-              as T,
-        _ => throw Exception("Unsupported type: $T"),
-      },
+      (item) => item.field0 as T,
     );
   }
 }
